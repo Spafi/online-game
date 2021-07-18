@@ -12,7 +12,7 @@ const Button = ({ content, width, height, pX, pY, handleClick, toggled }) => {
       px-${pX} 
       py-${pY} 
       w-${width} 
-      h-${height ?? width} 
+      h-${height} 
 
 			// ACTIVE OR HOVER CLASSES
       ${!(toggled === true) ? ` hover:` : ' '}${

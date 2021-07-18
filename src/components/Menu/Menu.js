@@ -34,22 +34,22 @@ const Menu = () => {
 					{/* MENU BUTTONS LIST */}
 					<ul className='p-6 pt-12 space-y-6 grid items-center justify-center'>
 						<li>
-							<Button content='Play' height={8} width={32} />
+							<Button content='Play' height={'8'} width={'32'} />
 						</li>
 						<li>
-							<Button content='Create' height={8} width={32} />
+							<Button content='Create' height={'8'} width={'32'} />
 						</li>
 						<li>
-							<Button content='Join' height={8} width={32} />
+							<Button content='Join' height={'8'} width={'32'} />
 						</li>
 					</ul>
 					<div className='absolute bottom-20 right-20'>
 						<Button
 							content={<Settings className='w-8 h-8 ' />}
-							width={10}
-							height={10}
-							pX={2}
-							pY={2}
+							width={'10'}
+							height={'10'}
+							pX={'2'}
+							pY={'2'}
 							handleClick={() => toggleMenu()}
 							toggled={showSettings}
 						/>
