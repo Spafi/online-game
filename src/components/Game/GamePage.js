@@ -1,5 +1,6 @@
 import { useColor } from '../ColorContext';
 import CodeContainer from './CodeContainer';
+import ChoicesContainer from './ChoicesContainer';
 
 const GamePage = () => {
 	const color = useColor();
@@ -16,7 +17,8 @@ const GamePage = () => {
 						<div className=' flex-grow items-center'>
 							<div className={`w-full h-5 rounded-lg nm-inset-${color}-lg`}>
 								<div
-									className={`h-full bg-gradient-to-r from-green-200 via-green-400 to-purple-700 rounded-lg opacity-80 w-3/4`}></div>
+									style={{ width: '40%' }}
+									className={`h-full bg-gradient-to-r from-green-200 via-green-400 to-purple-700 rounded-lg opacity-80 `}></div>
 							</div>
 						</div>
 						<div className=' min-w-24 text-right'>0</div>
@@ -29,9 +31,7 @@ const GamePage = () => {
 					</div>
 				</div>
 				<CodeContainer className='rounded-lg w-full relative h-full' />
-				<div className=' w-full h-1/3 p-4'>
-					<div className={`nm-inset-${color}-lg rounded-lg h-full`}>Sout</div>
-				</div>
+				<ChoicesContainer />
 			</div>
 		</div>
 	);

@@ -12,7 +12,7 @@ const Component = ({ string }) => {
 			language='java'
 			showLineNumbers={true}
 			style={color === 'gray-200' ? materialLight : materialDark}
-			className='rounded-lg'>
+			className='rounded-lg min-h-md'>
 			{string}
 		</SyntaxHighlighter>
 	);

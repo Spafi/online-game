@@ -7,7 +7,7 @@ const Button = ({ content, width, height, pX, pY, handleClick, toggled }) => {
 		<button
 			onClick={() => handleClick()}
 			className={`flex items-center justify-center rounded-2xl font-light text-sm outline-none
-      nm-convex-${color}-lg 
+      nm-convex-${color}
       text-${textColor} 
       px-${pX ?? 6} 
       py-${pY ?? 'px'} 

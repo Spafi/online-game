@@ -46,8 +46,8 @@ const SettingsPage = () => {
 					toggled={color === 'gray-200'}
 				/>
 			</div>
-			<div className='w-full flex flex-row space-x-8'>
-				<p className='mr-10'>Main BG</p>
+			{/* <div className='w-full flex flex-row space-x-8'>
+				<p className='mr-10 whitespace-pre'>Color   </p>
 				<Button
 					content={'Dark'}
 					width={16}
@@ -62,26 +62,27 @@ const SettingsPage = () => {
 					handleClick={() => setWhiteTheme()}
 					toggled={color === 'gray-200'}
 				/>
-			</div>
-			<div className='w-full flex flex-row space-x-4'>
+			</div> */}
+			{/* <div className='w-full flex flex-row space-x-4'>
 				<p className='mr-10'>BG Color</p>
 				<ColorButton type={'color'} color={'gray-800'} />
 				<ColorButton type={'color'} color={'gray-700'} />
 				<ColorButton type={'color'} color={'gray-600'} />
 				<ColorButton type={'color'} color={'gray-300'} />
-			</div>
+			</div> */}
 			<div className='w-full flex flex-row space-x-4'>
 				<p className='mr-10'>Text</p>
 				<ColorButton type={'text'} color={'gray-100'} />
 				<ColorButton type={'text'} color={'gray-800'} />
-				<ColorButton type={'text'} color={'green-600'} />
+				<ColorButton type={'text'} color={'green-500'} />
+				<ColorButton type={'text'} color={'blue-500'} />
 				<ColorButton type={'text'} color={'red-600'} />
 				<ColorButton type={'text'} color={'purple-600'} />
 
 			</div>
-			<div className='w-full'>
+			{/* <div className='w-full'>
 				<p className='mr-10'>Accent</p>
-			</div>
+			</div> */}
 		</div>
 	);
 };
