@@ -9,9 +9,21 @@ module.exports = {
 			'3/4': '75%',
 			full: '100%',
 		},
+		maxWidth: {
+			102: '32rem',
+		
+		},
+		minHeight: {
+			0: '0',
+			sm: '20rem',
+			'1/4': '25%',
+			'1/2': '50%',
+			'3/4': '75%',
+			full: '100%',
+		},
 		extend: {
 			fontFamily: {
-				nunito: ['"Nunito"', 'sans-serif'],
+				montserrat: ['"Montserrat"', 'sans-serif'],
 			},
 			colors: {
 				'neu-gray': '#2C3135',

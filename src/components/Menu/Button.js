@@ -1,10 +1,11 @@
 import { useColor, useTextColor, useAccentTextColor } from '../ColorContext';
-const Button = ({ content, width, height, pX, pY }) => {
+const Button = ({ content, width, height, pX, pY, handleClick }) => {
 	const color = useColor();
 	const textColor = useTextColor();
 	const accentColor = useAccentTextColor();
 	return (
 		<button
+    onClick={() => handleClick()}
 			className={`flex items-center justify-center rounded-2xl font-light text-sm
       nm-convex-${color}-lg 
       text-${textColor} 

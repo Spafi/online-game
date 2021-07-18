@@ -1,9 +1,11 @@
-import { useColor, useTextColor } from '../ColorContext';
+import { useChangeColor, useColor, useTextColor } from '../ColorContext';
 import Button from './Button';
+import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 const Menu = () => {
 	const color = useColor();
 	const textColor = useTextColor();
+	const changeColor = useChangeColor();
 	return (
 		<div className={`${textColor} fixed h-screen w-96 flex z-10 p-12`}>
 			{/* MAIN MENU CONTAINER */}
@@ -29,14 +31,25 @@ const Menu = () => {
 							<Button content='Create' height={8} />
 						</li>
 						<li>
-							<Button content='Join' height={8} />
+							<Button
+								content='Join'
+								height={8}
+								handleClick={()=>changeColor('gray-800')}
+							/>
 						</li>
 					</ul>
 					<div className='absolute bottom-20 right-20'>
-						<Button content={<Settings className='w-8 h-8 '/>} width={10} height={10} pX={0} pY={0} />
+						<Button
+							content={<Settings className='w-8 h-8 ' />}
+							width={10}
+							height={10}
+							pX={0}
+							pY={0}
+						/>
 					</div>
 				</div>
 			</div>
+			<SettingsPage/>
 		</div>
 	);
 };
