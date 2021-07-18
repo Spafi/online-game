@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { useChangeColor, useColor } from '../ColorContext';
+import { useChangeColor, useColor, useTheme } from '../ColorContext';
 import Button from './Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 const Menu = () => {
 	const color = useColor();
+	const darkTheme = useTheme();
 	const changeColor = useChangeColor();
 
 	const [showSettings, setShowSettings] = useState(false);
@@ -16,7 +17,9 @@ const Menu = () => {
 		<div className={`fixed h-screen w-96 flex z-20 p-12`}>
 			{/* MAIN MENU CONTAINER */}
 			<div
-				className={`nm-flat-gray-200-sm items-center justify-center h-full w-full rounded-lg`}>
+				className={`${
+					darkTheme === true ? 'nm-flat-gray-200-sm' : 'nm-flat-gray-neu-sm'
+				} items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
 					<img
