@@ -5,7 +5,7 @@ import {
 	useChangeAccentTextColor,
 } from '../ColorContext';
 
-import ColorButton from './ColorButton';
+// import ColorButton from './ColorButton';
 import Button from './Button';
 
 const SettingsPage = () => {
@@ -21,7 +21,7 @@ const SettingsPage = () => {
 		changeTextAccentColor('gray-400');
 	};
 	const setDarkTheme = () => {
-		changeColor('neu-gray');
+		changeColor('gray-neu');
 		changeTextColor('gray-200');
 		changeTextAccentColor('gray-400');
 	};
@@ -36,7 +36,7 @@ const SettingsPage = () => {
 					width={16}
 					height={6}
 					handleClick={() => setDarkTheme()}
-					toggled={color === 'neu-gray'}
+					toggled={color === 'gray-neu'}
 				/>
 				<Button
 					content={'Light'}
@@ -53,7 +53,7 @@ const SettingsPage = () => {
 					width={16}
 					height={6}
 					handleClick={() => setDarkTheme()}
-					toggled={color === 'neu-gray'}
+					toggled={color === 'gray-neu'}
 				/>
 				<Button
 					content={'Light'}
@@ -71,13 +71,13 @@ const SettingsPage = () => {
 				<ColorButton type={'color'} color={'gray-300'} />
 			</div> */}
 			<div className='w-full flex flex-row space-x-4'>
-				<p className='mr-10'>Text</p>
+				{/* <p className='mr-10'>Text</p>
 				<ColorButton type={'text'} color={'gray-100'} />
 				<ColorButton type={'text'} color={'gray-800'} />
 				<ColorButton type={'text'} color={'green-500'} />
 				<ColorButton type={'text'} color={'blue-500'} />
 				<ColorButton type={'text'} color={'red-600'} />
-				<ColorButton type={'text'} color={'purple-600'} />
+				<ColorButton type={'text'} color={'purple-600'} /> */}
 
 			</div>
 			{/* <div className='w-full'>

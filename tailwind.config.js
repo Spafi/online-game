@@ -2,6 +2,16 @@ module.exports = {
 	purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
+		neumorphismColor: {
+			gray: {
+				200: '#E5E7EB',
+				400: '#9CA3AF',
+				800: '#1F2937',
+				neu: '#2C3135',
+			},
+			red: { 600: '#DC2626' },
+			purple: { 600: '#7C3AED' },
+		},
 		minWidth: {
 			sm: '20rem',
 			24: '6rem',
@@ -15,6 +25,7 @@ module.exports = {
 		},
 		maxHeight: {
 			'3/4': '75%',
+			'24': '6rem',
 			full: '100%',
 		},
 		minHeight: {
@@ -32,7 +43,7 @@ module.exports = {
 				montserrat: ['"Montserrat"', 'sans-serif'],
 			},
 			colors: {
-				'neu-gray': '#2C3135',
+				'gray-neu': '#2C3135',
 				'neu-violet': '#8934DA',
 				'neu-purple': '#611DDE',
 			},
