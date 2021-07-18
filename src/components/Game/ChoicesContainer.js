@@ -1,12 +1,12 @@
-import { useColor } from '../ColorContext';
+// import { useColor } from '../ColorContext';
 import Choice from './Choice';
 
 const ChoicesContainer = () => {
-  const color = useColor()
+  // const color = useColor()
 	return (
 		<div className=' w-full h-1/3 p-4'>
 			<div
-				className={`nm-inset-${color}-lg rounded-md h-full grid grid-rows-2 grid-cols-2 gap-2 p-2`}>
+				className={` h-full grid grid-rows-2 grid-cols-2 gap-2 p-2`}>
 				<Choice children={'56'} />
 				<Choice children={'58'}  />
 				<Choice

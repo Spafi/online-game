@@ -20,6 +20,7 @@ public class Kata {
   }
 }`,
 	};
+	//eslint-disable-next-line
 	const [game, setGame] = useState(gameData);
 
 	return <GameContext.Provider value={game}>{children}</GameContext.Provider>;

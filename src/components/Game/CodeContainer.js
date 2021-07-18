@@ -7,6 +7,7 @@ const CodeContainer = () => {
 
 	useEffect(() => {
 		showCode(game);
+		//eslint-disable-next-line
 	}, []);
 
 	const showCode = (game) => game.code;
