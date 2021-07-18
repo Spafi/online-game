@@ -16,7 +16,7 @@ const Menu = () => {
 		<div className={`fixed h-screen w-96 flex z-20 p-12`}>
 			{/* MAIN MENU CONTAINER */}
 			<div
-				className={`nm-flat-${color}-sm items-center justify-center h-full w-full rounded-lg`}>
+				className={`nm-flat-gray-200-sm items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
 					<img
