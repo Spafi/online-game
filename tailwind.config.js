@@ -4,6 +4,7 @@ module.exports = {
 	theme: {
 		minWidth: {
 			sm: '20rem',
+			24: '6rem',
 			'1/4': '25%',
 			'1/2': '50%',
 			'3/4': '75%',
@@ -11,7 +12,10 @@ module.exports = {
 		},
 		maxWidth: {
 			102: '32rem',
-		
+		},
+		maxHeight: {
+			'3/4': '75%',
+			full: '100%',
 		},
 		minHeight: {
 			0: '0',
@@ -19,6 +23,7 @@ module.exports = {
 			'1/4': '25%',
 			'1/2': '50%',
 			'3/4': '75%',
+			screen: '100vh',
 			full: '100%',
 		},
 		extend: {
@@ -33,7 +38,8 @@ module.exports = {
 		},
 	},
 	variants: {
+		scrollbar: ['rounded'],
 		extend: {},
 	},
-	plugins: [require('tailwindcss-neumorphism')],
+	plugins: [require('tailwindcss-neumorphism'), require('tailwind-scrollbar')],
 };

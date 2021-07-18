@@ -1,13 +1,19 @@
-import { useChangeColor, useColor, useTextColor } from '../ColorContext';
+import React, { useState } from 'react';
+
+import { useChangeColor, useColor } from '../ColorContext';
 import Button from './Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 const Menu = () => {
 	const color = useColor();
-	const textColor = useTextColor();
 	const changeColor = useChangeColor();
+
+	const [showSettings, setShowSettings] = useState(false);
+
+	const toggleMenu = () => setShowSettings((prevState) => !prevState);
+
 	return (
-		<div className={`${textColor} fixed h-screen w-96 flex z-10 p-12`}>
+		<div className={`fixed h-screen w-96 flex z-20 p-12`}>
 			{/* MAIN MENU CONTAINER */}
 			<div
 				className={`nm-flat-${color}-sm items-center justify-center h-full w-full rounded-lg`}>
@@ -18,7 +24,7 @@ const Menu = () => {
 						src='https://via.placeholder.com/100'
 						alt='User'
 					/>
-					<p className={`text-${textColor} font-light text-2xl`}>Username</p>
+					<p className={`font-light text-2xl`}>Username</p>
 				</div>
 				{/* MENU BUTTONS CONTAINER */}
 				<div className=''>
@@ -34,7 +40,7 @@ const Menu = () => {
 							<Button
 								content='Join'
 								height={8}
-								handleClick={()=>changeColor('gray-800')}
+								handleClick={() => changeColor('gray-800')}
 							/>
 						</li>
 					</ul>
@@ -45,11 +51,13 @@ const Menu = () => {
 							height={10}
 							pX={0}
 							pY={0}
+							handleClick={() => toggleMenu()}
+							toggled={showSettings}
 						/>
 					</div>
 				</div>
 			</div>
-			<SettingsPage/>
+			{showSettings && <SettingsPage />}
 		</div>
 	);
 };
