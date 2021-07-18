@@ -9,9 +9,9 @@ const Button = ({ content, width, height, pX, pY, handleClick, toggled }) => {
       ${
 							darkTheme === true ? 'nm-convex-gray-neu-sm ' : 'nm-convex-gray-200-sm '
 						}
-      px-${pX ?? 6} 
-      py-${pY ?? 'px'} 
-      w-${width ?? 32} 
+      px-${pX} 
+      py-${pY} 
+      w-${width} 
       h-${height ?? width} 
 
 			// ACTIVE OR HOVER CLASSES

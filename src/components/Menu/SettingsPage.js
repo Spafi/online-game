@@ -17,6 +17,8 @@ const SettingsPage = () => {
 					content={'Dark'}
 					width={16}
 					height={6}
+					pX={'2'}
+					pY={'px'}
 					handleClick={() => toggleTheme()}
 					toggled={darkTheme}
 				/>
@@ -24,6 +26,8 @@ const SettingsPage = () => {
 					content={'Light'}
 					width={16}
 					height={6}
+					pX={'2'}
+					pY={'px'}
 					handleClick={() => toggleTheme()}
 					toggled={!darkTheme}
 				/>
