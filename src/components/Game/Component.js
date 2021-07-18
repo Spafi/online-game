@@ -3,15 +3,15 @@ import {
 	materialDark,
 	materialLight,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useColor } from '../ColorContext';
+import { useTheme } from '../ThemeContext';
 
 const Component = ({ string }) => {
-	const color = useColor();
+	const darkTheme = useTheme();
 	return (
 		<SyntaxHighlighter
 			language='java'
 			showLineNumbers={true}
-			style={color === 'gray-200' ? materialLight : materialDark}
+			style={darkTheme === true ? materialDark : materialLight}
 			className='rounded-lg min-h-md'>
 			{string}
 		</SyntaxHighlighter>

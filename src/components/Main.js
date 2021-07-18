@@ -1,10 +1,13 @@
-import { useColor, useTextColor } from '../components/ColorContext.js';
+import { useTheme } from './ThemeContext.js';
 const Main = ({ children }) => {
-	const color = useColor();
-	const textColor = useTextColor();
+	const darkTheme = useTheme();
 	return (
 		<div
-			className={`bg-${color} h-full min-h-screen font-montserrat text-${textColor}`}>
+			className={`${
+				darkTheme === true ? 'bg-gray-neu' : 'bg-gray-200'
+			} h-full min-h-screen font-montserrat ${
+				darkTheme === true ? 'text-gray-200' : 'text-gray-800'
+			}`}>
 			{children}
 		</div>
 	);

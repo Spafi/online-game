@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
-import { useChangeColor, useColor, useTheme } from '../ColorContext';
+import { useTheme } from '../ThemeContext';
 import Button from './Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 const Menu = () => {
-	const color = useColor();
 	const darkTheme = useTheme();
-	const changeColor = useChangeColor();
 
 	const [showSettings, setShowSettings] = useState(false);
 
@@ -18,12 +16,14 @@ const Menu = () => {
 			{/* MAIN MENU CONTAINER */}
 			<div
 				className={`${
-					darkTheme === true ? 'nm-flat-gray-200-sm' : 'nm-flat-gray-neu-sm'
+					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
 				} items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
 					<img
-						className={`nm-convex-${color}-lg rounded-full p-px`}
+						className={`${
+							darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'
+						} rounded-full p-px`}
 						src='https://via.placeholder.com/100'
 						alt='User'
 					/>
@@ -43,7 +43,6 @@ const Menu = () => {
 							<Button
 								content='Join'
 								height={8}
-								handleClick={() => changeColor('gray-800')}
 							/>
 						</li>
 					</ul>

@@ -1,8 +1,16 @@
-import { useColor } from "../ColorContext";
-const Choice = ({children}) => {
+import { useTheme } from '../ThemeContext';
+const Choice = ({ children }) => {
+	const darkTheme = useTheme();
+	return (
+		<button
+			className={`${
+				darkTheme === true
+					? 'nm-flat-gray-neu-sm hover:nm-inset-gray-neu-sm'
+					: 'nm-flat-gray-200-sm hover:nm-inset-gray-200-sm'
+			}  rounded-xl outline-none`}>
+			{children}
+		</button>
+	);
+};
 
-  const color = useColor()
-  return <button className={`nm-flat-${color}-sm hover:nm-inset-${color} rounded-xl outline-none`}>{children}</button>;
-}
-
-export default Choice
+export default Choice;
