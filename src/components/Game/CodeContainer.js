@@ -1,25 +1,23 @@
-import { useGame } from './GameContext';
-import React, { useEffect } from 'react';
-import Component from './Component.js';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import {
+	materialDark,
+	materialLight,
+} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from '../ThemeContext';
 
-const CodeContainer = () => {
-	const game = useGame();
-
-	useEffect(() => {
-		showCode(game);
-		//eslint-disable-next-line
-	}, []);
-
-	const showCode = (game) => game.code;
-
+const Component = ({ string }) => {
+	const darkTheme = useTheme();
 	return (
-		<>
-			<Component string={game.code} />
-			<div className='text-lg min-h-0 max-h-24 px-4 py-2'>
-				<p>What is the output for int[] n = {'{2, 4, 6}'}</p>
-			</div>
-		</>
+		<SyntaxHighlighter
+			language='java'
+			showLineNumbers={true}
+			style={darkTheme === true ? materialDark : materialLight}
+			className={`rounded-lg min-h-sm max-h-md scrollbar-thin ${
+				darkTheme ? 'scrollbar-thumb-purple-500' : 'scrollbar-thumb-gray-400'
+			} scrollbar-thumb-rounded-sm`}>
+			{string}
+		</SyntaxHighlighter>
 	);
 };
 
-export default CodeContainer;
+export default Component;

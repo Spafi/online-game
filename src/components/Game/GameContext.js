@@ -15,6 +15,27 @@ public class Kata {
       .stream(n)
       .map(n1 -> (int) Math.pow(n1, 2))
       .reduce(Integer::sum)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+      sdsd
       .getAsInt();
       
   }

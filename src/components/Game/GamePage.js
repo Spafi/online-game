@@ -1,5 +1,5 @@
 import { useTheme } from '../ThemeContext';
-import CodeContainer from './CodeContainer';
+import CodeContainer from './ProblemContainer';
 import ChoicesContainer from './ChoicesContainer';
 
 const GamePage = () => {
@@ -38,6 +38,7 @@ const GamePage = () => {
 				<CodeContainer className='rounded-lg w-full relative h-full' />
 				<ChoicesContainer />
 			</div>
+			<div className=" w-64 border-2 ml-8">x</div>
 		</div>
 	);
 };

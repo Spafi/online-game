@@ -24,8 +24,11 @@ module.exports = {
 			102: '32rem',
 		},
 		maxHeight: {
+			sm: '20rem',
+			md: '40rem',
 			'3/4': '75%',
-			'24': '6rem',
+			24: '6rem',
+			30: '10rem',
 			full: '100%',
 		},
 		minHeight: {
