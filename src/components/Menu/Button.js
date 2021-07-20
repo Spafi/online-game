@@ -9,7 +9,7 @@ const Button = ({ content, handleClick, toggled, classes }) => {
 
       ${darkTheme === true ? 'nm-convex-gray-neu-sm ' : 'nm-convex-gray-200-sm '}
 			// HOVER
-      ${` hover:${darkTheme === true ? 'nm-inset-gray-neu-lg ' : 'nm-inset-gray-200-lg '}`}
+      ${` ${darkTheme === true ? 'hover:nm-inset-gray-neu-lg ' : 'hover:nm-inset-gray-200-lg '}`}
 			// ACTIVE 
 			${toggled && `${darkTheme === true ? 'nm-inset-gray-neu-lg ' : 'nm-inset-gray-200-lg '}`}
 			// ACTIVE ACCENT COLOR 

@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 
 const ProgressBar = () => {
 	const darkTheme = useTheme();
-	const [progress, setProgress] = useState(0);
+	const [progress, setProgress] = useState(100);
 
 	useEffect(() => {
 		const updateProgress = setInterval(() => {
 			setProgress((prevProgress) => {
 				console.log(prevProgress);
-				if (prevProgress < 100) {
-					return (prevProgress += 1);
+				if (prevProgress > 0) {
+					return (prevProgress -= 1);
 				}
 				else clearInterval(updateProgress)
 			});
