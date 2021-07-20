@@ -6,11 +6,13 @@ import GamePage from './components/Game/GamePage.js';
 import { ThemeProvider } from './components/ThemeContext.js';
 import { GameProvider } from './components/Game/GameContext.js';
 
+
 function App() {
 	return (
 		<ThemeProvider>
 			<div className='App'>
 				<Main>
+					{/* <Landing/> */}
 					<Menu />
 					<GameProvider>
 						<GamePage />

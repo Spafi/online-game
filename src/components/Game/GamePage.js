@@ -1,9 +1,12 @@
 import { useTheme } from '../ThemeContext';
 import CodeContainer from './ProblemContainer';
 import ChoicesContainer from './ChoicesContainer';
+import ProgressBar from './ProgressBar';
 
 const GamePage = () => {
 	const darkTheme = useTheme();
+	
+
 	return (
 		<div className={` ml-80 p-12 flex h-screen`}>
 			{/* MAIN GAME CONTAINER */}
@@ -17,14 +20,7 @@ const GamePage = () => {
 					<div className='h-10 flex items-center space-x-6 text-5xl font-medium'>
 						<div className=' min-w-24'>6</div>
 						<div className=' flex-grow items-center'>
-							<div
-								className={`w-full h-5 rounded-lg ${
-									darkTheme === true ? 'nm-inset-gray-neu-lg' : 'nm-inset-gray-200-lg'
-								}`}>
-								<div
-									style={{ width: '40%' }}
-									className={`h-full bg-gradient-to-r from-green-200 via-green-400 to-purple-700 rounded-lg opacity-80 `}></div>
-							</div>
+							<ProgressBar progress={0}/>
 						</div>
 						<div className=' min-w-24 text-right'>0</div>
 					</div>
@@ -38,7 +34,7 @@ const GamePage = () => {
 				<CodeContainer className='rounded-lg w-full relative h-full' />
 				<ChoicesContainer />
 			</div>
-			<div className=" w-64 border-2 ml-8">x</div>
+			<div className='w-64 ml-8'></div>
 		</div>
 	);
 };
