@@ -6,20 +6,20 @@ import GamePage from './components/Game/GamePage.js';
 import { ThemeProvider } from './components/ThemeContext.js';
 import { GameProvider } from './components/Game/GameContext.js';
 import Landing from './components/LandingPage/Landing.js';
+import React, { useState } from 'react'
 
 function App() {
-	const user = localStorage.getItem('user');
+
 	return (
 		<ThemeProvider>
 			<div className='App'>
 				<Main>
-					{!user && <Landing />}
-					{user && (
+					<Landing/>
 						<GameProvider>
 							<Menu />
 							<GamePage />
 						</GameProvider>
-					)}
+					
 					{/* <Helper /> */}
 				</Main>
 			</div>

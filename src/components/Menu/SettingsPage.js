@@ -11,7 +11,7 @@ const SettingsPage = () => {
 			className={`${
 				darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
 			} absolute ml-80 bottom-0 mb-12 min-h-sm min-w-sm w-full max-w-102 rounded-lg p-12 flex flex-col justify-between `}>
-			<div className='w-full flex flex-row space-x-8'>
+			<div className='w-full flex flex-row space-x-8 justify-left items-center'>
 				<p className='mr-10'>Theme</p>
 				<Button
 					content={'Dark'}
@@ -33,7 +33,12 @@ const SettingsPage = () => {
 				/>
 			</div>
 
-			<div className='w-full flex flex-row space-x-4'></div>
+			<div className='w-full flex flex-row space-x-8 justify-left items-center'>
+				<Button
+					content={'Logout'}
+					handleClick={() => localStorage.clear()}
+				/>
+			</div>
 		</div>
 	);
 };

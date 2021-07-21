@@ -1,9 +1,9 @@
 import { useTheme } from '../ThemeContext';
 import Input from './Input';
 import Button from '../Menu/Button';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import {registerUrl, loginUrl} from '../../BASE_URL';
+import { registerUrl, loginUrl } from '../../BASE_URL';
 
 const LoginContainer = () => {
 	const darkTheme = useTheme();
@@ -14,8 +14,12 @@ const LoginContainer = () => {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [repeatPassword, setRepeatPassword] = useState('');
+	// eslint-disable-next-line
 	const [user, setUser] = useState();
 	const role = 'USER';
+	const inputRef = useRef();
+	const passwordRef = useRef();
 
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem('user');
@@ -25,29 +29,54 @@ const LoginContainer = () => {
 		}
 	}, []);
 
-	const handleLogout = () => {
-		setUser({});
-		setUsername('');
-		setEmail('');
-		setPassword('');
-		localStorage.clear();
+	function passwordsMatch(target) {
+		setRepeatPassword(target.value);
+		hideError(passwordRef);
+		if (password !== target.value) showError(passwordRef, 'Passwords not matching!');
 	};
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
+		hideError(inputRef);
 		const user = { email, password };
-		console.log(user);
-		const response = await axios.post(loginUrl, user);
-		setUser(response.data);
-		localStorage.setItem('user', JSON.stringify(response.data));
+		await axios
+			.post(loginUrl, user)
+			.then((response) => {
+				setUser(response.data);
+				localStorage.setItem('user', JSON.stringify(response.data));
+			})
+			.catch((error) => {
+				showError(inputRef, error.response.data.message);
+			});
 	};
 
 	const handleRegister = async (e) => {
 		e.preventDefault();
+		hideError(inputRef);
 		const user = { email, username, password, role };
-		const response = await axios.post(registerUrl, user);
-		setUser(response.data);
-		localStorage.setItem('user', JSON.stringify(response.data));
+		await axios
+			.post(registerUrl, user)
+			.then((response) => {
+				setUser(response.data);
+				localStorage.setItem('user', JSON.stringify(response.data));
+			})
+			.catch((error) => {
+				showError(inputRef, error.response.data.message);
+			});
+	};
+
+	const showError = (ref, e) => {
+		const inputContainer = ref.current;
+		inputContainer.firstChild.classList.remove('border-transparent');
+		inputContainer.firstChild.classList.add('border-red-500');
+		inputContainer.lastChild.textContent = e;
+	};
+
+	const hideError = (ref) => {
+		const inputContainer = ref.current;
+		inputContainer.firstChild.classList.remove('border-red-500');
+		inputContainer.firstChild.classList.add('border-transparent');
+		inputContainer.lastChild.textContent = '';
 	};
 
 	return (
@@ -64,11 +93,21 @@ const LoginContainer = () => {
 			</div>
 
 			{!registered && (
-				<form onSubmit={handleRegister} className='w-full flex flex-col items-center gap-8'>
+				<form
+					onSubmit={handleRegister}
+					className='w-full flex flex-col items-center gap-8'>
 					<Input
 						placeholder={'E-mail'}
 						value={email}
 						onChange={({ target }) => setEmail(target.value)}
+						ref={inputRef}
+					/>
+
+					<Input
+						placeholder={'Password'}
+						value={password}
+						type={'password'}
+						onChange={({ target }) => setPassword(target.value)}
 					/>
 					<Input
 						placeholder={'Username'}
@@ -76,12 +115,12 @@ const LoginContainer = () => {
 						onChange={({ target }) => setUsername(target.value)}
 					/>
 					<Input
-						placeholder={'Password'}
-						value={password}
+						placeholder={'Retype Password'}
+						value={repeatPassword}
 						type={'password'}
-						onChange={({ target }) => setPassword(target.value)}
+						onChange={({ target }) => passwordsMatch(target)}
+						ref={passwordRef}
 					/>
-					<Input placeholder={'Retype Password'} type={'password'} />
 					<Button content={'Sign Up'} classes='px-6' type={'submit'} />
 					<p className='text-sm'>
 						Already registered?{' '}
@@ -93,12 +132,15 @@ const LoginContainer = () => {
 			)}
 
 			{registered && (
-				<form onSubmit={handleLogin} className='w-full flex flex-col items-center gap-8'>
+				<form
+					onSubmit={handleLogin}
+					className='w-full flex flex-col items-center gap-8'>
 					{' '}
 					<Input
 						placeholder={'E-mail'}
 						value={email}
 						onChange={({ target }) => setEmail(target.value)}
+						ref={inputRef}
 					/>
 					<Input
 						placeholder={'Password'}

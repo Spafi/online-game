@@ -14,6 +14,7 @@ module.exports = {
 		},
 
 		extend: {
+			backgroundColor: ['active'],
 			fontFamily: {
 				montserrat: ['"Montserrat"', 'sans-serif'],
 			},
