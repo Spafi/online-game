@@ -1,12 +1,13 @@
 import { useTheme } from '../ThemeContext';
-const Button = ({ content, handleClick, toggled, classes }) => {
+const Button = ({ content, handleClick, toggled, classes, type }) => {
 	const darkTheme = useTheme();
 
 	return (
 		<button
-			onClick={() => handleClick()}
+		type={type ?? 'button'}
+			onClick={() => typeof handleClick === "function" && handleClick()}
 			className={`flex items-center p-2 justify-center rounded-2xl font-light text-sm outline-none 
-
+			
       ${darkTheme === true ? 'nm-convex-gray-neu-sm ' : 'nm-convex-gray-200-sm '}
 			// HOVER
       ${` ${darkTheme === true ? 'hover:nm-inset-gray-neu-lg ' : 'hover:nm-inset-gray-200-lg '}`}
