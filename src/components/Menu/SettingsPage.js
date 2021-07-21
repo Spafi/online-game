@@ -2,10 +2,10 @@ import { useTheme, useToggleTheme } from '../ThemeContext';
 
 import Button from './Button';
 
-const SettingsPage = () => {
+const SettingsPage = ({updateUser}) => {
 	const darkTheme = useTheme();
 	const toggleTheme = useToggleTheme();
-
+	const setUser = (user) => updateUser(user);
 	return (
 		<div
 			className={`${
@@ -34,10 +34,7 @@ const SettingsPage = () => {
 			</div>
 
 			<div className='w-full flex flex-row space-x-8 justify-left items-center'>
-				<Button
-					content={'Logout'}
-					handleClick={() => localStorage.clear()}
-				/>
+				<Button content={'Logout'} handleClick={() => setUser()} />
 			</div>
 		</div>
 	);

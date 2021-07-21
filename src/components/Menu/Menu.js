@@ -4,7 +4,7 @@ import { useTheme } from '../ThemeContext';
 import Button from './Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
-const Menu = () => {
+const Menu = (props) => {
 	const darkTheme = useTheme();
 
 	const [showSettings, setShowSettings] = useState(false);
@@ -51,7 +51,7 @@ const Menu = () => {
 					</div>
 				</div>
 			</div>
-			{showSettings && <SettingsPage />}
+			{showSettings && <SettingsPage updateUser={props.updateUser}/>}
 		</div>
 	);
 };
