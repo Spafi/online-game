@@ -1,7 +1,7 @@
 import { useTheme } from '../ThemeContext';
 import Input from './Input';
 import Button from '../Menu/Button';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
 
@@ -63,7 +63,7 @@ const LoginContainer = ({ updateUser }) => {
 		const inputContainer = ref.current;
 		inputContainer.firstChild.classList.remove('border-transparent');
 		inputContainer.firstChild.classList.add('border-red-500');
-		inputContainer.lastChild.textContent = e;
+		inputContainer.lastChild.textContent = e === 'Access Denied' ? 'You need to activate your account first!' : e
 	};
 
 	const hideError = (ref) => {

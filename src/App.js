@@ -33,16 +33,21 @@ function App() {
 		localStorage.clear();
 	}
 
-	const updateUser = (user) => setUser(user);
+	const updateUser = (user) => {
+		!user && localStorage.clear();
+		setUser(user);
+	};
 	return (
 		<ThemeProvider>
 			<div className='App'>
 				<Main>
 					{!user && <LoginContainer updateUser={updateUser} />}
-					<GameProvider>
-						<Menu updateUser={updateUser} />
-						<GamePage />
-					</GameProvider>
+					{user && (
+						<GameProvider>
+							<Menu updateUser={updateUser} />
+							<GamePage />
+						</GameProvider>
+					)}
 
 					{/* <Helper /> */}
 				</Main>
