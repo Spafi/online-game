@@ -34,8 +34,7 @@ public class RegistrationService {
 
         String token = appUserService.signUpUser(
                 new AppUser(
-                        request.getFirstName(),
-                        request.getLastName(),
+                        request.getUsername(),
                         request.getEmail(),
                         request.getPassword(),
                         AppUserRole.valueOf(request.getRole())
@@ -51,7 +50,7 @@ public class RegistrationService {
 
         emailSender.send(
                 request.getEmail(),
-                buildEmail(request.getFirstName(), link));
+                buildEmail(request.getUsername(), link));
         return token;
     }
 

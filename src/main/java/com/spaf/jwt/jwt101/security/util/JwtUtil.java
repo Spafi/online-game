@@ -1,5 +1,6 @@
 package com.spaf.jwt.jwt101.security.util;
 
+import com.spaf.jwt.jwt101.security.user.models.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -44,9 +45,9 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", ((AppUser) userDetails).getId());
         return createToken(claims, userDetails.getUsername());
     }
-
 
 
     private String createToken(Map<String, Object> claims, String subject) {

@@ -4,7 +4,10 @@ import com.spaf.jwt.jwt101.security.registration.models.RegistrationRequest;
 import com.spaf.jwt.jwt101.security.registration.service.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "api/v1/registration")
@@ -17,7 +20,12 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequest request) {
-        return registrationService.register(request);
+        try {
+            return registrationService.register(request);
+        } catch (IllegalStateException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered!", e);
+        }
+
     }
 
     @GetMapping(path = "confirm")

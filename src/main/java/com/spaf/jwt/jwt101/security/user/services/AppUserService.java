@@ -33,7 +33,7 @@ public class AppUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USERNAME_NOT_FOUND_MESSAGE, email)));
     }
 
-    public String signUpUser(AppUser user) {
+    public String signUpUser(AppUser user) throws IllegalStateException{
         boolean userExists = userRepository
                 .findByEmail(user.getEmail())
                 .isPresent();
