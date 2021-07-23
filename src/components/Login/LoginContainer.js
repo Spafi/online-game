@@ -25,7 +25,7 @@ const LoginContainer = ({ updateUser }) => {
 
 	const onRegisterSuccess = () => setSuccessfulRegister(true);
 
-	const closeModal = () => setSuccessfulRegister(false)
+	const closeModal = () => setSuccessfulRegister(false);
 
 	const setUser = (user) => updateUser(user);
 
@@ -38,27 +38,29 @@ const LoginContainer = ({ updateUser }) => {
 
 	const handleLogin = async (e, isRegister) => {
 		e.preventDefault();
-		hideError(inputRef);
-		const user =
-			isRegister === true
-				? { email, username, password, role }
-				: { email, password };
+		if (password === repeatPassword) {
+			hideError(inputRef);
+			const user =
+				isRegister === true
+					? { email, username, password, role }
+					: { email, password };
 
-		const url = isRegister === true ? registerUrl : loginUrl;
-		await axios
-			.post(url, user)
-			.then((response) => {
-				!isRegister && setUser(response.data);
-				!isRegister && localStorage.setItem('user', JSON.stringify(response.data));
-				if (isRegister && response.data !== null) {
-					onRegisterSuccess();
-				}
-			})
-			.catch((error) => {
-				error.response && showError(inputRef, error.response.data.message);
-				!error.response &&
-					showError(inputRef, 'Error connecting to the server. Try again later');
-			});
+			const url = isRegister === true ? registerUrl : loginUrl;
+			await axios
+				.post(url, user)
+				.then((response) => {
+					!isRegister && setUser(response.data);
+					!isRegister && localStorage.setItem('user', JSON.stringify(response.data));
+					if (isRegister && response.data !== null) {
+						onRegisterSuccess();
+					}
+				})
+				.catch((error) => {
+					error.response && showError(inputRef, error.response.data.message);
+					!error.response &&
+						showError(inputRef, 'Error connecting to the server. Try again later');
+				});
+		} else {showError(passwordRef, 'Passwords not matching!');}
 	};
 
 	const showError = (ref, e) => {
@@ -78,7 +80,7 @@ const LoginContainer = ({ updateUser }) => {
 
 	return (
 		<div className='p-12 w-full h-screen flex items-center justify-center'>
-			<RegisterSuccess isActive={successfulRegister} closeModal={closeModal}/>
+			<RegisterSuccess isActive={successfulRegister} closeModal={closeModal} />
 			<div
 				className={`${
 					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
