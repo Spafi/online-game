@@ -1,6 +1,7 @@
 import { useTheme } from '../ThemeContext';
 import Input from './Input';
 import Button from '../Menu/Button';
+import RegisterSuccess from './RegisterSuccess';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
@@ -8,6 +9,8 @@ import { registerUrl, loginUrl } from '../../BASE_URL';
 const LoginContainer = ({ updateUser }) => {
 	const darkTheme = useTheme();
 	const [registered, setRegistered] = useState(true);
+	// eslint-disable-next-line
+	const [successfulRegister, setSuccessfulRegister] = useState(false);
 
 	const switchLogin = () => setRegistered((prevState) => !prevState);
 
@@ -20,6 +23,10 @@ const LoginContainer = ({ updateUser }) => {
 	const inputRef = useRef();
 	const passwordRef = useRef();
 
+	const onRegisterSuccess = () => setSuccessfulRegister(true);
+
+	const closeModal = () => setSuccessfulRegister(false)
+
 	const setUser = (user) => updateUser(user);
 
 	function passwordsMatch(target) {
@@ -29,33 +36,28 @@ const LoginContainer = ({ updateUser }) => {
 			showError(passwordRef, 'Passwords not matching!');
 	}
 
-	const handleLogin = async (e) => {
+	const handleLogin = async (e, isRegister) => {
 		e.preventDefault();
 		hideError(inputRef);
-		const user = { email, password };
-		await axios
-			.post(loginUrl, user)
-			.then((response) => {
-				setUser(response.data);
-				localStorage.setItem('user', JSON.stringify(response.data));
-			})
-			.catch((error) => {
-				showError(inputRef, error?.response?.data.message);
-			});
-	};
+		const user =
+			isRegister === true
+				? { email, username, password, role }
+				: { email, password };
 
-	const handleRegister = async (e) => {
-		e.preventDefault();
-		hideError(inputRef);
-		const user = { email, username, password, role };
+		const url = isRegister === true ? registerUrl : loginUrl;
 		await axios
-			.post(registerUrl, user)
+			.post(url, user)
 			.then((response) => {
-				setUser(response.data);
-				localStorage.setItem('user', JSON.stringify(response.data));
+				!isRegister && setUser(response.data);
+				!isRegister && localStorage.setItem('user', JSON.stringify(response.data));
+				if (isRegister && response.data !== null) {
+					onRegisterSuccess();
+				}
 			})
 			.catch((error) => {
-				showError(inputRef, error.response.data.message);
+				error.response && showError(inputRef, error.response.data.message);
+				!error.response &&
+					showError(inputRef, 'Error connecting to the server. Try again later');
 			});
 	};
 
@@ -63,7 +65,8 @@ const LoginContainer = ({ updateUser }) => {
 		const inputContainer = ref.current;
 		inputContainer.firstChild.classList.remove('border-transparent');
 		inputContainer.firstChild.classList.add('border-red-500');
-		inputContainer.lastChild.textContent = e === 'Access Denied' ? 'You need to activate your account first!' : e
+		inputContainer.lastChild.textContent =
+			e === 'Access Denied' ? 'You need to activate your account first!' : e;
 	};
 
 	const hideError = (ref) => {
@@ -75,6 +78,7 @@ const LoginContainer = ({ updateUser }) => {
 
 	return (
 		<div className='p-12 w-full h-screen flex items-center justify-center'>
+			<RegisterSuccess isActive={successfulRegister} closeModal={closeModal}/>
 			<div
 				className={`${
 					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
@@ -89,7 +93,7 @@ const LoginContainer = ({ updateUser }) => {
 
 				{!registered && (
 					<form
-						onSubmit={handleRegister}
+						onSubmit={(e) => handleLogin(e, true)}
 						className='w-full flex flex-col items-center gap-8'>
 						<Input
 							placeholder={'E-mail'}

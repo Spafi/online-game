@@ -14,6 +14,7 @@ module.exports = {
 		},
 
 		extend: {
+			transitionProperty: ['hover', 'focus'],
 			backgroundColor: ['active'],
 			fontFamily: {
 				montserrat: ['"Montserrat"', 'sans-serif'],

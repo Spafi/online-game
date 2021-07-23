@@ -23,9 +23,13 @@ function App() {
 
 	const isTokenExpired = () => {
 		if (localStorage.length > 0) {
-			let expiration = new Date(jwt(localStorage.getItem('user')).exp * 1000);
-			let now = new Date();
-			return now > expiration;
+			try {
+				let expiration = new Date(jwt(localStorage.getItem('user')).exp * 1000);
+				let now = new Date();
+				return now > expiration;
+			} catch (err) {
+				localStorage.clear();
+			}
 		}
 	};
 
@@ -41,6 +45,7 @@ function App() {
 		<ThemeProvider>
 			<div className='App'>
 				<Main>
+					{/* <Helper /> */}
 					{!user && <LoginContainer updateUser={updateUser} />}
 					{user && (
 						<GameProvider>
@@ -48,8 +53,6 @@ function App() {
 							<GamePage />
 						</GameProvider>
 					)}
-
-					{/* <Helper /> */}
 				</Main>
 			</div>
 		</ThemeProvider>
