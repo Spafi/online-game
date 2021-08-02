@@ -4,6 +4,7 @@ import ChoicesContainer from './ChoicesContainer';
 import ProgressBar from './ProgressBar';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
+
 const GamePage = () => {
 	const darkTheme = useTheme();
 	let stompClient = null;
@@ -26,13 +27,14 @@ const GamePage = () => {
 		console.log('Disconnected');
 	}
 
-
 	function sendName() {
-		stompClient.send(
-			'/app/create',
-			{},
-			JSON.stringify({ playerId: '0c049177-1c78-4c64-b22a-36b0079f6a5c' })
-		);
+		if (stompClient !== null) {
+			stompClient.send(
+				'/app/create',
+				{},
+				JSON.stringify({ playerId: '0c049177-1c78-4c64-b22a-36b0079f6a5c' })
+			);
+		}
 	}
 
 	// Possible future use - Sends mouse position to all other users connected to same Websocket channel
@@ -95,9 +97,15 @@ const GamePage = () => {
 			</div>
 			<div className='w-64 ml-8'>
 				{' '}
-				<button className='w-full h-1/3 border-2' onClick={connect}>Connect</button>
-				<button className='w-full h-1/3 border-2' onClick={sendName}>Send</button>
-				<button className='w-full h-1/3 border-2' onClick={disconnect}>Disconnect</button>
+				<button className='w-full h-1/3 border-2' onClick={connect}>
+					Connect
+				</button>
+				<button className='w-full h-1/3 border-2' onClick={sendName}>
+					Send
+				</button>
+				<button className='w-full h-1/3 border-2' onClick={disconnect}>
+					Disconnect
+				</button>
 			</div>
 		</div>
 	);
