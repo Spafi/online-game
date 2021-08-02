@@ -75,6 +75,8 @@ class AppUser implements UserDetails {
         return email;
     }
 
+    public String getChosenUsername() {return username;}
+
     //    TODO: expiration check
     @Override
     public boolean isAccountNonExpired() {

@@ -32,13 +32,19 @@ public class AppUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USERNAME_NOT_FOUND_MESSAGE, email)));
     }
 
-    public String signUpUser(AppUser user) throws IllegalStateException{
+    public String signUpUser(AppUser user) throws IllegalStateException {
         boolean userExists = userRepository
                 .findByEmail(user.getEmail())
                 .isPresent();
 
         if (userExists) throw new IllegalStateException("Email already taken");
 //        TODO: if email not confirmed, send confirmation email, or resend confirmation email if same user that registered
+
+        boolean usernameTaken = userRepository
+                .findByUsername(user.getChosenUsername())
+                .isPresent();
+
+        if (usernameTaken) throw new IllegalStateException("Username already taken");
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 

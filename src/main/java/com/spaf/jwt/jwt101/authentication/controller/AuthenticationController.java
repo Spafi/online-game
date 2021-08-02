@@ -46,6 +46,7 @@ public class AuthenticationController {
 
         final String role = ((AppUser) userDetails).getRole().name();
 
+
         return ResponseEntity.ok(new AuthenticationResponse(jwt, role));
     }
 

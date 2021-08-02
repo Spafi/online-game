@@ -22,7 +22,7 @@ public class RegistrationController {
         try {
             return registrationService.register(request);
         } catch (IllegalStateException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered!", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
     }

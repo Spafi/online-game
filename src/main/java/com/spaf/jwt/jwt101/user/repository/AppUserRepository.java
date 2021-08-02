@@ -22,4 +22,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
             "SET a.enabled = TRUE WHERE a.email = ?1")
     int enableAppUser(String email);
 
+    Optional<AppUser> findByUsername(String username);
 }

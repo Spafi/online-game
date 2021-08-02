@@ -51,17 +51,10 @@ public class ProblemController {
 
         return restTemplate.exchange(
                 apiCompilerUrl, HttpMethod.POST, entity, String.class).getBody();
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode root = mapper.readTree(response);
-//        JsonNode output = root.path("output");
-//        JsonNode statusCode = root.path("statusCode");
-//
-//        return "{\"output\": " + output + "," + "\"statusCode\": " + statusCode + "}";
     }
 
     @PostMapping
-    public ResponseEntity<Problem> saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
+    public ResponseEntity<?> saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
 
         Problem problem = saveProblemRequest.getProblem();
         List<String> answers = saveProblemRequest.getAnswers();
@@ -73,8 +66,9 @@ public class ProblemController {
         problem.setOutput(output);
         problem.setAnswers(answers);
         problem.getAnswers().add(output);
+        Problem savedProblem = problemService.save(problem);
 
-        return ResponseEntity.ok(problemService.save(problem));
+        return ResponseEntity.ok(savedProblem.getId());
     }
 }
 
