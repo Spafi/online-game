@@ -1,7 +1,7 @@
 package com.spaf.jwt.jwt101.security.filters;
 
 import com.spaf.jwt.jwt101.security.util.JwtUtil;
-import com.spaf.jwt.jwt101.security.user.services.AppUserService;
+import com.spaf.jwt.jwt101.user.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,6 +1,6 @@
 package com.spaf.jwt.jwt101.security.util;
 
-import com.spaf.jwt.jwt101.security.user.models.AppUser;
+import com.spaf.jwt.jwt101.user.models.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

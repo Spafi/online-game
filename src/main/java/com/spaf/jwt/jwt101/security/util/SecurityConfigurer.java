@@ -2,7 +2,7 @@ package com.spaf.jwt.jwt101.security.util;
 
 
 import com.spaf.jwt.jwt101.security.filters.JwtRequestFilter;
-import com.spaf.jwt.jwt101.security.user.services.AppUserService;
+import com.spaf.jwt.jwt101.user.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +40,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/styles/error.css").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/hello").authenticated()
-                .anyRequest().authenticated()
+                .antMatchers("/ws*/**").permitAll()
+                .anyRequest().permitAll()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -49,6 +51,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public RestTemplate restTemplateBean() {
+        return new RestTemplate();
     }
 
 }
