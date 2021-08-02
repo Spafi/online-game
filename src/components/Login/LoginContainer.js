@@ -6,6 +6,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
 
+
 const LoginContainer = ({ updateUser }) => {
 	const darkTheme = useTheme();
 	const [registered, setRegistered] = useState(true);
@@ -22,6 +23,7 @@ const LoginContainer = ({ updateUser }) => {
 	const role = 'USER';
 	const inputRef = useRef();
 	const passwordRef = useRef();
+	const usernameRef = useRef();
 
 	const onRegisterSuccess = () => setSuccessfulRegister(true);
 
@@ -36,31 +38,53 @@ const LoginContainer = ({ updateUser }) => {
 			showError(passwordRef, 'Passwords not matching!');
 	}
 
-	const handleLogin = async (e, isRegister) => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
-		if (password === repeatPassword) {
-			hideError(inputRef);
-			const user =
-				isRegister === true
-					? { email, username, password, role }
-					: { email, password };
+		hideError(inputRef);
+		const user = { email, password };
+		const url = loginUrl;
+		await axios
+			.post(url, user)
+			.then((response) => {
+				setUser(response.data);
+				localStorage.setItem('user', JSON.stringify(response.data));
+			})
+			.catch((error) => {
+				error.response && showError(inputRef, error.response.data.message);
+				!error.response &&
+					showError(inputRef, 'Error connecting to the server. Try again later');
+			});
+	};
 
-			const url = isRegister === true ? registerUrl : loginUrl;
+	const handleRegister = async (e) => {
+		e.preventDefault();
+		hideError(inputRef);
+		hideError(usernameRef);
+		if (password.length < 8) {
+			showError(passwordRef, 'Password should be at least 8 characters!');
+			return;
+		}
+		if (password === repeatPassword) {
+			const user = { email, username, password, role };
+			const url = registerUrl;
 			await axios
 				.post(url, user)
 				.then((response) => {
-					!isRegister && setUser(response.data);
-					!isRegister && localStorage.setItem('user', JSON.stringify(response.data));
-					if (isRegister && response.data !== null) {
+					if (response.data !== null) {
 						onRegisterSuccess();
 					}
 				})
 				.catch((error) => {
-					error.response && showError(inputRef, error.response.data.message);
+					if (error.response) {
+						error.response.data.message.includes('Email') &&
+							showError(inputRef, error.response.data.message);
+						error.response.data.message.includes('Username') &&
+							showError(usernameRef, error.response.data.message);
+					}
 					!error.response &&
 						showError(inputRef, 'Error connecting to the server. Try again later');
 				});
-		} else {showError(passwordRef, 'Passwords not matching!');}
+		} else showError(passwordRef, 'Passwords not matching!');
 	};
 
 	const showError = (ref, e) => {
@@ -95,7 +119,7 @@ const LoginContainer = ({ updateUser }) => {
 
 				{!registered && (
 					<form
-						onSubmit={(e) => handleLogin(e, true)}
+						onSubmit={(e) => handleRegister(e)}
 						className='w-full flex flex-col items-center gap-8'>
 						<Input
 							placeholder={'E-mail'}
@@ -114,6 +138,7 @@ const LoginContainer = ({ updateUser }) => {
 							placeholder={'Username'}
 							value={username}
 							onChange={({ target }) => setUsername(target.value)}
+							ref={usernameRef}
 						/>
 						<Input
 							placeholder={'Retype Password'}
