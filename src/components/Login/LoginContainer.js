@@ -5,9 +5,9 @@ import RegisterSuccess from './RegisterSuccess';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
+import jwt from 'jwt-decode';
 
-
-const LoginContainer = ({ updateUser }) => {
+const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 	const darkTheme = useTheme();
 	const [registered, setRegistered] = useState(true);
 	// eslint-disable-next-line
@@ -30,6 +30,8 @@ const LoginContainer = ({ updateUser }) => {
 	const closeModal = () => setSuccessfulRegister(false);
 
 	const setUser = (user) => updateUser(user);
+	const setGlobalUsername = (username) => updateUsername(username);
+	const setUserBgColor = (color) => updateUserBgColor(color);
 
 	function passwordsMatch(target) {
 		setRepeatPassword(target.value);
@@ -46,8 +48,17 @@ const LoginContainer = ({ updateUser }) => {
 		await axios
 			.post(url, user)
 			.then((response) => {
-				setUser(response.data);
+				const randomHexColor =
+					'#' + Math.floor(Math.random() * 16777215).toString(16);
+				const userData = response.data;
+				console.log(userData);
+				const username = jwt(userData.jwt).username;
+				setUser(userData);
+				setGlobalUsername(username);
+				setUserBgColor(randomHexColor);
 				localStorage.setItem('user', JSON.stringify(response.data));
+				localStorage.setItem('username', username);
+				localStorage.setItem('userBgColor', randomHexColor);
 			})
 			.catch((error) => {
 				error.response && showError(inputRef, error.response.data.message);

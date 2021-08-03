@@ -11,13 +11,8 @@ const Menu = (props) => {
 
 	const toggleMenu = () => setShowSettings((prevState) => !prevState);
 
-	// let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-	// if (!localStorage.getItem('usernameBackgroundColor'))
-	// 	localStorage.setItem('usernameBackgroundColor', randomColor);
-
-	// const usernameBgColor = localStorage.getItem('usernameBackgroundColor');
-
-	// const username = localStorage.getItem('username');
+	const username = props.username;
+	const usernameBgColor = props.userBgColor;
 
 	return (
 		<div className={`fixed h-screen w-96 flex z-20 p-12`}>
@@ -32,13 +27,13 @@ const Menu = (props) => {
 						className={`${
 							darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'
 						} rounded-full p-px w-24 h-24 flex items-center justify-center text-4xl`}>
-						{/* <div
+						<div
 							className={` rounded-full p-px w-24 h-24 flex items-center justify-center text-4xl`}
-							style={{ backgroundColor: '#' + usernameBgColor }}> */}
-							{/* <p>{username.substring(0, 1).toUpperCase()}</p> */}
-						{/* </div> */}
+							style={{ backgroundColor: usernameBgColor }}>
+							<p>{username.substring(0, 1).toUpperCase()}</p>
+						</div>
 					</div>
-					{/* <p className={`font-light text-2xl`}>{username}</p> */}
+					<p className={`font-light text-2xl`}>{username}</p>
 				</div>
 				{/* MENU BUTTONS CONTAINER */}
 				<div className=''>

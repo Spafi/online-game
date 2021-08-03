@@ -12,21 +12,18 @@ import React, { useState, useEffect } from 'react';
 function App() {
 	// eslint-disable-next-line
 	const [user, setUser] = useState();
-	// const [username, setUsername] = useState();
+	const [username, setUsername] = useState('');
+	const [userBgColor, setUserBgColor] = useState('');
 
 	useEffect(() => {
-		// let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-		// if (!localStorage.getItem('usernameBackgroundColor'))
-		// 	localStorage.setItem('usernameBackgroundColor', randomColor);
-
-		// const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 		const loggedInUser = localStorage.getItem('user');
+		const username = localStorage.getItem('username');
+		const userBgColor = localStorage.getItem('userBgColor');
 		if (loggedInUser) {
 			const foundUser = JSON.parse(loggedInUser);
 			setUser(foundUser);
-
-			// const username = jwt(loggedInUser).username;
-			// setUsername(username);
+			setUsername(username);
+			setUserBgColor(userBgColor);
 		}
 	}, []);
 
@@ -42,23 +39,32 @@ function App() {
 		}
 	};
 
-	if (isTokenExpired()) {
-		localStorage.clear();
-	}
+	if (isTokenExpired()) localStorage.clear();
 
 	const updateUser = (user) => {
 		!user && localStorage.clear();
 		setUser(user);
 	};
+
+	const updateUsername = (username) => setUsername(username);
+
+	const updateUserBgColor = (color) => setUserBgColor(color);
+
 	return (
 		<ThemeProvider>
 			<div className='App'>
 				<Main>
 					{/* <Helper /> */}
-					{!user && <LoginContainer updateUser={updateUser} />}
+					{!user && (
+						<LoginContainer
+							updateUser={updateUser}
+							updateUsername={updateUsername}
+							updateUserBgColor={updateUserBgColor}
+						/>
+					)}
 					{user && (
 						<GameProvider>
-							<Menu updateUser={updateUser} />
+							<Menu updateUser={updateUser} username={username} userBgColor={userBgColor} />
 							<GamePage />
 						</GameProvider>
 					)}
