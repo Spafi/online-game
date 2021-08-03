@@ -25,12 +25,15 @@ public class Problem {
     @Column(length = 2000)
     private String script;
     private String output;
+    private String byUser;
 
     @Transient
     private String clientId;
 
     @Transient
     private String clientSecret;
+
+    private int playedCount;
 
 
     @ElementCollection

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spaf.jwt.jwt101.problem.model.Problem;
 import com.spaf.jwt.jwt101.problem.model.SaveProblemRequest;
 import com.spaf.jwt.jwt101.problem.service.ProblemService;
+import com.spaf.jwt.jwt101.user.models.AppUser;
+import com.spaf.jwt.jwt101.user.services.AppUserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ProblemController {
 
     @Autowired
     private ProblemService problemService;
+
+    @Autowired
+    private AppUserService userService;
 
     @Autowired
     RestTemplate restTemplate;
@@ -57,6 +62,7 @@ public class ProblemController {
     public ResponseEntity<?> saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
 
         Problem problem = saveProblemRequest.getProblem();
+        AppUser user = userService.findByUsername(saveProblemRequest.getUsername());
         List<String> answers = saveProblemRequest.getAnswers();
         String response = runScript(problem);
         ObjectMapper mapper = new ObjectMapper();
@@ -64,6 +70,7 @@ public class ProblemController {
         String output = root.path("output").textValue();
 
         problem.setOutput(output);
+        problem.setByUser(user.getUsername());
         problem.setAnswers(answers);
         problem.getAnswers().add(output);
         Problem savedProblem = problemService.save(problem);

@@ -1,5 +1,6 @@
 package com.spaf.jwt.jwt101.user.models;
 
+import com.spaf.jwt.jwt101.problem.model.Problem;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,11 @@ class AppUser implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private int score;
+    private int gamesPlayed;
+
+    @OneToMany
+    private List<Problem> problems;
 
     @Enumerated(EnumType.STRING)
     private AppUserRole role;
@@ -50,6 +57,8 @@ class AppUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.score = 0;
+        this.gamesPlayed = 0;
     }
 
     public AppUser(String username, String email, String password, AppUserRole role) {
@@ -75,7 +84,9 @@ class AppUser implements UserDetails {
         return email;
     }
 
-    public String getChosenUsername() {return username;}
+    public String getChosenUsername() {
+        return username;
+    }
 
     //    TODO: expiration check
     @Override

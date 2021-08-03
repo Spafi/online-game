@@ -68,8 +68,13 @@ public class AppUserService implements UserDetailsService {
         return token;
     }
 
+//    TODO: ADD Null check
     public AppUser findById(UUID userId) {
         return userRepository.findById(userId).get();
+    }
+
+    public AppUser findByUsername(String username) {
+        return userRepository.findByUsername(username).get();
     }
 
     public int enableAppUser(String email) {

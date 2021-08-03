@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SaveProblemRequest {
 
+    private String username;
     private Problem problem;
     private List<String> answers;
 }
