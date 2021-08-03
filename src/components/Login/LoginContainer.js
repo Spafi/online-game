@@ -1,6 +1,6 @@
 import { useTheme } from '../ThemeContext';
 import Input from './Input';
-import Button from '../Menu/Button';
+import Button from '../common/Button';
 import RegisterSuccess from './RegisterSuccess';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';

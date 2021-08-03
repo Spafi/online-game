@@ -5,19 +5,22 @@ import {
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from '../ThemeContext';
 
-const Component = ({ string }) => {
+const CodeContainer = ({ script, language }) => {
 	const darkTheme = useTheme();
+	
+	console.log(language);
+
 	return (
 		<SyntaxHighlighter
-			language='java'
+			language={language}
 			showLineNumbers={true}
 			style={darkTheme === true ? materialDark : materialLight}
-			className={`rounded-lg min-h-sm max-h-md scrollbar-thin ${
+			className={`rounded-lg min-h-sm max-h-md scrollbar-thin relative ${
 				darkTheme ? 'scrollbar-thumb-purple-500' : 'scrollbar-thumb-gray-400'
 			} scrollbar-thumb-rounded-sm`}>
-			{string}
+			{script}
 		</SyntaxHighlighter>
 	);
 };
 
-export default Component;
+export default CodeContainer;

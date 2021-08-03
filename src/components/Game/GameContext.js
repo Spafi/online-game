@@ -6,7 +6,7 @@ export const useGame = () => useContext(GameContext);
 
 export const GameProvider = ({ children }) => {
 	const gameData = {
-		code: `import java.util.Arrays;
+		script: `import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Kata {
@@ -15,29 +15,7 @@ public class Kata {
       .stream(n)
       .map(n1 -> (int) Math.pow(n1, 2))
       .reduce(Integer::sum)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-      sdsd
       .getAsInt();
-      
   }
 }`,
 	};

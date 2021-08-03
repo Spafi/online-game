@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useTheme } from '../ThemeContext';
-import Button from './Button';
+import Button from '../common/Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 const Menu = (props) => {
@@ -39,11 +39,13 @@ const Menu = (props) => {
 				<div className=''>
 					{/* MENU BUTTONS LIST */}
 					<div className=' py-12 space-y-6 grid items-center px-16'>
-						<Button content='Play' />
+						<Button content='Create Game' />
 
-						<Button content='Create' />
+						<Button content='Join Game' />
 
-						<Button content='Join' />
+						<Button content='Submit Problem' />
+
+						<Button content='Leaderboard' />
 					</div>
 					<div className='absolute bottom-20 right-20'>
 						<Button

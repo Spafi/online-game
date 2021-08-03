@@ -1,6 +1,6 @@
 import { useTheme, useToggleTheme } from '../ThemeContext';
 
-import Button from './Button';
+import Button from '../common/Button';
 
 const SettingsPage = ({updateUser}) => {
 	const darkTheme = useTheme();
