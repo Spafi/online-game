@@ -12,19 +12,21 @@ import React, { useState, useEffect } from 'react';
 function App() {
 	// eslint-disable-next-line
 	const [user, setUser] = useState();
-	const [username, setUsername] = useState();
+	// const [username, setUsername] = useState();
 
 	useEffect(() => {
-		let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-		if (!localStorage.getItem('usernameBackgroundColor'))
-			localStorage.setItem('usernameBackgroundColor', randomColor);
+		// let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+		// if (!localStorage.getItem('usernameBackgroundColor'))
+		// 	localStorage.setItem('usernameBackgroundColor', randomColor);
+
+		// const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 		const loggedInUser = localStorage.getItem('user');
 		if (loggedInUser) {
 			const foundUser = JSON.parse(loggedInUser);
 			setUser(foundUser);
 
-			const username = jwt(localStorage.getItem('user')).username;
-			setUsername(username);
+			// const username = jwt(loggedInUser).username;
+			// setUsername(username);
 		}
 	}, []);
 
@@ -56,7 +58,7 @@ function App() {
 					{!user && <LoginContainer updateUser={updateUser} />}
 					{user && (
 						<GameProvider>
-							<Menu updateUser={updateUser} username={username} />
+							<Menu updateUser={updateUser} />
 							<GamePage />
 						</GameProvider>
 					)}
