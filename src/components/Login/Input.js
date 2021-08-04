@@ -2,10 +2,10 @@ import { useTheme } from '../ThemeContext';
 import React from 'react';
 
 const Input = React.forwardRef(
-	({ placeholder, classes, value, onChange, type, onBlur }, ref) => {
+	({ placeholder, classes, value, onChange, type, onBlur, containerClasses }, ref) => {
 		const darkTheme = useTheme();
 		return (
-			<div ref={ref} className='w-4/6 relative'>
+			<div ref={ref} className={containerClasses ?? 'w-4/6 relative'}>
 				<input
 					onBlur={onBlur}
 					type={type ?? 'text'}

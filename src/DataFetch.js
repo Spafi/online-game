@@ -1,5 +1,3 @@
-
-
 export const AuthHeader = () => {
 	let headers = {};
 

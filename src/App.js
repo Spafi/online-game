@@ -5,10 +5,10 @@ import { ThemeProvider } from './components/ThemeContext.js';
 import { GameProvider } from './components/Game/GameContext.js';
 import Menu from './components/Menu/Menu';
 import Main from './components/Main.js';
-import Helper from './components/Helper.js';
-import GamePage from './components/Game/GamePage.js';
+// import Helper from './components/Helper.js';
+// import GamePage from './components/Game/GamePage.js';
 import LoginContainer from './components/Login/LoginContainer.js';
-import UserPage from './components/User/UserPage';
+// import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
 
 function App() {

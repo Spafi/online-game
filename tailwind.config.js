@@ -24,6 +24,7 @@ module.exports = {
 				'gray-neu': '#2C3135',
 				'neu-violet': '#8934DA',
 				'neu-purple': '#611DDE',
+				'monokai-bg': '#272822',
 			},
 			width: { 102: '32rem' },
 			minWidth: {

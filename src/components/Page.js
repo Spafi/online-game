@@ -11,7 +11,7 @@ const Page = ({ children }) => {
 				} w-full h-full rounded-lg p-12 flex flex-col relative`}>
 				{children}
 			</div>
-			<div className='w-64 ml-8'>
+			<div className='w-72 ml-8'>
 				{' '}
 				{/* <button className='w-full h-1/3 border-2' onClick={connect}>
 					Connect
