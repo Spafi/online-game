@@ -59,7 +59,7 @@ public class ProblemController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
+    public String saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
 
         Problem problem = saveProblemRequest.getProblem();
         AppUser user = userService.findByUsername(saveProblemRequest.getUsername());
@@ -70,12 +70,12 @@ public class ProblemController {
         String output = root.path("output").textValue();
 
         problem.setOutput(output);
+//        TODO: ADD USER NOT FOUND EXCEPTION
         problem.setByUser(user.getUsername());
         problem.setAnswers(answers);
         problem.getAnswers().add(output);
-        Problem savedProblem = problemService.save(problem);
-
-        return ResponseEntity.ok(savedProblem.getId());
+        problemService.save(problem);
+        return response;
     }
 }
 

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,6 +25,7 @@ public class Problem {
     private String script;
     private String output;
     private String byUser;
+    private String task;
 
     @Transient
     private String clientId;
