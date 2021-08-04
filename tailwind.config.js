@@ -18,6 +18,7 @@ module.exports = {
 			backgroundColor: ['active'],
 			fontFamily: {
 				montserrat: ['"Montserrat"', 'sans-serif'],
+				roboto: ['"Roboto Mono"', 'monospace'],
 			},
 			colors: {
 				'gray-neu': '#2C3135',
