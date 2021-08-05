@@ -11,7 +11,6 @@ import CreateGamePage from './components/Game/CreateGamePage.js';
 import LoginContainer from './components/Login/LoginContainer.js';
 import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
-
 function App() {
 	// eslint-disable-next-line
 	const [user, setUser] = useState();
