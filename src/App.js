@@ -6,9 +6,10 @@ import { GameProvider } from './components/Game/GameContext.js';
 import Menu from './components/Menu/Menu';
 import Main from './components/Main.js';
 // import Helper from './components/Helper.js';
-// import GamePage from './components/Game/GamePage.js';
+import GamePage from './components/Game/GamePage.js';
+import CreateGamePage from './components/Game/CreateGamePage.js';
 import LoginContainer from './components/Login/LoginContainer.js';
-// import UserPage from './components/User/UserPage';
+import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 	const [user, setUser] = useState();
 	const [username, setUsername] = useState('');
 	const [userBgColor, setUserBgColor] = useState('');
+	const [currentPage, setCurrentPage] = useState('main');
 
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem('user');
@@ -52,6 +54,22 @@ function App() {
 
 	const updateUserBgColor = (color) => setUserBgColor(color);
 
+	const updateCurrentPage = (page) => setCurrentPage(page);
+
+	const switchPages = (page) => {
+		switch (page) {
+			case 'main':
+				return <UserPage />;
+				case 'play':
+					return <CreateGamePage />;
+			case 'submitProblem':
+				return <SubmitProblem />;
+			case 'user':
+				return <UserPage />;
+			default:
+				break;
+		}
+	};
 	return (
 		<ThemeProvider>
 			<div className='App'>
@@ -70,10 +88,9 @@ function App() {
 								updateUser={updateUser}
 								username={username}
 								userBgColor={userBgColor}
+								updateCurrentPage={updateCurrentPage}
 							/>
-							{/* <GamePage /> */}
-							{/* <UserPage/> */}
-							<SubmitProblem />
+							{switchPages(currentPage)}
 						</GameProvider>
 					)}
 				</Main>

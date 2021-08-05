@@ -1,11 +1,23 @@
-import React from 'react'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { monokai, xcode } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { useTheme } from '../ThemeContext';
 
-const CodeContainer = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const CodeContainer = ({ script, language }) => {
+	const darkTheme = useTheme();
 
-export default CodeContainer
+	console.log(language);
+
+	return (
+		<SyntaxHighlighter
+			language={language}
+			showLineNumbers={true}
+			style={darkTheme === true ? monokai : xcode}
+			className={`rounded-lg min-h-sm max-h-md scrollbar-thin relative ${
+				darkTheme ? 'scrollbar-thumb-purple-500' : 'scrollbar-thumb-gray-400'
+			} scrollbar-thumb-rounded-sm text-sm font-roboto`}>
+			{script}
+		</SyntaxHighlighter>
+	);
+};
+
+export default CodeContainer;

@@ -1,96 +1,32 @@
 import CodeContainer from './ProblemContainer';
 import ChoicesContainer from './ChoicesContainer';
 import ProgressBar from './ProgressBar';
-// import SockJS from 'sockjs-client';
-// import Stomp from 'stompjs';
-import Page from '../Page';
-// import { websocketUrl } from '../../BASE_URL';
 
+import Page from '../common/Page.js';
 const GamePage = () => {
-
-	// let stompClient = null;
-
-	// function connect() {
-	// 	let socket = new SockJS(websocketUrl);
-	// 	stompClient = Stomp.over(socket);
-	// 	stompClient.connect({}, function (frame) {
-	// 		console.log('Connected: ' + frame);
-	// 		stompClient.subscribe('/game', function (greeting) {
-	// 			console.log(JSON.parse(greeting.body).content);
-	// 		});
-	// 	});
-	// }
-
-	// function disconnect() {
-	// 	if (stompClient !== null) {
-	// 		stompClient.disconnect();
-	// 	}
-	// 	console.log('Disconnected');
-	// }
-
-	// function sendName() {
-	// 	if (stompClient !== null) {
-	// 		stompClient.send(
-	// 			'/app/create',
-	// 			{},
-	// 			JSON.stringify({ playerId: '0c049177-1c78-4c64-b22a-36b0079f6a5c' })
-	// 		);
-	// 	}
-	// }
-
-	// Possible future use - Sends mouse position to all other users connected to same Websocket channel
-	// document.onmousemove = handleMouseMove;
-	// function handleMouseMove(event) {
-	// 	var eventDoc, doc, body;
-
-	// 	event = event || window.event; // IE-ism
-
-	// 	// If pageX/Y aren't available and clientX/Y are,
-	// 	// calculate pageX/Y - logic taken from jQuery.
-	// 	// (This is to support old IE)
-	// 	if (event.pageX == null && event.clientX != null) {
-	// 		eventDoc = (event.target && event.target.ownerDocument) || document;
-	// 		doc = eventDoc.documentElement;
-	// 		body = eventDoc.body;
-
-	// 		event.pageX =
-	// 			event.clientX +
-	// 			((doc && doc.scrollLeft) || (body && body.scrollLeft) || 0) -
-	// 			((doc && doc.clientLeft) || (body && body.clientLeft) || 0);
-	// 		event.pageY =
-	// 			event.clientY +
-	// 			((doc && doc.scrollTop) || (body && body.scrollTop) || 0) -
-	// 			((doc && doc.clientTop) || (body && body.clientTop) || 0);
-	// 	}
-
-	// 	// Use event.pageX / event.pageY here
-	// 	console.log(event.pageX);
-	// 	console.log(event.pageY);
-	// 	stompClient.send('/app/hello', {}, JSON.stringify({ name: event.pageX }));
-	// }
 
 	return (
 		<Page>
-				{/* MAIN GAME CONTAINER */}
-					{/* SCORE & PLAYERS CONTAINER*/}
-					<div className='w-full space-y-8'>
-						{/* SCORE CONTAINER */}
-						<div className='h-10 flex items-center space-x-6 text-5xl font-medium'>
-							<div className=' min-w-24'>6</div>
-							<div className=' flex-grow items-center'>
-								<ProgressBar progress={0} />
-							</div>
-							<div className=' min-w-24 text-right'>0</div>
-						</div>
-						{/* PLAYERS CONTAINER */}
-						<div className='h-10 grid grid-cols-7 items-center justify-center text-2xl'>
-							<div className='col-span-3'>P1 </div>
-							<div className='text-center '>VS</div>
-							<div className='col-span-3 text-right'>P2</div>
-						</div>
+			{/* MAIN GAME CONTAINER */}
+			{/* SCORE & PLAYERS CONTAINER*/}
+			<div className='w-full space-y-8'>
+				{/* SCORE CONTAINER */}
+				<div className='h-10 flex items-center space-x-6 text-5xl font-medium'>
+					<div className=' min-w-24'>6</div>
+					<div className=' flex-grow items-center'>
+						<ProgressBar progress={0} />
 					</div>
-					<CodeContainer className='rounded-lg w-full relative h-full' />
-					<ChoicesContainer />
+					<div className=' min-w-24 text-right'>0</div>
+				</div>
+				{/* PLAYERS CONTAINER */}
+				<div className='h-10 grid grid-cols-7 items-center justify-center text-2xl'>
+					<div className='col-span-3'>P1 </div>
+					<div className='text-center '>VS</div>
+					<div className='col-span-3 text-right'>P2</div>
+				</div>
+			</div>
+			<CodeContainer className='rounded-lg w-full relative h-full' />
+			<ChoicesContainer />
 		</Page>
 	);
 };

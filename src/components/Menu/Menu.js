@@ -39,13 +39,24 @@ const Menu = (props) => {
 				<div className=''>
 					{/* MENU BUTTONS LIST */}
 					<div className=' py-12 space-y-6 grid items-center px-16'>
-						<Button content='Create Game' />
+						<Button
+							content='Play'
+							handleClick={() => props.updateCurrentPage('play')}
+						/>
 
-						<Button content='Join Game' />
+						<Button
+							content='Submit Problem'
+							handleClick={() => props.updateCurrentPage('submitProblem')}
+						/>
 
-						<Button content='Submit Problem' />
-
-						<Button content='Leaderboard' />
+						<Button
+							content='Leaderboard'
+							handleClick={() => props.updateCurrentPage('leaderboard')}
+						/>
+						<Button
+							content='My Page'
+							handleClick={() => props.updateCurrentPage('user')}
+						/>
 					</div>
 					<div className='absolute bottom-20 right-20'>
 						<Button

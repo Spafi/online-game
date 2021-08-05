@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Page from '../Page';
+import Page from '../common/Page';
 import EditableCodeContainer from '../Game/EditableCodeContainer.js';
 import ListBox from '../common/SelectList.js';
 import Button from '../common/Button';
