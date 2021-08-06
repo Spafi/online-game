@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '../ThemeContext';
-const Page = ({ children }) => {
+const Page = ({ children, noPadding }) => {
 	const darkTheme = useTheme();
 
 	return (
@@ -8,7 +8,7 @@ const Page = ({ children }) => {
 			<div
 				className={`${
 					darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
-				} w-full h-full rounded-lg p-12 flex flex-col relative`}>
+				} min-w-md w-full max-w-6xl h-full rounded-lg ${noPadding ?? 'p-12'} flex flex-col relative`}>
 				{children}
 			</div>
 			<div className='w-72 ml-8'>

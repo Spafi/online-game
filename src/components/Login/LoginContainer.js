@@ -51,7 +51,6 @@ const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 				const randomHexColor =
 					'#' + Math.floor(Math.random() * 16777215).toString(16);
 				const userData = response.data;
-				console.log(userData);
 				const username = jwt(userData.jwt).username;
 				setUser(userData);
 				setGlobalUsername(username);

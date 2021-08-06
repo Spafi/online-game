@@ -16,7 +16,7 @@ const Input = React.forwardRef(
 					} rounded-3xl placeholder-gray-400 py-2 px-4 outline-none w-full border border-transparent ${classes}`}
 					placeholder={placeholder ?? 'Input'}
 				/>
-				<div className='absolute -bottom-5 text-xs text-red-700 left-4'></div>
+				<div className='absolute -bottom-5 text-sm text-red-700 left-4'></div>
 			</div>
 		);
 	}

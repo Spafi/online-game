@@ -29,6 +29,7 @@ module.exports = {
 			width: { 102: '32rem' },
 			minWidth: {
 				sm: '20rem',
+				md: '40rem',
 				24: '6rem',
 				'1/4': '25%',
 				'1/2': '50%',
@@ -60,7 +61,13 @@ module.exports = {
 	},
 	variants: {
 		scrollbar: ['rounded'],
-		extend: {},
+		extend: {
+			scale: ['active'],
+			height: ['hover', 'focus'],
+			position: ['hover'],
+			display: ['hover'],
+			width: ['hover'],
+		},
 	},
 	plugins: [require('tailwindcss-neumorphism'), require('tailwind-scrollbar')],
 };

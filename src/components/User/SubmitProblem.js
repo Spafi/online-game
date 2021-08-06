@@ -71,6 +71,8 @@ const SubmitProblem = () => {
 	};
 
 	const testCode = async (script, language) => {
+    hideError(taskRef);
+				hideError(decoysRef, true);
 		const problem = {
 			script,
 			language: language.compilerApiCode,
@@ -152,15 +154,21 @@ const SubmitProblem = () => {
 				{/*END CODE CONTAINER */}
 				<div className='w-full text-sm pt-2 pb-1'>Output</div>
 				{/*START OUTPUT CONTAINER */}
-				<div
-					className={`h-36 max-h-md relative rounded-md px-1 py-2 text-xs font-roboto w-full ${
-						darkTheme ? 'bg-monokai-bg' : 'bg-white'
-					}`}>
-					{output}
+				<div className='relative'>
+					<div
+						className={`h-36 max-h-md relative rounded-md px-1 py-2 text-xs font-roboto w-full overflow-scroll scrollbar-thin scrollbar-thumb-rounded-sm ${
+							darkTheme
+								? 'bg-monokai-bg scrollbar-thumb-purple-500'
+								: 'bg-white scrollbar-thumb-gray-400'
+						}`}>
+						{output.split('\n').map((i, key) => {
+							return <p key={key}>{i}</p>;
+						})}
+					</div>
 					{cpuTime && (
-						<span className='absolute text-xs -bottom-4 right-2 font-montserrat font-light'>
-							Executed in: <span>{cpuTime}</span> ms
-						</span>
+						<div className='absolute text-xs -top-5 right-2 font-montserrat font-light'>
+							Executed in: <span>{cpuTime}</span> s
+						</div>
 					)}
 				</div>
 				{/*END OUTPUT CONTAINER */}
@@ -198,7 +206,7 @@ const SubmitProblem = () => {
 								setAnswers({ ...answers, decoy3: target.value })
 							}
 						/>
-						<div className='absolute -bottom-5 text-xs text-red-700 left-4'></div>
+						<div className='absolute -bottom-5 text-sm text-red-700 left-4'></div>
 					</div>
 				</div>
 			</div>

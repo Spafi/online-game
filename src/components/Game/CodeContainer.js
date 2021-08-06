@@ -12,9 +12,9 @@ const CodeContainer = ({ script, language }) => {
 			language={language}
 			showLineNumbers={true}
 			style={darkTheme === true ? monokai : xcode}
-			className={`rounded-lg min-h-sm max-h-md scrollbar-thin relative ${
+			className={`rounded-lg min-h-sm max-h-md scrollbar-thin relative scrollbar-thumb-rounded-sm text-sm font-roboto ${
 				darkTheme ? 'scrollbar-thumb-purple-500' : 'scrollbar-thumb-gray-400'
-			} scrollbar-thumb-rounded-sm text-sm font-roboto`}>
+			} `}>
 			{script}
 		</SyntaxHighlighter>
 	);
