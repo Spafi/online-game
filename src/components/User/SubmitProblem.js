@@ -9,7 +9,7 @@ import { useTheme } from '../ThemeContext';
 import Input from '../Login/Input.js';
 const SubmitProblem = () => {
 	const [script, setScript] = useState('');
-	const [output, setOutput] = useState('Output');
+	const [output, setOutput] = useState('');
 	const [task, setTask] = useState('');
 	const [cpuTime, setCpuTime] = useState('');
 	const [answers, setAnswers] = useState({

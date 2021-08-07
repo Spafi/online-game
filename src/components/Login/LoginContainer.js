@@ -6,6 +6,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
 import jwt from 'jwt-decode';
+import { ReactComponent as Logo } from '../../icons/logo.svg';
 
 const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 	const darkTheme = useTheme();
@@ -121,10 +122,9 @@ const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 				}
         w-full max-w-102 h-5/6 rounded-lg flex flex-col items-center gap-8 pt-12`}>
 				<div
-					className={`${
-						darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'
-					} rounded-full p-px w-24 h-24 flex items-center justify-center`}>
-					Logo
+					className={`
+						 animate-pulse rounded-2xl px-4 w-72 h-24 flex items-center justify-center`}>
+					<Logo />
 				</div>
 
 				{!registered && (

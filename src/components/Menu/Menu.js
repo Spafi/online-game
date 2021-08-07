@@ -4,6 +4,7 @@ import { useTheme } from '../ThemeContext';
 import Button from '../common/Button';
 import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
+import { ReactComponent as Logo } from '../../icons/logo.svg';
 const Menu = (props) => {
 	const darkTheme = useTheme();
 
@@ -23,6 +24,7 @@ const Menu = (props) => {
 				} items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
+					<Logo className=' w-3/4' />
 					<div
 						className={`${
 							darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'

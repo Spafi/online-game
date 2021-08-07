@@ -13,15 +13,7 @@ const Page = ({ children, noPadding }) => {
 			</div>
 			<div className='w-72 ml-8'>
 				{' '}
-				{/* <button className='w-full h-1/3 border-2' onClick={connect}>
-					Connect
-				</button>
-				<button className='w-full h-1/3 border-2' onClick={sendName}>
-					Send
-				</button>
-				<button className='w-full h-1/3 border-2' onClick={disconnect}>
-					Disconnect
-				</button> */}
+			
 			</div>
 		</div>
 	);

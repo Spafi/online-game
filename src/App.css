@@ -1,0 +1,7 @@
+.slider-thumb::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 rounded-full bg-purple-500 cursor-pointer;
+}
+  
+.slider-thumb::-webkit-slider-thumb:hover {
+    @apply bg-purple-700;
+}
