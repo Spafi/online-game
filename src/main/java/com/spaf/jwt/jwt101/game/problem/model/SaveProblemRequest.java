@@ -1,4 +1,4 @@
-package com.spaf.jwt.jwt101.problem.model;
+package com.spaf.jwt.jwt101.game.problem.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

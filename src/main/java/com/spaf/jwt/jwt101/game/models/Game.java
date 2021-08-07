@@ -1,7 +1,7 @@
 package com.spaf.jwt.jwt101.game.models;
 
-import com.spaf.jwt.jwt101.problem.model.Problem;
-import com.spaf.jwt.jwt101.user.models.AppUser;
+import com.spaf.jwt.jwt101.game.languages.Language;
+import com.spaf.jwt.jwt101.game.problem.model.Problem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +16,11 @@ import java.util.UUID;
 @Builder
 public class Game {
     private UUID gameId;
-    private AppUser player1;
-    private AppUser player2;
+    private Player player1;
+    private Player player2;
     private GameStatus gameStatus;
     private List<Problem> problems;
+    private Boolean isPrivate;
+    private String password;
+    private byte rounds;
 }

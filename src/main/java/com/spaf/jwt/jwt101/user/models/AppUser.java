@@ -1,6 +1,7 @@
 package com.spaf.jwt.jwt101.user.models;
 
-import com.spaf.jwt.jwt101.problem.model.Problem;
+import com.spaf.jwt.jwt101.game.languages.Language;
+import com.spaf.jwt.jwt101.game.problem.model.Problem;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +35,9 @@ class AppUser implements UserDetails {
     private int score;
     private int gamesPlayed;
 
+
     @OneToMany
-    private List<Problem> problems;
+    private List<Language> languages;
 
     @Enumerated(EnumType.STRING)
     private AppUserRole role;

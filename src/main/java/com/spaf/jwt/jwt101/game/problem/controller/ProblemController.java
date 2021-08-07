@@ -1,11 +1,11 @@
-package com.spaf.jwt.jwt101.problem.controller;
+package com.spaf.jwt.jwt101.game.problem.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spaf.jwt.jwt101.problem.model.Problem;
-import com.spaf.jwt.jwt101.problem.model.SaveProblemRequest;
-import com.spaf.jwt.jwt101.problem.service.ProblemService;
+import com.spaf.jwt.jwt101.game.problem.model.Problem;
+import com.spaf.jwt.jwt101.game.problem.model.SaveProblemRequest;
+import com.spaf.jwt.jwt101.game.problem.service.ProblemService;
 import com.spaf.jwt.jwt101.user.models.AppUser;
 import com.spaf.jwt.jwt101.user.services.AppUserService;
 import lombok.AllArgsConstructor;
@@ -60,7 +60,6 @@ public class ProblemController {
 
     @PostMapping
     public String saveProblem(@RequestBody SaveProblemRequest saveProblemRequest) throws JsonProcessingException {
-
         Problem problem = saveProblemRequest.getProblem();
         AppUser user = userService.findByUsername(saveProblemRequest.getUsername());
         List<String> answers = saveProblemRequest.getAnswers();
@@ -71,7 +70,7 @@ public class ProblemController {
 
         problem.setOutput(output);
 //        TODO: ADD USER NOT FOUND EXCEPTION
-        problem.setByUser(user.getUsername());
+        problem.setByUser(user.getChosenUsername());
         problem.setAnswers(answers);
         problem.getAnswers().add(output);
         problemService.save(problem);

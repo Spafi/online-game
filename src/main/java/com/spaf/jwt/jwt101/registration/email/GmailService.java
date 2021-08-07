@@ -22,9 +22,6 @@ public class GmailService implements EmailSender {
     @Async
     public void send(String to, String email) {
 
-//        // Recipient's email ID needs to be mentioned.
-//        String to = "spafiii@gmail.com";
-
         // Sender's email ID needs to be mentioned
         String from = "spafiii@gmail.com";
 
@@ -70,7 +67,7 @@ public class GmailService implements EmailSender {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("Welcome to {orice o sa pun aici}!");
+            message.setSubject("Welcome to Code Rush!");
 
             // Now set the actual message (used for text mail)
 //            message.setText("This is actual message");
