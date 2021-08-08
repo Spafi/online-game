@@ -1,21 +1,19 @@
 package com.spaf.jwt.jwt101.game.models;
 
-import com.spaf.jwt.jwt101.game.languages.Language;
 import com.spaf.jwt.jwt101.game.problem.model.Problem;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Game {
-    private UUID gameId;
+
+    private String gameId;
     private Player player1;
     private Player player2;
     private GameStatus gameStatus;

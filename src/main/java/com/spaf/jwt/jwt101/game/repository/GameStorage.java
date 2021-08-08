@@ -1,16 +1,13 @@
 package com.spaf.jwt.jwt101.game.repository;
 
 import com.spaf.jwt.jwt101.game.models.Game;
-import lombok.Data;
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+
 
 public class GameStorage {
 
-    private static Map<UUID, Game> games;
+    private static Map<String, Game> games;
     private static GameStorage instance;
 
     private GameStorage() {
@@ -24,7 +21,7 @@ public class GameStorage {
         return instance;
     }
 
-    public Map<UUID, Game> getGames() {
+    public Map<String, Game> getGames() {
         return games;
     }
 

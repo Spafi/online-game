@@ -10,6 +10,7 @@ import com.spaf.jwt.jwt101.user.models.AppUser;
 import com.spaf.jwt.jwt101.user.services.AppUserService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,8 @@ public class GameService {
         byte rounds = createGameRequest.getRounds();
 
         Game game = new Game();
-        game.setGameId(UUID.randomUUID());
+        final int SHORT_ID_LENGTH = 6;
+        game.setGameId(RandomStringUtils.randomAlphanumeric(SHORT_ID_LENGTH));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);
         List<Problem> problems = problemService.findByLanguages(languages);
@@ -46,24 +48,31 @@ public class GameService {
         return game;
     }
 
-    public Game connectToGame(Player player2username, UUID gameId) throws InvalidParamException, InvalidGameException {
-        if (!GameStorage.getInstance().getGames().containsKey(gameId)) {
+    public Game connectToGame(ConnectRequest connectRequest) throws InvalidParamException, InvalidGameException {
+        Player player2 = connectRequest.getPlayer();
+        String gameId = connectRequest.getGameId();
+        if (!GameStorage.getInstance().getGames().containsKey(gameId))
             throw new InvalidParamException("Game not found with ID: " + gameId);
-        }
+
 
         Game game = GameStorage.getInstance().getGames().get(gameId);
 
-        if (game.getPlayer2() != null) {
+        if (game.getPassword() != null && !game.getPassword().equals(""))
+            if (!connectRequest.getPassword().equals(game.getPassword()))
+                throw new InvalidParamException("Wrong Password!");
+
+
+        if (game.getPlayer2() != null)
             throw new InvalidGameException("Game is not valid anymore");
-        }
+
 
 //        TODO: ADD check for retrieving the username
-        AppUser user2 = userService.findByUsername(player2username.getUsername());
-        Player player2 = new Player(user2.getChosenUsername());
+        AppUser user2 = userService.findByUsername(player2.getUsername());
+        player2 = new Player(user2.getChosenUsername());
 
         game.setPlayer2(player2);
         game.setGameStatus(GameStatus.IN_PROGRESS);
-        GameStorage.getInstance().setGame(game);
+
         return game;
     }
 
@@ -77,9 +86,11 @@ public class GameService {
         }
 
         Game game = GameStorage.getInstance().getGames().get(gamePlay.getGameId());
+
         if (game.getGameStatus().equals(FINISHED)) {
             throw new InvalidGameException("Game is already finished");
         }
+
         return game;
     }
 }
