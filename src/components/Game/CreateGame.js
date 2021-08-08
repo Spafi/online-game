@@ -2,11 +2,16 @@ import React, { useState, useRef } from 'react';
 import Button from '../common/Button';
 import { useTheme } from '../ThemeContext';
 import axios from 'axios';
-import { startGameUrl } from '../../BASE_URL';
-const CreateGame = ({ children, changeGameMode }) => {
+import { startGameUrl, websocketUrl, gameplayUrl } from '../../BASE_URL';
+import Input from '../Login/Input';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+
+const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const darkTheme = useTheme();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
+	const [password, setPassword] = useState(null);
 	const sliderRef = useRef();
 	const languages = [
 		{
@@ -43,13 +48,34 @@ const CreateGame = ({ children, changeGameMode }) => {
 		}
 	};
 
+	let stompClient = null;
+
+	function connect(gameId) {
+		let socket = new SockJS(websocketUrl);
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function (frame) {
+			console.log('Connected: ' + frame);
+			stompClient.subscribe(gameplayUrl + '/' + gameId, function (game) {
+				console.log(JSON.parse(game.body).username);
+			});
+		});
+	}
+
 	const createGame = async () => {
 		const username = localStorage.getItem('username');
-		const createGameRequest = { username, languages: selectedLanguages, rounds };
+		const createGameRequest = {
+			username,
+			languages: selectedLanguages,
+			rounds,
+			password,
+		};
 		await axios
 			.post(startGameUrl, createGameRequest)
 			.then((response) => {
 				console.log(response);
+				const gameId = response.data.gameId;
+				connect(gameId);
+				changeGameMode(gameStatus.WAIT);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -103,8 +129,21 @@ const CreateGame = ({ children, changeGameMode }) => {
 			</div>
 
 			<div>
-				Private (needs password)
-				
+				<p className='pb-4'>
+					Password (Optional) -{' '}
+					<span
+						className={`${
+							darkTheme === true ? 'text-yellow-400 ' : 'text-yellow-900 '
+						}`}>
+						The game won't appear in random games
+					</span>
+				</p>
+				<Input
+					containerClasses={'w-full'}
+					placeholder={'1234 or something'}
+					value={password}
+					onChange={({ target }) => setPassword(target.value)}
+				/>
 			</div>
 			<div className='flex justify-between  px-2'>
 				<Button content={'Back'} handleClick={() => changeGameMode(null)}></Button>

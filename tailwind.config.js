@@ -15,6 +15,10 @@ module.exports = {
 
 		extend: {
 			transitionProperty: ['hover', 'focus'],
+			gridTemplateColumns: {
+          // Simple 16 column grid
+         '15': 'repeat(15, minmax(0, 1fr))',
+			},
 			backgroundColor: ['active'],
 			fontFamily: {
 				montserrat: ['"Montserrat"', 'sans-serif'],

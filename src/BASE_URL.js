@@ -12,4 +12,6 @@ export const submitCodeUrl = BASE_URL + '/api/v1/problem';
 
 export const startGameUrl = BASE_URL + '/api/v1/game/start';
 
-export const websocketUrl = BASE_URL + '/ws';
+export const websocketUrl = BASE_URL + '/gameplay';
+
+export const gameplayUrl = '/topic/game-progress'
