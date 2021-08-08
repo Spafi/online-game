@@ -1,4 +1,4 @@
-const BASE_URL = 'https://code-rush-server.herokuapp.com/';
+const BASE_URL = 'https://code-rush-server.herokuapp.com';
 
 export default BASE_URL;
 
