@@ -1,47 +1,19 @@
 import CodeContainer from './ProblemContainer';
 import ChoicesContainer from './ChoicesContainer';
 import ProgressBar from './ProgressBar';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import { useTheme } from '../ThemeContext';
+import { useGame } from './GameContext';
 
-import Page from '../common/Page.js';
+
 const GamePage = () => {
-
-	let stompClient = null;
-
-	function connect() {
-		let socket = new SockJS('http://localhost:8080/gameplay');
-		stompClient = Stomp.over(socket);
-		stompClient.connect({}, function (frame) {
-			console.log('Connected: ' + frame);
-			stompClient.subscribe(
-				'/topic/game-progress/cdce3869-c67d-41a3-9838-6a7826efd26a',
-				function (greeting) {
-					console.log(JSON.parse(greeting.body).content);
-				}
-			);
-		});
-	}
-
-	function disconnect() {
-		if (stompClient !== null) {
-			stompClient.disconnect();
-		}
-		console.log('Disconnected');
-	}
-
-	function sendName() {
-		if (stompClient !== null) {
-			stompClient.send(
-				'/app/create',
-				{},
-				JSON.stringify({ playerId: '0c049177-1c78-4c64-b22a-36b0079f6a5c' })
-			);
-		}
-	}
+	const darkTheme = useTheme();
+	const game = useGame()
 
 	return (
-		<Page>
+		<div
+			className={`${
+				darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
+			} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col relative`}>
 			{/* MAIN GAME CONTAINER */}
 			{/* SCORE & PLAYERS CONTAINER*/}
 			<div className='w-full space-y-8'>
@@ -54,24 +26,15 @@ const GamePage = () => {
 					<div className=' min-w-24 text-right'>0</div>
 				</div>
 				{/* PLAYERS CONTAINER */}
-				<div className='h-10 grid grid-cols-7 items-center justify-center text-2xl'>
-					<div className='col-span-3'>P1 </div>
+				<div className='h-max pb-4 grid grid-cols-7 items-center justify-center text-2xl'>
+					<div className='col-span-3'>{game.player1.username} </div>
 					<div className='text-center '>VS</div>
-					<div className='col-span-3 text-right'>P2</div>
+					<div className='col-span-3 text-right'>{game.player2.username}</div>
 				</div>
 			</div>
 			<CodeContainer className='rounded-lg w-full relative h-full' />
 			<ChoicesContainer />
-			<button className='w-full h-1/3 border-2' onClick={connect}>
-					Connect
-				</button>
-				<button className='w-full h-1/3 border-2' onClick={sendName}>
-					Send
-				</button>
-				<button className='w-full h-1/3 border-2' onClick={disconnect}>
-					Disconnect
-				</button>
-		</Page>
+		</div>
 	);
 };
 

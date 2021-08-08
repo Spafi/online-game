@@ -6,7 +6,7 @@ import { GameProvider } from './components/Game/GameContext.js';
 import Menu from './components/Menu/Menu';
 import Main from './components/Main.js';
 // import Helper from './components/Helper.js';
-import GamePage from './components/Game/GamePage.js';
+// import GamePage from './components/Game/GamePage.js';
 import SelectGameType from './components/Game/SelectGameType.js';
 import LoginContainer from './components/Login/LoginContainer.js';
 import UserPage from './components/User/UserPage';
@@ -58,7 +58,7 @@ function App() {
 	const switchPages = (page) => {
 		switch (page) {
 			case 'main':
-				return <GamePage />;
+				return <UserPage />;
 				case 'play':
 					return <SelectGameType />;
 			case 'submitProblem':

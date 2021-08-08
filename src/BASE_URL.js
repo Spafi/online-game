@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://code-rush-server.herokuapp.com/';
 
 export default BASE_URL;
 
@@ -12,6 +12,10 @@ export const submitCodeUrl = BASE_URL + '/api/v1/problem';
 
 export const startGameUrl = BASE_URL + '/api/v1/game/start';
 
-export const websocketUrl = BASE_URL + '/gameplay';
+export const webSocketUrl = BASE_URL + '/gameplay';
 
-export const gameplayUrl = '/topic/game-progress'
+export const gamePlayUrl = BASE_URL + '/api/v1/game/gameplay';
+
+export const joinGameUrl = BASE_URL + '/api/v1/game/connect';
+
+export const gameProgressUrl = '/topic/game-progress';

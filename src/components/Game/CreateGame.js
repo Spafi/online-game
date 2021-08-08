@@ -2,13 +2,16 @@ import React, { useState, useRef } from 'react';
 import Button from '../common/Button';
 import { useTheme } from '../ThemeContext';
 import axios from 'axios';
-import { startGameUrl, websocketUrl, gameplayUrl } from '../../BASE_URL';
+import { startGameUrl, webSocketUrl, gameProgressUrl } from '../../BASE_URL';
 import Input from '../Login/Input';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
+import { useGame, useUpdateGame } from './GameContext';
 
 const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const darkTheme = useTheme();
+	const game = useGame();
+	const setGame = useUpdateGame();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
 	const [password, setPassword] = useState(null);
@@ -51,12 +54,17 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	let stompClient = null;
 
 	function connect(gameId) {
-		let socket = new SockJS(websocketUrl);
+		let socket = new SockJS(webSocketUrl);
 		stompClient = Stomp.over(socket);
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
-			stompClient.subscribe(gameplayUrl + '/' + gameId, function (game) {
-				console.log(JSON.parse(game.body).username);
+			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
+				console.log(JSON.parse(game.body));
+				if (JSON.parse(game.body).username) changeGameMode(gameStatus.IN_PROGRESS);
+				if (JSON.parse(game.body).gameId) {
+					setGame(JSON.parse(game.body));
+					console.log(JSON.parse(game.body));
+				}
 			});
 		});
 	}
@@ -72,10 +80,11 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 		await axios
 			.post(startGameUrl, createGameRequest)
 			.then((response) => {
-				console.log(response);
 				const gameId = response.data.gameId;
 				connect(gameId);
+
 				changeGameMode(gameStatus.WAIT);
+				setGame({ ...game, gameId: gameId });
 			})
 			.catch((error) => {
 				console.log(error);

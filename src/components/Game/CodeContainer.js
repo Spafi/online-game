@@ -5,8 +5,6 @@ import { useTheme } from '../ThemeContext';
 const CodeContainer = ({ script, language }) => {
 	const darkTheme = useTheme();
 
-	console.log(language);
-
 	return (
 		<SyntaxHighlighter
 			language={language}

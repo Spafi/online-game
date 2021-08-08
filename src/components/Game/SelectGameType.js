@@ -6,18 +6,17 @@ import GamePage from './GamePage.js';
 import JoinGame from './JoinGame.js';
 import JoinRandomGame from './JoinRandomGame.js';
 import WaitPage from './WaitPage.js';
+// import { useGame } from './GameContext.js';
 
 const SelectGameType = () => {
+	// const game = useGame();
 	const [gameMode, setGameMode] = useState(null);
-	const [gameId, setGameId] = useState('')
-	const selectGameMode = (gameMode, gameId) => {
-		console.log(gameId);
+	const selectGameMode = (gameMode) => {
 		setGameMode(gameMode);
-		setGameId(gameId);
 	};
 
 	const gameStatus = {
-		WAIT: <WaitPage gameId={gameId}/>,
+		WAIT: <WaitPage />,
 		IN_PROGRESS: <GamePage />,
 		FINISHED: <div>over</div>,
 	};
@@ -26,8 +25,10 @@ const SelectGameType = () => {
 		CREATE: (
 			<CreateGame changeGameMode={selectGameMode} gameStatus={gameStatus} />
 		),
-		JOIN: <JoinGame changeGameMode={selectGameMode} />,
-		RANDOM: <JoinRandomGame changeGameMode={selectGameMode} />,
+		JOIN: <JoinGame changeGameMode={selectGameMode} gameStatus={gameStatus} />,
+		RANDOM: (
+			<JoinRandomGame changeGameMode={selectGameMode} gameStatus={gameStatus} />
+		),
 	};
 
 	return (
