@@ -3,6 +3,7 @@ package com.spaf.jwt.jwt101.game.models;
 import com.spaf.jwt.jwt101.game.problem.model.Problem;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,9 +17,10 @@ public class Game {
     private Player player2;
     private GameStatus gameStatus;
     private List<Problem> problems;
+    private List<Problem> playedProblems = new ArrayList<>();
     private Boolean isPrivate;
     private String password;
-    private byte rounds;
+    private int round;
 
     public Player getPlayerByUsername(String username) {
         Player player = null;

@@ -25,7 +25,6 @@ public class Problem {
     private String script;
     private String output;
     private String byUser;
-    private String task;
 
     @Transient
     private String clientId;
