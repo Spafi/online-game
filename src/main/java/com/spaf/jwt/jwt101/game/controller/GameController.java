@@ -7,10 +7,15 @@ import com.spaf.jwt.jwt101.game.service.GameService;
 import com.spaf.jwt.jwt101.user.models.AppUser;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 @RestController
 @Slf4j
@@ -29,12 +34,31 @@ public class GameController {
     }
 
     @PostMapping("/connect")
-    public ResponseEntity<GameRound> connect(@RequestBody ConnectRequest request) throws InvalidParamException, InvalidGameException {
+    public ResponseEntity<GameRound> connect(@RequestBody ConnectRequest request) throws InvalidParamException, InvalidGameException, NotFoundException {
         log.info("connect request: {}", request);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), request.getPlayer());
         GameRound gameRound = gameService.connectToGame(request);
-        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
+        Timer timer = new Timer();
 
+        GameRound finalGameRound = gameRound;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int timeRemaining = 3;
+
+            @SneakyThrows
+            @Override
+            public void run() {
+                finalGameRound.setScript(Integer.toString(timeRemaining));
+                timeRemaining -= 1;
+                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), finalGameRound);
+                if (timeRemaining <= -1) {
+                    cancel();
+                    GameRound firstRound = gameService.gamePlay(new GamePlay(gameRound.getGameId()));
+                    simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), firstRound);
+                }
+            }
+        }, 0, 1000);
+
+        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
         return ResponseEntity.ok(gameRound);
     }
 

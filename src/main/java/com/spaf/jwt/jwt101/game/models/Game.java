@@ -24,6 +24,9 @@ public class Game {
         Player player = null;
         if (getPlayer1().getUsername().equals(username)) player = getPlayer1();
         else if (getPlayer2().getUsername().equals(username)) player = getPlayer2();
+        System.out.println("==============================================================");
+        System.out.println(player);
+        System.out.println("==============================================================");
         return player;
     }
 }
