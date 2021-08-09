@@ -16,8 +16,8 @@ module.exports = {
 		extend: {
 			transitionProperty: ['hover', 'focus'],
 			gridTemplateColumns: {
-          // Simple 16 column grid
-         '15': 'repeat(15, minmax(0, 1fr))',
+				// Simple 16 column grid
+				15: 'repeat(15, minmax(0, 1fr))',
 			},
 			backgroundColor: ['active'],
 			fontFamily: {
@@ -55,6 +55,7 @@ module.exports = {
 				0: '0',
 				sm: '20rem',
 				md: '30rem',
+				24: '6rem',
 				'1/4': '25%',
 				'1/2': '50%',
 				'3/4': '75%',

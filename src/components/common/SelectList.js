@@ -19,7 +19,7 @@ const SelectList = ({choices, selected, updateState}) => {
 					<SelectorIcon className='w-5 h-5 text-gray-400' aria-hidden='true' />
 				</span>
 			</Listbox.Button>
-			<Listbox.Options className='w-max absolute z-20 top-10 right-4 cursor-pointer'>
+			<Listbox.Options className='w-max absolute z-50 top-10 right-2 cursor-pointer'>
 				{choices.map((choice, index) => (
 					<Listbox.Option key={index} value={choice} disabled={choice.unavailable}>
 						{({ active }) => (

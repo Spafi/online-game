@@ -10,7 +10,6 @@ import Input from '../Login/Input.js';
 const SubmitProblem = () => {
 	const [script, setScript] = useState('');
 	const [output, setOutput] = useState('');
-	const [task, setTask] = useState('');
 	const [cpuTime, setCpuTime] = useState('');
 	const [answers, setAnswers] = useState({
 		decoy1: '',
@@ -19,7 +18,6 @@ const SubmitProblem = () => {
 	});
 	const darkTheme = useTheme();
 	const decoysRef = useRef();
-	const taskRef = useRef();
 	const choices = [
 		{
 			name: 'Java',
@@ -70,9 +68,12 @@ const SubmitProblem = () => {
 		inputContainer.lastChild.textContent = '';
 	};
 
+	const hasDuplicates = (array) => {
+		return new Set(array).size !== array.length;
+	};
+
 	const testCode = async (script, language) => {
-    hideError(taskRef);
-				hideError(decoysRef, true);
+		hideError(decoysRef, true);
 		const problem = {
 			script,
 			language: language.compilerApiCode,
@@ -88,24 +89,40 @@ const SubmitProblem = () => {
 				console.log(error);
 			});
 	};
+	const successBorderRef = useRef();
+	const successMessageRef = useRef();
+
+	const onSubmitSuccess = () => {
+		setScript('');
+		setAnswers('');
+		setOutput('');
+		setCpuTime('');
+		successBorderRef.current.classList.remove('border-transparent');
+		successBorderRef.current.classList.add('border-green-600');
+		successMessageRef.current.classList.remove('hidden');
+		setTimeout(() => {
+			successBorderRef.current.classList.remove('border-green-600');
+			successBorderRef.current.classList.add('border-transparent');
+			successMessageRef.current.classList.add('hidden');
+		}, 1500);
+	};
 
 	const submitProblem = async (script, language) => {
-		hideError(taskRef);
 		hideError(decoysRef, true);
 		const problem = {
 			script,
 			language: language.compilerApiCode,
 			versionIndex: language.versionIndex,
-			task,
 		};
 		const username = localStorage.getItem('username');
 		const answersList = Object.values(answers);
-		if (!task) {
-			showError(taskRef, 'You must write a task for the problem!', false);
-			return;
-		}
-		if (answersList.includes('')) {
-			showError(decoysRef, 'You must write three decoy answers!', true);
+
+		if (
+			answersList.includes('') ||
+			answersList.length !== 3 ||
+			hasDuplicates(answersList)
+		) {
+			showError(decoysRef, 'You must write three distinct decoy answers!', true);
 			return;
 		}
 
@@ -113,9 +130,7 @@ const SubmitProblem = () => {
 		await axios
 			.post(submitCodeUrl, submitProblemRequest)
 			.then((response) => {
-				console.log(response);
-				updateOutput(response.data.output);
-				updateCpuTime(response.data.cpuTime);
+				onSubmitSuccess();
 			})
 			.catch((error) => {
 				console.log(error);
@@ -124,7 +139,7 @@ const SubmitProblem = () => {
 
 	return (
 		<Page>
-			<div className='h-full relative'>
+			<div className='h-full relative flex flex-col'>
 				{/*START BUTTONS & LANGUAGE SELECT CONTAINER */}
 				<div className='w-full pb-2 flex items-center justify-between gap-2 text-sm px-px'>
 					<div className='flex flex-row gap-4'>
@@ -145,7 +160,17 @@ const SubmitProblem = () => {
 				</div>
 				{/*END BUTTONS & LANGUAGE SELECT CONTAINER */}
 				{/*START CODE CONTAINER */}
-				<div className='min-h-sm h-36 max-h-md relative'>
+				<div
+					className='min-h-sm h-36 max-h-md relative rounded-md border border-transparent flex-grow'
+					ref={successBorderRef}>
+					<div
+						className={` absolute w-full h-full flex items-center justify-center`}>
+						<span
+							ref={successMessageRef}
+							className='hidden text-green-600 text-xl z-40'>
+							Problem submitted!
+						</span>
+					</div>
 					<EditableCodeContainer
 						script={script}
 						language={language.codeHighlight}
@@ -156,12 +181,12 @@ const SubmitProblem = () => {
 				{/*START OUTPUT CONTAINER */}
 				<div className='relative'>
 					<div
-						className={`h-36 max-h-md relative rounded-md px-1 py-2 text-xs font-roboto w-full overflow-scroll scrollbar-thin scrollbar-thumb-rounded-sm ${
+						className={`  h-36 flex-grow relative rounded-md px-1 py-2 text-xs font-roboto w-full overflow-scroll scrollbar-thin scrollbar-thumb-rounded-sm ${
 							darkTheme
 								? 'bg-monokai-bg scrollbar-thumb-purple-500'
 								: 'bg-white scrollbar-thumb-gray-400'
 						}`}>
-						{output.split('\n').map((i, key) => {
+						{output?.split('\n').map((i, key) => {
 							return <p key={key}>{i}</p>;
 						})}
 					</div>
@@ -173,14 +198,7 @@ const SubmitProblem = () => {
 				</div>
 				{/*END OUTPUT CONTAINER */}
 
-				<div className='absolute bottom-0 w-full'>
-					<Input
-						containerClasses={'w-full'}
-						placeholder={'Task'}
-						value={task}
-						onChange={({ target }) => setTask(target.value)}
-						ref={taskRef}
-					/>
+				<div className='w-full h-max'>
 					<div className='w-full text-sm pt-2 pb-1'>Decoys</div>
 					<div
 						className='flex w-full gap-2 text-sm border border-transparent rounded-3xl'
