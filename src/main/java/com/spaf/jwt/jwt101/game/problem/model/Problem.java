@@ -36,6 +36,6 @@ public class Problem {
     private int playedCount;
 
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> answers;
 }
