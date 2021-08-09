@@ -1,4 +1,4 @@
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import SyntaxHighlighter  from 'react-syntax-highlighter';
 import { monokai, xcode } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { useTheme } from '../ThemeContext';
 

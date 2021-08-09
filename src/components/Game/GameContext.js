@@ -11,18 +11,7 @@ export const GameProvider = ({ children }) => {
 		gameId: '',
 		player1: { username: '', score: 0 },
 		player2: { username: '', score: 0 },
-		script: `import java.util.Arrays;
-import java.util.stream.IntStream;
-
-public class Kata {
-  public static int squareSum(int[] n) { 
-    return Arrays
-      .stream(n)
-      .map(n1 -> (int) Math.pow(n1, 2))
-      .reduce(Integer::sum)
-      .getAsInt();
-  }
-}`,
+		script: ``,
 		language: '',
 		answers: [],
 		byUser: '',

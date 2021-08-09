@@ -97,13 +97,13 @@ const SubmitProblem = () => {
 		setAnswers('');
 		setOutput('');
 		setCpuTime('');
-		successBorderRef.current.classList.remove('border-transparent');
-		successBorderRef.current.classList.add('border-green-600');
-		successMessageRef.current.classList.remove('hidden');
+		successBorderRef?.current.classList.remove('border-transparent');
+		successBorderRef?.current.classList.add('border-green-600');
+		successMessageRef?.current.classList.remove('hidden');
 		setTimeout(() => {
-			successBorderRef.current.classList.remove('border-green-600');
-			successBorderRef.current.classList.add('border-transparent');
-			successMessageRef.current.classList.add('hidden');
+			successBorderRef?.current.classList.remove('border-green-600');
+			successBorderRef?.current.classList.add('border-transparent');
+			successMessageRef?.current.classList.add('hidden');
 		}, 1500);
 	};
 

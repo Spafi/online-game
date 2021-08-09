@@ -61,7 +61,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
 				console.log(JSON.parse(game.body));
 				if (JSON.parse(game.body).username) changeGameMode(gameStatus.IN_PROGRESS);
-				if (JSON.parse(game.body).gameId) {
+				if (JSON.parse(game.body).script) {
 					setGame(JSON.parse(game.body));
 					console.log(JSON.parse(game.body));
 				}
