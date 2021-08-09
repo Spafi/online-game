@@ -5,7 +5,7 @@ import { gamePlayUrl } from '../../BASE_URL';
 
 const ChoicesContainer = () => {
 	const game = useGame();
-	const answers = game.problems[0].answers;
+	const answers = game.answers;
 	const onAnswerClick = async (answer) => {
 		const gamePlay = {gameId: game.gameId, username: localStorage.getItem('username'), answer}
 		await axios

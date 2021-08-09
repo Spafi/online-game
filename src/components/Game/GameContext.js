@@ -8,6 +8,9 @@ export const useUpdateGame = () => useContext(UpdateGameContext);
 
 export const GameProvider = ({ children }) => {
 	const gameData = {
+		gameId: '',
+		player1: { username: '', score: 0 },
+		player2: { username: '', score: 0 },
 		script: `import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -20,10 +23,9 @@ public class Kata {
       .getAsInt();
   }
 }`,
-		gameId: '',
-		player1: { username: '' },
-		player2: { username: '' },
-		problems: [{ script: '', language: '', answers: [], task: '' }],
+		language: '',
+		answers: [],
+		byUser: '',
 	};
 	//eslint-disable-next-line
 	const [game, setGame] = useState(gameData);

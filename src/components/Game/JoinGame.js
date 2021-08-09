@@ -11,6 +11,7 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	const [gameId, setGameId] = useState('');
 	const [password, setPassword] = useState('');
 	const darkTheme = useTheme();
+
 	const setGame = useUpdateGame();
 
 	let stompClient = null;
@@ -21,7 +22,10 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-				console.log(JSON.parse(game.body)); 
+					if (JSON.parse(game.body).gameId) {
+						setGame(JSON.parse(game.body));
+						console.log(JSON.parse(game.body));
+					}
 			});
 		});
 	}

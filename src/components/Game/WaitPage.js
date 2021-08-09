@@ -7,8 +7,8 @@ const WaitPage = () => {
 	const game = useGame();
 	const darkTheme = useTheme();
 	const gameIdRef = useRef();
-	const rows = 15;
-	const cols = 4;
+	const rows = 8;
+	const cols = 8;
 	const animationElementsNumber = new Array(rows * cols);
 	animationElementsNumber.fill(1);
 
@@ -19,11 +19,15 @@ const WaitPage = () => {
 				{ value: 0.1, easing: 'easeInOutQuad', duration: 600 },
 				{ value: 1, easing: 'easeInOutQuad', duration: 1200 },
 			],
-			backgroundColor: ['#7C3AED', '#D97706', '#DC2626'],
+			backgroundColor: ['#7C3AED', '#D97706', '#DC2626', '#7C3AED'],
 
 			delay: anime.stagger(200, { grid: [rows, cols], from: 'center' }),
 			loop: true,
+			rotate: '360',
+			easing: 'linear',
+			duration: 4000,
 		});
+
 	}, []);
 
 	const copyGameId = (e) => {
@@ -40,13 +44,18 @@ const WaitPage = () => {
 		<div
 			className={` min-w-md w-full max-w-6xl h-full rounded-lg p-12 flex flex-col justify-between gap-y-6 relative`}>
 			<div className=' staggering-grid-demo h-full w-full flex flex-col justify-around'>
-				<h2 className='w-full text-center text-2xl font-bold'>
-					Waiting for the second player to join
+				<h2 className='w-full text-center text-3xl'>
+					Waiting for opponent
 				</h2>
 				<div className='w-full items-center flex justify-center'>
-					<div className='grid grid-cols-15 w-max overflow-hidden rounded-full'>
+					<div
+						className={`grid grid-cols-8 w-max overflow-hidden rounded-full ${
+							darkTheme === true
+								? 'nm-concave-gray-neu-xs '
+								: 'nm-concave-gray-200-xs '
+						} rot`}>
 						{animationElementsNumber.map((el, index) => {
-							return <div className='w-9 h-9 bg-purple-600 el' key={index}></div>;
+							return <div className='w-7 h-7 bg-purple-600 el' key={index}></div>;
 						})}
 					</div>
 				</div>

@@ -9,15 +9,15 @@ const ProblemContainer = () => {
 		<div>
 			<div className='relative'>
 				<Code
-					script={game.problems[0].script}
-					language={game.problems[0].language}
+					script={game.script}
+					language={game.language}
 				/>
 				<p className='absolute bottom-0 right-0 text-xs p-1'>
-					Submitted by: {game.problems[0].byUser}
+					By: {game.byUser}
 				</p>
 			</div>
 			<div className='text-lg min-h-0 max-h-24 px-4 py-2 relative'>
-				<p>{game.problems[0].task}</p>
+				<p>task (TO BE REMOVED)</p>
 			</div>
 		</div>
 	);
