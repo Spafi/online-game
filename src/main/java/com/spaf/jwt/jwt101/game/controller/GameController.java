@@ -40,16 +40,15 @@ public class GameController {
         GameRound gameRound = gameService.connectToGame(request);
         Timer timer = new Timer();
 
-        GameRound finalGameRound = gameRound;
         timer.scheduleAtFixedRate(new TimerTask() {
             int timeRemaining = 3;
 
             @SneakyThrows
             @Override
             public void run() {
-                finalGameRound.setScript(Integer.toString(timeRemaining));
+                gameRound.setScript(Integer.toString(timeRemaining));
                 timeRemaining -= 1;
-                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), finalGameRound);
+                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
                 if (timeRemaining <= -1) {
                     cancel();
                     GameRound firstRound = gameService.gamePlay(new GamePlay(gameRound.getGameId()));
