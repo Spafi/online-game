@@ -5,8 +5,6 @@ import lombok.*;
 
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,4 +19,11 @@ public class Game {
     private Boolean isPrivate;
     private String password;
     private byte rounds;
+
+    public Player getPlayerByUsername(String username) {
+        Player player = null;
+        if (getPlayer1().getUsername().equals(username)) player = getPlayer1();
+        else if (getPlayer2().getUsername().equals(username)) player = getPlayer2();
+        return player;
+    }
 }
