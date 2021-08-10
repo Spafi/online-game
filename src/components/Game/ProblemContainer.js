@@ -1,15 +1,15 @@
 import { useGame } from './GameContext';
-import Code from './CodeContainer.js';
+import EditableCodeContainer from './EditableCodeContainer';
 
 const ProblemContainer = () => {
 	const game = useGame();
 
 	return (
-		<div>
-			<div className='relative'>
-				<Code
+		<div className='h-full'>
+			<div className='relative h-full'>
+				<EditableCodeContainer
 					script={game.script && game.script}
-					language={game.language && game.language}
+					language={game.language}
 				/>
 				{game.byUser && (
 					<p className='absolute bottom-0 right-0 text-xs p-1'>By: {game.byUser}</p>

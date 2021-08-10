@@ -6,13 +6,26 @@ import GamePage from './GamePage.js';
 import JoinGame from './JoinGame.js';
 import JoinRandomGame from './JoinRandomGame.js';
 import WaitPage from './WaitPage.js';
-// import { useGame } from './GameContext.js';
+import anime from 'animejs/lib/anime.es';
 
 const SelectGameType = () => {
-	// const game = useGame();
 	const [gameMode, setGameMode] = useState(null);
-	const selectGameMode = (gameMode) => {
-		setGameMode(gameMode);
+
+	const selectGameMode = async (gameMode, bg) => {
+		const a = anime({ targets: '.btn', color: bg, duration: 0.1 }).finished;
+		const animation = anime({
+			targets: '.btn',
+			width: '300px',
+			scaleX: '*=10',
+			easing: 'easeInQuad',
+			duration: 5,
+		}).finished;
+
+		await Promise.all([a, animation]);
+
+		setTimeout(() => {
+			setGameMode(gameMode);
+		}, 300);
 	};
 
 	const gameStatus = {
@@ -34,21 +47,23 @@ const SelectGameType = () => {
 	return (
 		<Page noPadding={true}>
 			{!gameMode && (
-				<div className='flex h-full w-full px-36 justify-evenly items-center relative gap-12 overflow-hidden text-6xl font-bold '>
+				<div className='flex h-full w-full px-36 justify-evenly items-center relative gap-12 overflow-hidden text-6xl font-bold'>
 					<GameChoiceButton
 						content={'Create'}
-						bgColor={'hover:bg-purple-600'}
-						clickHandler={() => selectGameMode(gameType.CREATE)}
+						classes={'hover:bg-purple-600 btn'}
+						clickHandler={() => {
+							selectGameMode(gameType.CREATE, '#7C3AED');
+						}}
 					/>
 					<GameChoiceButton
 						content={'Join'}
-						bgColor={'hover:bg-yellow-600'}
-						clickHandler={() => selectGameMode(gameType.JOIN)}
+						classes={'hover:bg-yellow-600 btn'}
+						clickHandler={() => selectGameMode(gameType.JOIN, '#D97706')}
 					/>
 					<GameChoiceButton
 						content={'Random'}
-						bgColor={'hover:bg-red-600'}
-						clickHandler={() => selectGameMode(gameType.RANDOM)}
+						classes={'hover:bg-red-600 btn'}
+						clickHandler={() => selectGameMode(gameType.RANDOM, '#DC2626')}
 					/>
 				</div>
 			)}
