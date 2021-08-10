@@ -9,4 +9,5 @@ public class CreateGameRequest {
     private String username;
     private List<String> languages;
     private byte rounds;
+    private String password;
 }

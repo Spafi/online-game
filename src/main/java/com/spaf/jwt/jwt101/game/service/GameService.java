@@ -53,6 +53,11 @@ public class GameService {
         game.setRound(problemsList.size() - 1);
         GameStorage.getInstance().setGame(game);
 
+        String password = createGameRequest.getPassword();
+
+        if (password != null && !password.equals(""))
+            game.setPassword(password);
+
         return GameRound
                 .builder()
                 .gameId(game.getGameId())
@@ -68,8 +73,10 @@ public class GameService {
 
 
         Game game = GameStorage.getInstance().getGames().get(gameId);
-        if (game.getPassword() != null && !game.getPassword().equals(""))
-            if (!connectRequest.getPassword().equals(game.getPassword()))
+        String password = game.getPassword();
+
+        if (password != null && !password.equals(""))
+            if (!connectRequest.getPassword().equals(password))
                 throw new InvalidParamException("Wrong Password!");
 
 //        int previousScore = 0;
@@ -139,6 +146,7 @@ public class GameService {
                 .player1(game.getPlayer1())
                 .player2(game.getPlayer2())
                 .script(currentProblem.getScript())
+                .language(currentProblem.getLanguage())
                 .answers(currentProblem.getAnswers())
                 .byUser(currentProblem.getByUser())
                 .build();
