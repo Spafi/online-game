@@ -11,6 +11,7 @@ import SelectGameType from './components/Game/SelectGameType.js';
 import LoginContainer from './components/Login/LoginContainer.js';
 import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
+
 function App() {
 	// eslint-disable-next-line
 	const [user, setUser] = useState();
@@ -61,6 +62,7 @@ function App() {
 				return <UserPage />;
 				case 'play':
 					return <SelectGameType />;
+					// return <div className='ml-96 pt-12 relative'><GamePage/></div>
 			case 'submitProblem':
 				return <SubmitProblem />;
 			case 'user':
@@ -71,7 +73,7 @@ function App() {
 	};
 	return (
 		<ThemeProvider>
-			<div className='App'>
+			<div className='App subpixel-antialiased'>
 				<Main>
 					{/* <Helper /> */}
 					{!user && (

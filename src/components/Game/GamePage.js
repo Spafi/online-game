@@ -4,7 +4,6 @@ import ProgressBar from './ProgressBar';
 import { useTheme } from '../ThemeContext';
 import { useGame } from './GameContext';
 
-
 const GamePage = () => {
 	const darkTheme = useTheme();
 	const game = useGame()
@@ -32,8 +31,8 @@ const GamePage = () => {
 					<div className='col-span-3 text-right'>{game.player2.username}</div>
 				</div>
 			</div>
-			<CodeContainer className='rounded-lg w-full relative h-full' />
-			<ChoicesContainer />
+			<CodeContainer className='rounded-lg w-full relative h-full flex-grow-1' />
+			<ChoicesContainer/>
 		</div>
 	);
 };

@@ -35,6 +35,12 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			compilerApiCode: 'nodejs',
 			versionIndex: 3,
 		},
+		{
+			name: 'Bash Shell',
+			codeHighlight: 'bash',
+			compilerApiCode: 'bash',
+			versionIndex: 2,
+		},
 	];
 
 	const updateRounds = (rounds) => setRounds(rounds.target.value);
@@ -59,12 +65,8 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-				console.log(JSON.parse(game.body));
 				if (JSON.parse(game.body).username) changeGameMode(gameStatus.IN_PROGRESS);
-				if (JSON.parse(game.body).script) {
-					setGame(JSON.parse(game.body));
-					console.log(JSON.parse(game.body));
-				}
+				if (JSON.parse(game.body).script) setGame(JSON.parse(game.body));
 			});
 		});
 	}
@@ -77,18 +79,19 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			rounds,
 			password,
 		};
-		await axios
-			.post(startGameUrl, createGameRequest)
-			.then((response) => {
-				const gameId = response.data.gameId;
-				connect(gameId);
+		console.log(createGameRequest);
+			await axios
+				.post(startGameUrl, createGameRequest)
+				.then((response) => {
+					const gameId = response.data.gameId;
+					connect(gameId);
 
-				changeGameMode(gameStatus.WAIT);
-				setGame({ ...game, gameId: gameId });
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+					changeGameMode(gameStatus.WAIT);
+					setGame({ ...game, gameId: gameId });
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 	};
 
 	return (
@@ -102,7 +105,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 				<div
 					className={`${
 						darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-					} w-full grid grid-cols-4 gap-4 rounded-md h-max p-4 `}>
+					} w-full grid grid-cols-4 gap-4 rounded-md h-max p-4 place-items-center`}>
 					{languages.map((language) => {
 						return (
 							<Button
@@ -110,7 +113,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 								content={language.name}
 								handleClick={() => addLanguage(language.compilerApiCode)}
 								toggled={selectedLanguages.includes(language.compilerApiCode)}
-								classes={'w-24 h-8'}
+								classes={'w-24 h-8 '}
 							/>
 						);
 					})}

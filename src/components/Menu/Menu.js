@@ -16,7 +16,7 @@ const Menu = (props) => {
 	const usernameBgColor = props.userBgColor;
 
 	return (
-		<div className={`fixed h-screen w-96 flex z-20 p-12`}>
+		<div className={`fixed h-screen w-96 flex z-20 p-12 `}>
 			{/* MAIN MENU CONTAINER */}
 			<div
 				className={`${

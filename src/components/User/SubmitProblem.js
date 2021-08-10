@@ -37,6 +37,12 @@ const SubmitProblem = () => {
 			compilerApiCode: 'nodejs',
 			versionIndex: 3,
 		},
+		{
+			name: 'Bash Shell',
+			codeHighlight: 'sh',
+			compilerApiCode: 'bash',
+			versionIndex: 2,
+		},
 	];
 	const [language, setLanguage] = useState(choices[0]);
 	const updateCode = (code) => setScript(code);
