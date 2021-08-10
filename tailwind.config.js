@@ -2,6 +2,7 @@ module.exports = {
 	purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
+		letterSpacing: { normal: '.10em' },
 		neumorphismColor: {
 			gray: {
 				200: '#E5E7EB',
@@ -21,7 +22,7 @@ module.exports = {
 			},
 			backgroundColor: ['active'],
 			fontFamily: {
-				montserrat: ['"Montserrat"', 'sans-serif'],
+				montserrat: ['"Aldrich"', 'sans-serif'],
 				roboto: ['"Roboto Mono"', 'monospace'],
 			},
 			colors: {

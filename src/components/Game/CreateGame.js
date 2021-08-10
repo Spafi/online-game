@@ -79,18 +79,19 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			rounds,
 			password,
 		};
-		await axios
-			.post(startGameUrl, createGameRequest)
-			.then((response) => {
-				const gameId = response.data.gameId;
-				connect(gameId);
+		console.log(createGameRequest);
+			await axios
+				.post(startGameUrl, createGameRequest)
+				.then((response) => {
+					const gameId = response.data.gameId;
+					connect(gameId);
 
-				changeGameMode(gameStatus.WAIT);
-				setGame({ ...game, gameId: gameId });
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+					changeGameMode(gameStatus.WAIT);
+					setGame({ ...game, gameId: gameId });
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 	};
 
 	return (

@@ -73,7 +73,7 @@ function App() {
 	};
 	return (
 		<ThemeProvider>
-			<div className='App'>
+			<div className='App subpixel-antialiased'>
 				<Main>
 					{/* <Helper /> */}
 					{!user && (

@@ -8,7 +8,6 @@ const Main = ({ children }) => {
 			} h-full min-h-screen font-montserrat ${
 				darkTheme === true ? 'text-gray-200' : 'text-gray-800'
 			}`}>
-				
 			{children}
 		</div>
 	);
