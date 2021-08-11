@@ -10,7 +10,7 @@ const ChoicesContainer = () => {
 		const gamePlay = {gameId: game.gameId, username: localStorage.getItem('username'), answer}
 		await axios
 			.post(gamePlayUrl, gamePlay)
-			.then((response) => console.log(response))
+			.then((response) => console.log("gameplay request"))
 			.catch((error) => console.log(error));
 	};
 	return (

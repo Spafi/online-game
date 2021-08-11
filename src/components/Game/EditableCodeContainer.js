@@ -10,7 +10,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-xcode';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-const EditableCodeContainer = ({ script, language, updateCode }) => {
+const EditableCodeContainer = ({ script, language, updateCode, readOnly }) => {
 	if (language === 'java')
 		script =
 			script ||
@@ -26,7 +26,7 @@ const EditableCodeContainer = ({ script, language, updateCode }) => {
 			placeholder={language && (`Start Coding in ${
 				language.substring(0, 1).toUpperCase() + language.substring(1)
 			}`)}
-			mode={language}
+			mode={language || 'java'}
 			theme={darkTheme === true ? 'monokai' : 'xcode'}
 			name='basic-code-editor'
 			onChange={updateCode && updateCode}
@@ -35,11 +35,13 @@ const EditableCodeContainer = ({ script, language, updateCode }) => {
 			showGutter={true}
 			highlightActiveLine={true}
 			value={script}
+			readOnly={readOnly ?? false}
 			setOptions={{
 				enableBasicAutocompletion: false,
 				enableLiveAutocompletion: true,
 				enableSnippets: true,
 				showLineNumbers: true,
+				
 				tabSize: 2,
 			}}
 		/>

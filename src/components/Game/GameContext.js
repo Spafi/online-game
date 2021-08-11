@@ -15,6 +15,7 @@ export const GameProvider = ({ children }) => {
 		language: '',
 		answers: [],
 		byUser: '',
+		roundTimeLimit: null
 	};
 	//eslint-disable-next-line
 	const [game, setGame] = useState(gameData);

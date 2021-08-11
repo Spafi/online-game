@@ -14,6 +14,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const setGame = useUpdateGame();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
+	const [roundTimeLimit, setRoundTimeLimit] = useState(9);
 	const [password, setPassword] = useState(null);
 	const sliderRef = useRef();
 	const languages = [
@@ -65,8 +66,17 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-				if (JSON.parse(game.body).username) changeGameMode(gameStatus.IN_PROGRESS);
-				if (JSON.parse(game.body).script) setGame(JSON.parse(game.body));
+				const round = JSON.parse(game.body);
+				if (round.roundStatus === 'CONNECTED') {
+					changeGameMode(gameStatus.IN_PROGRESS);
+					setGame(round);
+				}
+				if (round.roundStatus === 'NEW') setGame(round);
+
+				if (round.roundStatus === 'FINISH_GAME') {
+					
+					setGame(round);
+				}
 			});
 		});
 	}
@@ -78,20 +88,21 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			languages: selectedLanguages,
 			rounds,
 			password,
+			roundTimeLimit,
 		};
-		console.log(createGameRequest);
-			await axios
-				.post(startGameUrl, createGameRequest)
-				.then((response) => {
-					const gameId = response.data.gameId;
-					connect(gameId);
 
-					changeGameMode(gameStatus.WAIT);
-					setGame({ ...game, gameId: gameId });
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		await axios
+			.post(startGameUrl, createGameRequest)
+			.then((response) => {
+				const gameId = response.data.gameId;
+				connect(gameId);
+
+				changeGameMode(gameStatus.WAIT);
+				setGame({ ...game, gameId: gameId });
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	return (

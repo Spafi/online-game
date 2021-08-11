@@ -6,7 +6,7 @@ import { useGame } from './GameContext';
 
 const GamePage = () => {
 	const darkTheme = useTheme();
-	const game = useGame()
+	const game = useGame();
 
 	return (
 		<div
@@ -31,8 +31,11 @@ const GamePage = () => {
 					<div className='col-span-3 text-right'>{game.player2.username}</div>
 				</div>
 			</div>
-			<CodeContainer className='rounded-lg w-full relative h-full flex-grow-1' />
-			<ChoicesContainer/>
+			<CodeContainer
+				className='rounded-lg w-full relative h-full flex-grow-1'
+				readOnly={true}
+			/>
+			<ChoicesContainer />
 		</div>
 	);
 };
