@@ -77,6 +77,9 @@ public class AppUserService implements UserDetailsService {
         return userRepository.findByUsername(username).get();
     }
 
+    public void updateUserData(AppUser user) {
+        userRepository.save(user);
+    }
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }

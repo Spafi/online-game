@@ -10,4 +10,5 @@ public class CreateGameRequest {
     private List<String> languages;
     private byte rounds;
     private String password;
+    private int roundTimeLimit;
 }

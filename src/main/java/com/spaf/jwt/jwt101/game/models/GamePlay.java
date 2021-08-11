@@ -11,7 +11,7 @@ public class GamePlay {
     private String gameId;
     private String username;
     private String answer;
-    private int round;
+//    private int round;
 
     public GamePlay(String gameId) {
         this.gameId = gameId;
