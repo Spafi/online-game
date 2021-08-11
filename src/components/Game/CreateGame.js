@@ -14,6 +14,8 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const setGame = useUpdateGame();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
+	// eslint-disable-next-line
+	const [roundTimeLimit, setRoundTimeLimit] = useState(10);
 	const [password, setPassword] = useState(null);
 	const sliderRef = useRef();
 	const languages = [
@@ -65,8 +67,21 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-				if (JSON.parse(game.body).username) changeGameMode(gameStatus.IN_PROGRESS);
-				if (JSON.parse(game.body).script) setGame(JSON.parse(game.body));
+				const round = JSON.parse(game.body);
+				if (round.roundStatus === 'CONNECTED') {
+					changeGameMode(gameStatus.CONNECTED);
+					setGame(round);
+				}
+				if (round.roundStatus === 'START_GAME') {
+					changeGameMode(gameStatus.IN_PROGRESS);
+				}
+				if (round.roundStatus === 'NEW') setGame(round);
+
+				if (round.roundStatus === 'FINISH_GAME') {
+					setGame(round);
+					changeGameMode(gameStatus.FINISHED);
+					disconnect();
+				}
 			});
 		});
 	}
@@ -78,21 +93,27 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			languages: selectedLanguages,
 			rounds,
 			password,
+			roundTimeLimit,
 		};
-		console.log(createGameRequest);
-			await axios
-				.post(startGameUrl, createGameRequest)
-				.then((response) => {
-					const gameId = response.data.gameId;
-					connect(gameId);
 
-					changeGameMode(gameStatus.WAIT);
-					setGame({ ...game, gameId: gameId });
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		await axios
+			.post(startGameUrl, createGameRequest)
+			.then((response) => {
+				const gameId = response.data.gameId;
+				connect(gameId);
+
+				changeGameMode(gameStatus.WAIT);
+				setGame({ ...game, gameId: gameId });
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
+	function disconnect() {
+		if (stompClient !== null) {
+			stompClient.disconnect();
+		}
+	}
 
 	return (
 		<div

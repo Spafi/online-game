@@ -1,7 +1,7 @@
 import { useGame } from './GameContext';
 import EditableCodeContainer from './EditableCodeContainer';
 
-const ProblemContainer = () => {
+const ProblemContainer = ({readOnly}) => {
 	const game = useGame();
 
 	return (
@@ -9,7 +9,8 @@ const ProblemContainer = () => {
 			<div className='relative h-full'>
 				<EditableCodeContainer
 					script={game.script && game.script}
-					language={game.language}
+					language={game.language && game.language}
+					readOnly={readOnly}
 				/>
 				{game.byUser && (
 					<p className='absolute bottom-0 right-0 text-xs p-1'>By: {game.byUser}</p>

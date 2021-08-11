@@ -1,11 +1,17 @@
 import axios from 'axios';
-import { joinGameUrl, webSocketUrl, gameProgressUrl } from '../../BASE_URL';
+import {
+	joinGameUrl,
+	webSocketUrl,
+	gameProgressUrl,
+	gamePlayUrl,
+} from '../../BASE_URL';
 import Button from '../common/Button';
 import { useTheme } from '../ThemeContext';
 import { useUpdateGame } from './GameContext';
 import React, { useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
+
 
 const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	const [gameId, setGameId] = useState('');
@@ -22,13 +28,33 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-				if (JSON.parse(game.body).gameId) {
-					setGame(JSON.parse(game.body));
-					console.log(JSON.parse(game.body));
+				const round = JSON.parse(game.body);
+				if (round.roundStatus === 'CONNECTED') {
+					changeGameMode(gameStatus.CONNECTED);
+					setGame(round);
+				}
+				if (round.roundStatus === 'START_GAME') {
+					changeGameMode(gameStatus.IN_PROGRESS);
+					axios
+						.post(gamePlayUrl, { gameId })
+						.then((response) => {})
+						.catch((err) => console.log(err));
+					setGame(round);
+				}
+
+				if (round.roundStatus === 'NEW') {
+					setGame(round);
+				}
+
+				if (round.roundStatus === 'FINISH_GAME') {
+					setGame(round);
+					changeGameMode(gameStatus.FINISHED);
+					disconnect()
 				}
 			});
 		});
 	}
+
 
 	const joinGame = async () => {
 		hideError(gameIdRef);
@@ -39,24 +65,29 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 			gameId,
 			password,
 		};
+		changeGameMode(gameStatus.CONNECTED);
 		await axios
 			.post(joinGameUrl, joinGameRequest)
 			.then((response) => {
-				console.log(response);
-				const game = response.data;
 				const gameId = response.data.gameId;
 				connect(gameId);
-				setGame(game);
-				changeGameMode(gameStatus.IN_PROGRESS);
 			})
 			.catch((error) => {
 				const message = error.response.data.message;
-				message.includes('Game not found with ID') && showError(gameIdRef, message);
+				message.includes('Game') && showError(gameIdRef, message);
 				message.includes('Wrong Password') && showError(passwordRef, message);
 			});
 	};
+
+	function disconnect() {
+		if (stompClient !== null) {
+			stompClient.disconnect();
+			console.log("disconected");
+		}
+	}
 	const passwordRef = useRef();
 	const gameIdRef = useRef();
+
 	const showError = (ref, e) => {
 		const passwordContainer = ref.current;
 		passwordContainer.firstChild.classList.remove('border-transparent');
