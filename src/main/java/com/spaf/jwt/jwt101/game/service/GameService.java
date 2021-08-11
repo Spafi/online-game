@@ -14,14 +14,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
-
 
 import static com.spaf.jwt.jwt101.game.models.GameStatus.FINISHED;
+
 
 @Service
 @AllArgsConstructor
@@ -40,6 +37,7 @@ public class GameService {
         Player player1 = new Player(user.getChosenUsername(), 0);
         List<String> languages = createGameRequest.getLanguages();
         byte rounds = createGameRequest.getRounds();
+        int roundTimeLimit = createGameRequest.getRoundTimeLimit();
 
         Game game = new Game();
         final int SHORT_ID_LENGTH = 6;
@@ -47,6 +45,7 @@ public class GameService {
         game.setGameId(RandomStringUtils.randomAlphanumeric(SHORT_ID_LENGTH));
         game.setPlayer1(player1);
         game.setGameStatus(GameStatus.NEW);
+        game.setRoundTimeLimit(roundTimeLimit);
         List<Problem> problemsList = problemService.findByLanguages(languages, rounds);
         game.setProblems(problemsList);
         problemsList.forEach(problem -> Collections.shuffle(problem.getAnswers()));
@@ -79,21 +78,21 @@ public class GameService {
             if (!connectRequest.getPassword().equals(password))
                 throw new InvalidParamException("Wrong Password!");
 
-//        int previousScore = 0;
+        int previousScore = 0;
 
         if (game.getPlayer2() != null) {
             if (!game.getPlayer2().equals(player2)) {
                 throw new InvalidGameException("Game is not valid anymore");
             }
+//                Player 2 reconnect logic
             //  If player 2 is reconnecting, it keeps the score
-//            previousScore = game.getPlayer2().getScore();
+            previousScore = game.getPlayer2().getScore();
 
         }
 //        TODO: ADD check for retrieving the username
         AppUser user2 = userService.findByUsername(player2.getUsername());
 
-// score previousScore
-        player2 = new Player(user2.getChosenUsername(), 0);
+        player2 = new Player(user2.getChosenUsername(), previousScore);
 
         game.setPlayer2(player2);
         game.setGameStatus(GameStatus.IN_PROGRESS);
@@ -104,13 +103,13 @@ public class GameService {
                 .gameId(game.getGameId())
                 .player1(game.getPlayer1())
                 .player2(game.getPlayer2())
+                .roundStatus(RoundStatus.CONNECTED)
                 .build();
     }
 
     public Game connectToRandomGame(AppUser player2) {
         return null;
     }
-
 
     public GameRound gamePlay(GamePlay gamePlay) throws NotFoundException, InvalidGameException {
 
@@ -119,50 +118,61 @@ public class GameService {
         }
 
         Game game = GameStorage.getInstance().getGames().get(gamePlay.getGameId());
+
+        if (game.getGameStatus().equals(FINISHED)) {
+            throw new InvalidGameException("Game is already finished");
+        }
+
         List<Problem> gameProblems = game.getProblems();
         int currentRound = game.getRound();
 
-        Player player = game.getPlayerByUsername(gamePlay.getUsername());
-        /*finished game logic*/
-        if (currentRound <= -1) {
-            if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-                player.setScore((player.getScore() + 1));
-            }
-
-            return GameRound
-                    .builder()
-                    .gameId(game.getGameId())
-                    .player1(game.getPlayer1())
-                    .player2(game.getPlayer2())
-                    .script("finished")
-                    .build();
-        }
-
-        Problem currentProblem = gameProblems.get(currentRound);
 
         GameRound gameRound = GameRound
                 .builder()
                 .gameId(game.getGameId())
-                .player1(game.getPlayer1())
-                .player2(game.getPlayer2())
-                .script(currentProblem.getScript())
-                .language(currentProblem.getLanguage())
-                .answers(currentProblem.getAnswers())
-                .byUser(currentProblem.getByUser())
+                .timeLimit(game.getRoundTimeLimit())
+                .roundStatus(RoundStatus.IN_PROGRESS)
                 .build();
 
-        if (gamePlay.getUsername() == null) {
-            game.setRound(game.getRound() - 1);
+        if (gamePlay.getUsername() != null && gamePlay.getAnswer() != null) {
+            Player player = game.getPlayerByUsername(gamePlay.getUsername());
+
+            if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
+                player.setScore((player.getScore() + 1));
+            }
+            gameRound.setRoundStatus(RoundStatus.FINISHED);
+        }
+
+        gameRound.setPlayer1(game.getPlayer1());
+        gameRound.setPlayer2(game.getPlayer2());
+
+
+        if (currentRound <= -1) {
+            game.setGameStatus(FINISHED);
+            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
+
+            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
+                AppUser user = userService.findByUsername(p.getUsername());
+//                TODO: Update game score
+                user.setScore(user.getScore() + p.getScore());
+                user.setGamesPlayed(user.getGamesPlayed() + 1);
+                userService.updateUserData(user);
+            }
             return gameRound;
         }
 
+        Problem currentProblem = gameProblems.get(currentRound);
+        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
+        problemService.save(currentProblem);
 
-        if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-            player.setScore((player.getScore() + 1));
-        }
+        gameRound.setScript(currentProblem.getScript());
+        gameRound.setLanguage(currentProblem.getLanguage());
+        gameRound.setByUser(currentProblem.getByUser());
+        gameRound.setAnswers(currentProblem.getAnswers());
 
-        if (game.getGameStatus().equals(FINISHED)) {
-            throw new InvalidGameException("Game is already finished");
+        if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
+            gameRound.setRoundStatus(RoundStatus.NEW);
+
         }
         game.setRound(--currentRound);
         return gameRound;

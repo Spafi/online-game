@@ -3,6 +3,7 @@ package com.spaf.jwt.jwt101.game.controller;
 import com.spaf.jwt.jwt101.game.exception.InvalidGameException;
 import com.spaf.jwt.jwt101.game.exception.InvalidParamException;
 import com.spaf.jwt.jwt101.game.models.*;
+import com.spaf.jwt.jwt101.game.repository.GameStorage;
 import com.spaf.jwt.jwt101.game.service.GameService;
 import com.spaf.jwt.jwt101.user.models.AppUser;
 import javassist.NotFoundException;
@@ -34,10 +35,11 @@ public class GameController {
     }
 
     @PostMapping("/connect")
-    public ResponseEntity<GameRound> connect(@RequestBody ConnectRequest request) throws InvalidParamException, InvalidGameException, NotFoundException {
+    public ResponseEntity<GameRound> connect(@RequestBody ConnectRequest request) throws InvalidParamException, InvalidGameException {
         log.info("connect request: {}", request);
-        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), request.getPlayer());
-        GameRound gameRound = gameService.connectToGame(request);
+
+        GameRound waitingRound = gameService.connectToGame(request);
+
         Timer timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -46,19 +48,16 @@ public class GameController {
             @SneakyThrows
             @Override
             public void run() {
-                gameRound.setScript(Integer.toString(timeRemaining));
-                timeRemaining -= 1;
-                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
-                if (timeRemaining <= -1) {
+                waitingRound.setTimeLimit(timeRemaining);
+                if (timeRemaining == 0) {
                     cancel();
-                    GameRound firstRound = gameService.gamePlay(new GamePlay(gameRound.getGameId()));
-                    simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), firstRound);
+                    waitingRound.setRoundStatus(RoundStatus.START_GAME);
                 }
+                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), waitingRound);
+                timeRemaining -= 1;
             }
         }, 0, 1000);
-
-        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
-        return ResponseEntity.ok(gameRound);
+        return ResponseEntity.ok(waitingRound);
     }
 
     @PostMapping("/connect/random")
@@ -71,7 +70,35 @@ public class GameController {
     public ResponseEntity<GameRound> gamePlay(@RequestBody GamePlay request) throws NotFoundException, InvalidGameException {
         log.info("gameplay: {}", request);
         GameRound gameRound = gameService.gamePlay(request);
-        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + gameRound.getGameId(), gameRound);
+        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
+        RoundStatus roundStatus = gameRound.getRoundStatus();
+        if (roundStatus.equals(RoundStatus.NEW)) gameRound.setRoundStatus(RoundStatus.IN_PROGRESS);
+        if (roundStatus.equals(RoundStatus.FINISHED)) gameRound.setRoundStatus(RoundStatus.NEW);
+
+        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
+
+
+//        Timer timer = new Timer();
+//
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            int roundTimeLimit = gameRound.getTimeLimit();
+//
+//            @SneakyThrows
+//            @Override
+//            public void run() {
+//                gameRound.setTimeLimit(roundTimeLimit);
+//
+//                if (gameRound.getRoundStatus().equals("NEW")) gameRound.setRoundStatus("IN_PROGRESS");
+//                if (gameRound.getRoundStatus().equals("FINISHED") || roundTimeLimit <= 0) {
+//                    gameRound.setRoundStatus("NEW");
+//
+//                    cancel();
+//                }
+//                simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
+//                roundTimeLimit -= 1;
+//            }
+//        }, 0, 1000);
+
         return ResponseEntity.ok(gameRound);
     }
 }

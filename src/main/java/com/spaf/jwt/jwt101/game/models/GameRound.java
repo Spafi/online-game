@@ -15,4 +15,6 @@ public class GameRound {
     private String language;
     private String byUser;
     private List<String> answers;
+    private int timeLimit;
+    private RoundStatus roundStatus;
 }
