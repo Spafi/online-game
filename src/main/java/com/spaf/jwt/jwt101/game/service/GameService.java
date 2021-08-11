@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+import static com.spaf.jwt.jwt101.game.models.GameStatus.FINISHED;
+
 
 @Service
 @AllArgsConstructor
@@ -83,7 +85,6 @@ public class GameService {
                 throw new InvalidGameException("Game is not valid anymore");
             }
 //                Player 2 reconnect logic
-
             //  If player 2 is reconnecting, it keeps the score
             previousScore = game.getPlayer2().getScore();
 
@@ -91,7 +92,6 @@ public class GameService {
 //        TODO: ADD check for retrieving the username
         AppUser user2 = userService.findByUsername(player2.getUsername());
 
-// score previousScore
         player2 = new Player(user2.getChosenUsername(), previousScore);
 
         game.setPlayer2(player2);
@@ -116,42 +116,23 @@ public class GameService {
         if (!GameStorage.getInstance().getGames().containsKey(gamePlay.getGameId())) {
             throw new NotFoundException("Game not found");
         }
+
         Game game = GameStorage.getInstance().getGames().get(gamePlay.getGameId());
+
+        if (game.getGameStatus().equals(FINISHED)) {
+            throw new InvalidGameException("Game is already finished");
+        }
+
         List<Problem> gameProblems = game.getProblems();
         int currentRound = game.getRound();
 
-        Problem currentProblem = gameProblems.get(currentRound);
 
         GameRound gameRound = GameRound
                 .builder()
                 .gameId(game.getGameId())
-                .player1(game.getPlayer1())
-                .player2(game.getPlayer2())
-                .script(currentProblem.getScript())
-                .language(currentProblem.getLanguage())
-                .byUser(currentProblem.getByUser())
-                .answers(currentProblem.getAnswers())
                 .timeLimit(game.getRoundTimeLimit())
                 .roundStatus(RoundStatus.IN_PROGRESS)
                 .build();
-
-
-        if (currentRound <= -1) {
-            game.setGameStatus(GameStatus.FINISHED);
-            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
-            return gameRound;
-//
-//            if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-//                player.setScore((player.getScore() + 1));
-//            }
-//            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
-//                AppUser user = userService.findByUsername(p.getUsername());
-////                TODO: Update game score
-//                user.setScore(user.getScore() + p.getScore());
-//                user.setGamesPlayed(user.getGamesPlayed() + 1);
-//                userService.updateUserData(user);
-//            }
-        }
 
         if (gamePlay.getUsername() != null && gamePlay.getAnswer() != null) {
             Player player = game.getPlayerByUsername(gamePlay.getUsername());
@@ -162,73 +143,38 @@ public class GameService {
             gameRound.setRoundStatus(RoundStatus.FINISHED);
         }
 
+        gameRound.setPlayer1(game.getPlayer1());
+        gameRound.setPlayer2(game.getPlayer2());
+
+
+        if (currentRound <= -1) {
+            game.setGameStatus(FINISHED);
+            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
+
+            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
+                AppUser user = userService.findByUsername(p.getUsername());
+//                TODO: Update game score
+                user.setScore(user.getScore() + p.getScore());
+                user.setGamesPlayed(user.getGamesPlayed() + 1);
+                userService.updateUserData(user);
+            }
+            return gameRound;
+        }
+
+        Problem currentProblem = gameProblems.get(currentRound);
+        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
+        problemService.save(currentProblem);
+
+        gameRound.setScript(currentProblem.getScript());
+        gameRound.setLanguage(currentProblem.getLanguage());
+        gameRound.setByUser(currentProblem.getByUser());
+        gameRound.setAnswers(currentProblem.getAnswers());
+
         if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
             gameRound.setRoundStatus(RoundStatus.NEW);
 
         }
-        if (!gameRound.getRoundStatus().equals(RoundStatus.FINISH_GAME)) game.setRound(--currentRound);
+        game.setRound(--currentRound);
         return gameRound;
     }
 }
-
-
-//        if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
-//            return GameRound
-//                    .builder()
-//                    .gameId(game.getGameId())
-//                    .player1(game.getPlayer1())
-//                    .player2(game.getPlayer2())
-//                    .script(currentProblem.getScript())
-//                    .language(currentProblem.getLanguage())
-//                    .byUser(currentProblem.getByUser())
-//                    .answers(currentProblem.getAnswers())
-//                    .timeLimit(game.getRoundTimeLimit())
-//                    .roundStatus("IN_PROGRESS")
-//                    .build();
-//        }
-
-//        Player player = game.getPlayerByUsername(gamePlay.getUsername());
-//
-//        /*finished game logic*/
-//        if (currentRound <= -1) {
-//            game.setGameStatus(FINISHED);
-//
-//            if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-//                player.setScore((player.getScore() + 1));
-//            }
-//            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
-//                AppUser user = userService.findByUsername(p.getUsername());
-////                TODO: Update game score
-//                user.setScore(user.getScore() + p.getScore());
-//                user.setGamesPlayed(user.getGamesPlayed() + 1);
-//                userService.updateUserData(user);
-//            }
-//
-//            return GameRound
-//                    .builder()
-//                    .gameId(game.getGameId())
-//                    .player1(game.getPlayer1())
-//                    .player2(game.getPlayer2())
-//                    .script("finished")
-//                    .build();
-//        }
-//
-//        Problem currentProblem = gameProblems.get(currentRound);
-//        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
-//        problemService.save(currentProblem);
-//
-//
-//
-//        if (gamePlay.getUsername() == null) {
-//            game.setRound(game.getRound() - 1);
-//            return gameRound;
-//        }
-//
-//        if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-//            player.setScore((player.getScore() + 1));
-//        }
-//
-//        if (game.getGameStatus().equals(FINISHED)) {
-//            throw new InvalidGameException("Game is already finished");
-//        }
-//

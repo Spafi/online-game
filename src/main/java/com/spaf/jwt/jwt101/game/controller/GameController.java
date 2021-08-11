@@ -39,6 +39,7 @@ public class GameController {
         log.info("connect request: {}", request);
 
         GameRound waitingRound = gameService.connectToGame(request);
+
         Timer timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
