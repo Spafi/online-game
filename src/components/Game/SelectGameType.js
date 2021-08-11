@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import Page from '../common/Page.js';
+import ConnectedPage from './ConnectedPage.js';
 import CreateGame from './CreateGame.js';
+import FinishedGame from './FinishedGame.js';
 import GameChoiceButton from './GameChoiceButton.js';
 import GamePage from './GamePage.js';
 import JoinGame from './JoinGame.js';
@@ -17,12 +19,14 @@ const SelectGameType = () => {
 
 	const gameStatus = {
 		WAIT: <WaitPage />,
+		CONNECTED: <ConnectedPage />,
 		IN_PROGRESS: <GamePage />,
-		FINISHED: <div>over</div>,
+		FINISHED: <FinishedGame/>,
 	};
 
 	const gameType = {
 		CREATE: (
+			// <FinishedGame />
 			<CreateGame changeGameMode={selectGameMode} gameStatus={gameStatus} />
 		),
 		JOIN: <JoinGame changeGameMode={selectGameMode} gameStatus={gameStatus} />,
@@ -34,7 +38,7 @@ const SelectGameType = () => {
 	return (
 		<Page noPadding={true}>
 			{!gameMode && (
-				<div className='flex h-full w-full px-36 justify-evenly items-center relative gap-12 overflow-hidden text-6xl font-bold'>
+				<div className='flex h-full w-full px-36 justify-evenly items-center relative gap-12 rounded-lg overflow-hidden text-6xl font-bold'>
 					<GameChoiceButton
 						content={'Create'}
 						classes={'hover:bg-purple-600 btn'}

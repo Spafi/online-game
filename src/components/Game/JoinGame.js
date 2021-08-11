@@ -12,6 +12,7 @@ import React, { useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 
+
 const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	const [gameId, setGameId] = useState('');
 	const [password, setPassword] = useState('');
@@ -27,13 +28,13 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 		stompClient.connect({}, function (frame) {
 			console.log('Connected: ' + frame);
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
-
 				const round = JSON.parse(game.body);
 				if (round.roundStatus === 'CONNECTED') {
-					changeGameMode(gameStatus.IN_PROGRESS);
+					changeGameMode(gameStatus.CONNECTED);
 					setGame(round);
 				}
 				if (round.roundStatus === 'START_GAME') {
+					changeGameMode(gameStatus.IN_PROGRESS);
 					axios
 						.post(gamePlayUrl, { gameId })
 						.then((response) => {})
@@ -47,11 +48,13 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 
 				if (round.roundStatus === 'FINISH_GAME') {
 					setGame(round);
+					changeGameMode(gameStatus.FINISHED);
+					disconnect()
 				}
-
 			});
 		});
 	}
+
 
 	const joinGame = async () => {
 		hideError(gameIdRef);
@@ -62,18 +65,29 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 			gameId,
 			password,
 		};
-		connect(gameId);
+		changeGameMode(gameStatus.CONNECTED);
 		await axios
 			.post(joinGameUrl, joinGameRequest)
-			.then((response) => {})
+			.then((response) => {
+				const gameId = response.data.gameId;
+				connect(gameId);
+			})
 			.catch((error) => {
 				const message = error.response.data.message;
 				message.includes('Game') && showError(gameIdRef, message);
 				message.includes('Wrong Password') && showError(passwordRef, message);
 			});
 	};
+
+	function disconnect() {
+		if (stompClient !== null) {
+			stompClient.disconnect();
+			console.log("disconected");
+		}
+	}
 	const passwordRef = useRef();
 	const gameIdRef = useRef();
+
 	const showError = (ref, e) => {
 		const passwordContainer = ref.current;
 		passwordContainer.firstChild.classList.remove('border-transparent');

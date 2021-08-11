@@ -14,7 +14,8 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const setGame = useUpdateGame();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
-	const [roundTimeLimit, setRoundTimeLimit] = useState(9);
+	// eslint-disable-next-line
+	const [roundTimeLimit, setRoundTimeLimit] = useState(10);
 	const [password, setPassword] = useState(null);
 	const sliderRef = useRef();
 	const languages = [
@@ -68,14 +69,18 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			stompClient.subscribe(gameProgressUrl + '/' + gameId, function (game) {
 				const round = JSON.parse(game.body);
 				if (round.roundStatus === 'CONNECTED') {
-					changeGameMode(gameStatus.IN_PROGRESS);
+					changeGameMode(gameStatus.CONNECTED);
 					setGame(round);
+				}
+				if (round.roundStatus === 'START_GAME') {
+					changeGameMode(gameStatus.IN_PROGRESS);
 				}
 				if (round.roundStatus === 'NEW') setGame(round);
 
 				if (round.roundStatus === 'FINISH_GAME') {
-					
 					setGame(round);
+					changeGameMode(gameStatus.FINISHED);
+					disconnect();
 				}
 			});
 		});
@@ -104,6 +109,11 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 				console.log(error);
 			});
 	};
+	function disconnect() {
+		if (stompClient !== null) {
+			stompClient.disconnect();
+		}
+	}
 
 	return (
 		<div
