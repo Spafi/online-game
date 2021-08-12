@@ -8,7 +8,6 @@ import Main from './components/Main.js';
 // import Helper from './components/Helper.js';
 // import GamePage from './components/Game/GamePage.js';
 import SelectGameType from './components/Game/SelectGameType.js';
-import LoginContainer from './components/Login/LoginContainer.js';
 import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
 import Leaderboard from './components/Game/Leaderboard';
