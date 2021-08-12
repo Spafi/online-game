@@ -14,4 +14,6 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID>, PagingA
 
 
     List<Problem> findByLanguageIn(List<String> languages);
+
+    List<Problem> findByByUser(String byUser);
 }

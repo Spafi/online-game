@@ -1,6 +1,7 @@
 package com.spaf.jwt.jwt101.game.problem.service;
 
 import com.spaf.jwt.jwt101.game.problem.model.Problem;
+import com.spaf.jwt.jwt101.game.problem.model.ProblemStatistics;
 import com.spaf.jwt.jwt101.game.problem.repository.ProblemRepository;
 import com.spaf.jwt.jwt101.user.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,10 @@ public class ProblemService {
             randomProblems.add(problems.get(i));
         }
         return randomProblems;
+    }
+
+    public List<Problem> findByUsername(String username) {
+        return problemRepository.findByByUser(username);
     }
 
 //    private List<Problem> getRandomProblems(List<Problem> problems, int count)
