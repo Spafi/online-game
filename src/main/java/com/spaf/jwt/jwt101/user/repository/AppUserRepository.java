@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,4 +25,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
     int enableAppUser(String email);
 
     Optional<AppUser> findByUsername(String username);
+
 }

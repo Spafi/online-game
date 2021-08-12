@@ -1,17 +1,26 @@
 package com.spaf.jwt.jwt101.user.services;
 
+import com.spaf.jwt.jwt101.game.models.Player;
 import com.spaf.jwt.jwt101.registration.token.ConfirmationToken;
 import com.spaf.jwt.jwt101.registration.token.ConfirmationTokenService;
 import com.spaf.jwt.jwt101.user.models.AppUser;
+import com.spaf.jwt.jwt101.user.models.PlayerData;
 import com.spaf.jwt.jwt101.user.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,7 +77,7 @@ public class AppUserService implements UserDetailsService {
         return token;
     }
 
-//    TODO: ADD Null check
+    //    TODO: ADD Null check
     public AppUser findById(UUID userId) {
         return userRepository.findById(userId).get();
     }
@@ -80,7 +89,27 @@ public class AppUserService implements UserDetailsService {
     public void updateUserData(AppUser user) {
         userRepository.save(user);
     }
+
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }
+
+    public List<PlayerData> getLeaderboard(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<AppUser> pagedResult = userRepository.findAll(paging);
+        List<PlayerData> convertedResults = new ArrayList<>();
+        if (pagedResult.hasContent()) {
+            pagedResult.forEach(user -> {
+                PlayerData playerData = PlayerData
+                        .builder()
+                        .username(user.getChosenUsername())
+                        .score(user.getScore())
+                        .gamesPlayed(user.getGamesPlayed())
+                        .build();
+                convertedResults.add(playerData);
+            });
+        }
+        return convertedResults;
+    }
+
 }
