@@ -55,7 +55,7 @@ const WaitPage = () => {
 								: 'nm-concave-gray-200-xs '
 						} rot`}>
 						{animationElementsNumber.map((el, index) => {
-							return <div className='w-7 h-7 bg-purple-600 el' key={index}></div>;
+							return <div className='w-5 h-5 bg-purple-600 el' key={index}></div>;
 						})}
 					</div>
 				</div>

@@ -1,14 +1,19 @@
 import { useTheme } from '../ThemeContext';
 import Input from './Input';
 import Button from '../common/Button';
-import RegisterSuccess from './RegisterSuccess';
+import RegisterSuccess from '../common/PopupMessage';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { registerUrl, loginUrl } from '../../BASE_URL';
 import jwt from 'jwt-decode';
 import { ReactComponent as Logo } from '../../icons/logo.svg';
 
-const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
+const LoginContainer = ({
+	updateUser,
+	updateUsername,
+	updateUserBgColor,
+	updateCurrentPage,
+}) => {
 	const darkTheme = useTheme();
 	const [registered, setRegistered] = useState(true);
 	// eslint-disable-next-line
@@ -59,6 +64,7 @@ const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 				localStorage.setItem('user', JSON.stringify(response.data));
 				localStorage.setItem('username', username);
 				localStorage.setItem('userBgColor', randomHexColor);
+				updateCurrentPage('main');
 			})
 			.catch((error) => {
 				error.response && showError(inputRef, error.response.data.message);
@@ -115,16 +121,19 @@ const LoginContainer = ({ updateUser, updateUsername, updateUserBgColor }) => {
 
 	return (
 		<div className='p-12 w-full h-screen flex items-center justify-center'>
-			<RegisterSuccess isActive={successfulRegister} closeModal={closeModal} />
+			<RegisterSuccess
+				isActive={successfulRegister}
+				closeModal={closeModal}
+				content={'Success! Check your E-mail to activate your account!'}
+			/>
 			<div
 				className={`${
 					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
 				}
         w-full max-w-102 h-5/6 rounded-lg flex flex-col items-center gap-8 pt-12`}>
 				<div
-					className={`
-						 animate-pulse rounded-2xl px-4 w-72 h-24 flex items-center justify-center`}>
-					<Logo />
+					className={`animate-pulse rounded-2xl px-4 w-72 h-24 flex items-center justify-center`}>
+					<Logo fill={`${darkTheme === true ? '#fff ' : '#000 '}`} />
 				</div>
 
 				{!registered && (

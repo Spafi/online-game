@@ -1,26 +1,36 @@
+import React from 'react';
+import { ReactComponent as Logo } from '../../icons/logo.svg';
+import LoginContainer from '../Login/LoginContainer';
+import { useTheme } from '../ThemeContext';
 
-// const Landing = () => {
-// 	const [username, setUsername] = useState('');
-// 	const [email, setEmail] = useState('');
-// 	const [password, setPassword] = useState('');
-// 	// eslint-disable-next-line
-// 	const [user, setUser] = useState();
-// 	return (
-// 		<div className='p-12 w-full h-screen flex items-center justify-center'>
-// 			{!user && (
-// 				<LoginContainer
-// 					user={user}
-// 					username={username}
-// 					email={email}
-// 					password={password}
-// 					setUsername={setUsername}
-// 					setUser={setUser}
-// 					setEmail={setEmail}
-// 					setPassword={setPassword}
-// 				/>
-// 			)}
-// 		</div>
-// 	);
-// };
+const Landing = (props) => {
+	const darkTheme = useTheme();
+	return (
+		<div className='h-screen relative w-screen'>
+			<div className='grid grid-cols-2 h-full'>
+				<div className='flex flex-col items-center justify-center gap-y-6'>
+					<Logo
+						className='w-1/3'
+						fill={`${darkTheme === true ? '#fff ' : '#000 '}`}
+					/>
+					<div className=' w-1/3 text-2xl'>
+						<p>
+							Improve your coding skills, attention to details and reaction time by
+							challenging your friends to a 1v1 coding quiz.{' '}
+						</p>
+					</div>
+				</div>
+				<div className='flex items-center justify-center'>
+					<LoginContainer
+						updateUser={props.updateUser}
+						updateUsername={props.updateUsername}
+						updateUserBgColor={props.updateUserBgColor}
+						updateCurrentPage={props.updateCurrentPage}
+					/>
+				</div>
+			</div>
+		</div>
+	);
+};
 
-// export default Landing;
+export default Landing;
