@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping("/leaderboard")
     public ResponseEntity<List<PlayerData>> getLeaderboard(
             @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "2") Integer pageSize,
+            @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "score") String sortBy) {
         List<PlayerData> players = userService.getLeaderboard(pageNo, pageSize, sortBy);
         return ResponseEntity.ok(players);

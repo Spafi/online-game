@@ -1,6 +1,6 @@
 package com.spaf.jwt.jwt101.user.services;
 
-import com.spaf.jwt.jwt101.game.models.Player;
+
 import com.spaf.jwt.jwt101.registration.token.ConfirmationToken;
 import com.spaf.jwt.jwt101.registration.token.ConfirmationTokenService;
 import com.spaf.jwt.jwt101.user.models.AppUser;
