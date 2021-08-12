@@ -7,6 +7,7 @@ import Input from '../Login/Input';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import { useGame, useUpdateGame } from './GameContext';
+import languages from '../../LANGUAGES';
 
 const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const darkTheme = useTheme();
@@ -18,32 +19,6 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const [roundTimeLimit, setRoundTimeLimit] = useState(10);
 	const [password, setPassword] = useState(null);
 	const sliderRef = useRef();
-	const languages = [
-		{
-			name: 'Java',
-			codeHighlight: 'java',
-			compilerApiCode: 'java',
-			versionIndex: 3,
-		},
-		{
-			name: 'Python 3',
-			codeHighlight: 'python',
-			compilerApiCode: 'python3',
-			versionIndex: 3,
-		},
-		{
-			name: 'Javascript',
-			codeHighlight: 'javascript',
-			compilerApiCode: 'nodejs',
-			versionIndex: 3,
-		},
-		{
-			name: 'Bash Shell',
-			codeHighlight: 'bash',
-			compilerApiCode: 'bash',
-			versionIndex: 2,
-		},
-	];
 
 	const updateRounds = (rounds) => setRounds(rounds.target.value);
 
