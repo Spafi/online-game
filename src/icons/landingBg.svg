@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 978.85 1081.33">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="489.42" y1="1080.83" x2="489.42" y2="0.5"
+      gradientTransform="matrix(1, 0, 0, -1, 0, 1081.33)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7c3aed" />
+      <stop offset="0.19" stop-color="#8c37cc" />
+      <stop offset="0.62" stop-color="#b52e78" />
+      <stop offset="1" stop-color="#dc2626" />
+    </linearGradient>
+  </defs>
+  <title>Asset 1</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <path class="cls-1"
+        d="M187.35,1080.81s205.48,4.6,142-132c-51.1-109.94-347.91-368.82-311-483,57-176.41,173-195,121-281s-100-62-134-127,122-57,122-57h851v1080Z" />
+    </g>
+  </g>
+</svg>

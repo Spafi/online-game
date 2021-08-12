@@ -11,13 +11,23 @@ import SelectGameType from './components/Game/SelectGameType.js';
 import LoginContainer from './components/Login/LoginContainer.js';
 import UserPage from './components/User/UserPage';
 import SubmitProblem from './components/User/SubmitProblem';
+import Leaderboard from './components/Game/Leaderboard';
+import Landing from './components/LandingPage/Landing';
+// import SessionExpiredMessage from './components/common/PopupMessage'
 
 function App() {
 	// eslint-disable-next-line
 	const [user, setUser] = useState();
 	const [username, setUsername] = useState('');
 	const [userBgColor, setUserBgColor] = useState('');
-	const [currentPage, setCurrentPage] = useState('main');
+	const [currentPage, setCurrentPage] = useState();
+	const [leaderboardPage, setLeaderboardPage] = useState(0);
+
+	const changeLeaderboardPage = (direction) => {
+		if (direction === '-' && leaderboardPage > 0)
+			setLeaderboardPage((prevPage) => prevPage - 1);
+		if (direction === '+') setLeaderboardPage((prevPage) => prevPage + 1);
+	};
 
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem('user');
@@ -29,7 +39,7 @@ function App() {
 			setUsername(username);
 			setUserBgColor(userBgColor);
 		}
-	}, []);
+	}, [username]);
 
 	const isTokenExpired = () => {
 		if (localStorage.length > 0) {
@@ -43,7 +53,9 @@ function App() {
 		}
 	};
 
-	if (isTokenExpired()) localStorage.clear();
+	if (isTokenExpired()) {
+		localStorage.clear();
+	}
 
 	const updateUser = (user) => {
 		!user && localStorage.clear();
@@ -59,28 +71,33 @@ function App() {
 	const switchPages = (page) => {
 		switch (page) {
 			case 'main':
-				return <UserPage />;
-				case 'play':
-					return <SelectGameType />;
-					// return <div className='ml-96 pt-12 relative'><GamePage/></div>
+				return <UserPage username={username} />;
+			case 'play':
+				return <SelectGameType />;
 			case 'submitProblem':
 				return <SubmitProblem />;
 			case 'user':
-				return <UserPage />;
+				return <UserPage username={username} />;
+			case 'leaderboard':
+				return (
+					<Leaderboard page={leaderboardPage} changePage={changeLeaderboardPage} />
+				);
 			default:
 				break;
 		}
 	};
 	return (
 		<ThemeProvider>
-			<div className='App subpixel-antialiased'>
+			<div className='App subpixel-antialiased '>
 				<Main>
+					{/* <SessionExpiredMessage content={"Your session has expired!"} isActive={true}/> */}
 					{/* <Helper /> */}
 					{!user && (
-						<LoginContainer
+						<Landing
 							updateUser={updateUser}
 							updateUsername={updateUsername}
 							updateUserBgColor={updateUserBgColor}
+							updateCurrentPage={updateCurrentPage}
 						/>
 					)}
 					{user && (

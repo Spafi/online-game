@@ -12,7 +12,6 @@ import React, { useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 
-
 const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	const [gameId, setGameId] = useState('');
 	const [password, setPassword] = useState('');
@@ -49,12 +48,11 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 				if (round.roundStatus === 'FINISH_GAME') {
 					setGame(round);
 					changeGameMode(gameStatus.FINISHED);
-					disconnect()
+					disconnect();
 				}
 			});
 		});
 	}
-
 
 	const joinGame = async () => {
 		hideError(gameIdRef);
@@ -65,15 +63,17 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 			gameId,
 			password,
 		};
-		changeGameMode(gameStatus.CONNECTED);
+
 		await axios
 			.post(joinGameUrl, joinGameRequest)
 			.then((response) => {
 				const gameId = response.data.gameId;
 				connect(gameId);
+				changeGameMode(gameStatus.CONNECTED);
 			})
 			.catch((error) => {
 				const message = error.response.data.message;
+				console.log(message);
 				message.includes('Game') && showError(gameIdRef, message);
 				message.includes('Wrong Password') && showError(passwordRef, message);
 			});
@@ -82,7 +82,7 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	function disconnect() {
 		if (stompClient !== null) {
 			stompClient.disconnect();
-			console.log("disconected");
+			console.log('disconected');
 		}
 	}
 	const passwordRef = useRef();
@@ -92,8 +92,7 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 		const passwordContainer = ref.current;
 		passwordContainer.firstChild.classList.remove('border-transparent');
 		passwordContainer.firstChild.classList.add('border-red-500');
-		passwordContainer.lastChild.textContent =
-			e === 'Access Denied' ? 'You need to activate your account first!' : e;
+		passwordContainer.lastChild.textContent = e;
 	};
 
 	const hideError = (ref) => {
@@ -119,6 +118,7 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 							value={gameId}
 							onChange={({ target }) => setGameId(target.value)}
 						/>
+						<div className='absolute -bottom-6 text-sm left-4 text-red-700'></div>
 					</div>
 				</div>
 				<div>

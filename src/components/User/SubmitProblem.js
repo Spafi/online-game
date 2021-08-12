@@ -7,6 +7,8 @@ import axios from 'axios';
 import { testCodeUrl, submitCodeUrl } from '../../BASE_URL';
 import { useTheme } from '../ThemeContext';
 import Input from '../Login/Input.js';
+import choices from '../../LANGUAGES'
+
 const SubmitProblem = () => {
 	const [script, setScript] = useState('');
 	const [output, setOutput] = useState('');
@@ -18,32 +20,6 @@ const SubmitProblem = () => {
 	});
 	const darkTheme = useTheme();
 	const decoysRef = useRef();
-	const choices = [
-		{
-			name: 'Java',
-			codeHighlight: 'java',
-			compilerApiCode: 'java',
-			versionIndex: 3,
-		},
-		{
-			name: 'Python 3',
-			codeHighlight: 'python',
-			compilerApiCode: 'python3',
-			versionIndex: 3,
-		},
-		{
-			name: 'Javascript',
-			codeHighlight: 'javascript',
-			compilerApiCode: 'nodejs',
-			versionIndex: 3,
-		},
-		{
-			name: 'Bash Shell',
-			codeHighlight: 'sh',
-			compilerApiCode: 'bash',
-			versionIndex: 2,
-		},
-	];
 	const [language, setLanguage] = useState(choices[0]);
 	const updateCode = (code) => setScript(code);
 	const updateOutput = (output) => setOutput(output);

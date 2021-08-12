@@ -26,7 +26,6 @@ const SelectGameType = () => {
 
 	const gameType = {
 		CREATE: (
-			// <FinishedGame />
 			<CreateGame changeGameMode={selectGameMode} gameStatus={gameStatus} />
 		),
 		JOIN: <JoinGame changeGameMode={selectGameMode} gameStatus={gameStatus} />,

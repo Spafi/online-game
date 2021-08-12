@@ -2,10 +2,8 @@ import React, { Fragment } from 'react';
 import { Transition } from '@headlessui/react';
 import { useTheme } from '../ThemeContext';
 
-const RegisterSuccess = ({ isActive, closeModal }) => {
+const RegisterSuccess = ({ isActive, closeModal, content }) => {
 	const darkTheme = useTheme();
-
-  
 
 	return (
 		<Transition appear show={ isActive}>
@@ -23,7 +21,7 @@ const RegisterSuccess = ({ isActive, closeModal }) => {
 							darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
 						} absolute right-12 top-12 p-4 pt-2 ml-12  rounded-xl flex text-md  `}>
 						<p>
-							Success! Check your E-mail to activate your account!{' '}
+							{content}
 							<span className='text-3xl cursor-pointer pl-2' onClick={closeModal}>
 								&times;
 							</span>

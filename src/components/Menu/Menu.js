@@ -24,7 +24,10 @@ const Menu = (props) => {
 				} items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
-					<Logo className=' w-3/4' />
+					<Logo
+						className=' w-3/4'
+						fill={`${darkTheme === true ? '#fff ' : '#000 '}`}
+					/>
 					<div
 						className={`${
 							darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'

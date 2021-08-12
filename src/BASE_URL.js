@@ -19,3 +19,7 @@ export const gamePlayUrl = BASE_URL + '/api/v1/game/gameplay';
 export const joinGameUrl = BASE_URL + '/api/v1/game/connect';
 
 export const gameProgressUrl = '/topic/game-progress';
+
+export const playerDataUrl = BASE_URL + '/api/v1/user';
+
+export const leaderboardUrl = BASE_URL + '/api/v1/user/leaderboard';

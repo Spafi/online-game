@@ -3,11 +3,15 @@ import ChoicesContainer from './ChoicesContainer';
 import ProgressBar from './ProgressBar';
 import { useTheme } from '../ThemeContext';
 import { useGame } from './GameContext';
+import anime from 'animejs';
 
 const GamePage = () => {
 	const darkTheme = useTheme();
 	const game = useGame();
-
+anime({
+	targets: '.score',
+	scale: ['50%', '100%'],
+});
 	return (
 		<div
 			className={`${
@@ -18,11 +22,11 @@ const GamePage = () => {
 			<div className='w-full space-y-8'>
 				{/* SCORE CONTAINER */}
 				<div className='h-10 flex items-center space-x-6 text-5xl font-medium'>
-					<div className=' min-w-24'>{game.player1.score}</div>
+					<div className=' min-w-24 score'>{game.player1.score}</div>
 					<div className=' flex-grow items-center'>
 						<ProgressBar progress={0} />
 					</div>
-					<div className=' min-w-24 text-right'>{game.player2.score}</div>
+					<div className=' min-w-24 text-right score'>{game.player2.score}</div>
 				</div>
 				{/* PLAYERS CONTAINER */}
 				<div className='h-max pb-4 grid grid-cols-7 items-center justify-center text-2xl'>
