@@ -4,14 +4,14 @@ import LoginContainer from '../Login/LoginContainer';
 import { useTheme } from '../ThemeContext';
 
 const Landing = (props) => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	return (
 		<div className='h-screen relative w-screen'>
 			<div className='grid grid-cols-2 h-full'>
 				<div className='flex flex-col items-center justify-center gap-y-6'>
 					<Logo
 						className='w-1/3'
-						fill={`${darkTheme === true ? '#fff ' : '#000 '}`}
+						fill={`${theme.logoColor}`}
 					/>
 					<div className=' w-1/3 text-2xl'>
 						<p>

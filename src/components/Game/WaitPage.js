@@ -5,7 +5,7 @@ import { useTheme } from '../ThemeContext';
 
 const WaitPage = () => {
 	const game = useGame();
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const gameIdRef = useRef();
 	const rows = 8;
 	const cols = 8;
@@ -44,16 +44,10 @@ const WaitPage = () => {
 		<div
 			className={` min-w-md w-full max-w-6xl h-full rounded-lg p-12 flex flex-col justify-between gap-y-6 relative`}>
 			<div className=' staggering-grid-demo h-full w-full flex flex-col justify-around'>
-				<h2 className='w-full text-center text-3xl'>
-					Waiting for opponent
-				</h2>
+				<h2 className='w-full text-center text-3xl'>Waiting for opponent</h2>
 				<div className='w-full items-center flex justify-center'>
 					<div
-						className={`grid grid-cols-8 w-max overflow-hidden rounded-full ${
-							darkTheme === true
-								? 'nm-concave-gray-neu-xs '
-								: 'nm-concave-gray-200-xs '
-						} rot`}>
+						className={`grid grid-cols-8 w-max overflow-hidden rounded-full ${theme.concaveBackgroundColorXs} rot`}>
 						{animationElementsNumber.map((el, index) => {
 							return <div className='w-5 h-5 bg-purple-600 el' key={index}></div>;
 						})}
@@ -63,17 +57,13 @@ const WaitPage = () => {
 					<div ref={gameIdRef}>
 						<h2 className='pb-4'>Game ID:</h2>
 						<input
-							className={`${
-								darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-							} w-full text-center rounded-md h-max p-4 outline-none cursor-pointer text-xl border border-transparent`}
+							className={`${theme.insetBackgroundColorXs} w-full text-center rounded-md h-max p-4 outline-none cursor-pointer text-xl border border-transparent`}
 							value={game.gameId}
 							readOnly={true}
 							onClick={(e) => copyGameId(e)}
 						/>
 						<span
-							className={`hidden absolute text-sm top-0 px-2 py-1 rounded-xl ${
-								darkTheme === true ? 'nm-flat-gray-neu-xs ' : 'nm-flat-gray-200-xs '
-							}`}>
+							className={`hidden absolute text-sm top-0 px-2 py-1 rounded-xl ${theme.flatBackgroundColorXs}`}>
 							Copied!
 						</span>
 					</div>

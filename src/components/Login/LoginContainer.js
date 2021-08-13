@@ -14,7 +14,7 @@ const LoginContainer = ({
 	updateUserBgColor,
 	updateCurrentPage,
 }) => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const [registered, setRegistered] = useState(true);
 	// eslint-disable-next-line
 	const [successfulRegister, setSuccessfulRegister] = useState(false);
@@ -127,13 +127,11 @@ const LoginContainer = ({
 				content={'Success! Check your E-mail to activate your account!'}
 			/>
 			<div
-				className={`${
-					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
-				}
+				className={`${theme.flatBackgroundColorSm}
         w-full max-w-102 h-5/6 rounded-lg flex flex-col items-center gap-8 pt-12`}>
 				<div
 					className={`animate-pulse rounded-2xl px-4 w-72 h-24 flex items-center justify-center`}>
-					<Logo fill={`${darkTheme === true ? '#fff ' : '#000 '}`} />
+					<Logo fill={`${theme.logoColor}`} />
 				</div>
 
 				{!registered && (

@@ -6,7 +6,7 @@ import SettingsPage from './SettingsPage.js';
 import { ReactComponent as Settings } from '../../icons/settings.svg';
 import { ReactComponent as Logo } from '../../icons/logo.svg';
 const Menu = (props) => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 
 	const [showSettings, setShowSettings] = useState(false);
 
@@ -19,19 +19,12 @@ const Menu = (props) => {
 		<div className={`fixed h-screen w-96 flex z-20 p-12 `}>
 			{/* MAIN MENU CONTAINER */}
 			<div
-				className={`${
-					darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
-				} items-center justify-center h-full w-full rounded-lg`}>
+				className={`${theme.flatBackgroundColorSm} items-center justify-center h-full w-full rounded-lg`}>
 				{/* IMAGE & USERNAME CONTAINER */}
 				<div className='flex flex-col items-center pt-12 space-y-6'>
-					<Logo
-						className=' w-3/4'
-						fill={`${darkTheme === true ? '#fff ' : '#000 '}`}
-					/>
+					<Logo className=' w-3/4' fill={`${theme.logoColor}`} />
 					<div
-						className={`${
-							darkTheme === true ? 'nm-convex-gray-neu-lg' : 'nm-convex-gray-200-lg'
-						} rounded-full p-px w-24 h-24 flex items-center justify-center text-4xl`}>
+						className={`${theme.convexBackgroundColorLg} rounded-full p-px w-24 h-24 flex items-center justify-center text-4xl`}>
 						<div
 							className={` rounded-full p-px w-24 h-24 flex items-center justify-center text-4xl`}
 							style={{ backgroundColor: usernameBgColor }}>

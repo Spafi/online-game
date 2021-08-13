@@ -3,10 +3,10 @@ import { Transition } from '@headlessui/react';
 import { useTheme } from '../ThemeContext';
 
 const RegisterSuccess = ({ isActive, closeModal, content }) => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 
 	return (
-		<Transition appear show={ isActive}>
+		<Transition appear show={isActive}>
 			<Transition.Child
 				as={Fragment}
 				enter='ease-out duration-300'
@@ -17,9 +17,7 @@ const RegisterSuccess = ({ isActive, closeModal, content }) => {
 				leaveTo='opacity-0'>
 				<div>
 					<div
-						className={`${
-							darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
-						} absolute right-12 top-12 p-4 pt-2 ml-12  rounded-xl flex text-md  `}>
+						className={`${theme.flatBackgroundColorSm} absolute right-12 top-12 p-4 pt-2 ml-12  rounded-xl flex text-md  `}>
 						<p>
 							{content}
 							<span className='text-3xl cursor-pointer pl-2' onClick={closeModal}>

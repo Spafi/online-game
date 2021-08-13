@@ -6,7 +6,7 @@ import { useGame } from './GameContext';
 import anime from 'animejs';
 
 const GamePage = () => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const game = useGame();
 anime({
 	targets: '.score',
@@ -14,9 +14,7 @@ anime({
 });
 	return (
 		<div
-			className={`${
-				darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
-			} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col relative`}>
+			className={`${theme.flatBackgroundColorSm} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col relative`}>
 			{/* MAIN GAME CONTAINER */}
 			{/* SCORE & PLAYERS CONTAINER*/}
 			<div className='w-full space-y-8'>

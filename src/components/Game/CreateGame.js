@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Button from '../common/Button';
-import { useTheme } from '../ThemeContext';
-import { useTheme2, useToggleTheme2 } from '../ThemeContext2js.js';
+
+import { useTheme } from '../ThemeContext.js';
 import axios from 'axios';
 import { startGameUrl, webSocketUrl, gameProgressUrl } from '../../BASE_URL';
 import Input from '../Login/Input';
@@ -11,11 +11,10 @@ import { useGame, useUpdateGame } from './GameContext';
 import languages from '../../LANGUAGES';
 
 const CreateGame = ({ children, changeGameMode, gameStatus }) => {
-	const darkTheme = useTheme();
-	const theme = useTheme2();
+	const theme = useTheme();
 	const game = useGame();
 	const setGame = useUpdateGame();
-	const t2 = useToggleTheme2();
+
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
 	// eslint-disable-next-line
@@ -95,16 +94,12 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 
 	return (
 		<div
-			className={`${
-				darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
-			} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col justify-between gap-y-6 relative`}>
+			className={`${theme.flatBackgroundColorSm} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col justify-between gap-y-6 relative`}>
 			{children}
 			<div>
 				<div className='pb-4'>Choose game languages:</div>
 				<div
-					className={`${
-						darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-					} w-full grid grid-cols-4 gap-4 rounded-md h-max p-4 place-items-center`}>
+					className={`${theme.insetBackgroundColorXs} w-full grid grid-cols-4 gap-4 rounded-md h-max p-4 place-items-center`}>
 					{languages.map((language) => {
 						return (
 							<Button
@@ -120,10 +115,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 			</div>
 			<div>
 				<div className='pb-4'> Choose number of rounds:</div>
-				<div
-					className={`${
-						darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-					} w-full rounded-md h-max `}>
+				<div className={`${theme.insetBackgroundColorXs} w-full rounded-md h-max `}>
 					<div className='w-full pt-4 px-4 flex flex-col items-center'>
 						<input
 							ref={sliderRef}
@@ -144,7 +136,7 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 					Password (Optional) -{' '}
 					<span
 						className={`${
-							darkTheme === true ? 'text-yellow-400 ' : 'text-yellow-900 '
+							theme.dark === true ? 'text-yellow-400 ' : 'text-yellow-900 '
 						}`}>
 						The game won't appear in random games
 					</span>
@@ -163,8 +155,6 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 					handleClick={() => createGame()}
 					classes={'text-xl text-green-600 font-bold'}></Button>
 			</div>
-			<div className={`${theme.insetBackgroundColor} ${theme.textColor}`}>w</div>
-			<button onClick={()=> t2()}>d</button>
 		</div>
 	);
 };

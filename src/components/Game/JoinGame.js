@@ -15,7 +15,7 @@ import Stomp from 'stompjs';
 const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	const [gameId, setGameId] = useState('');
 	const [password, setPassword] = useState('');
-	const darkTheme = useTheme();
+	const theme = useTheme();
 
 	const setGame = useUpdateGame();
 
@@ -103,35 +103,31 @@ const JoinGame = ({ children, changeGameMode, gameStatus }) => {
 	};
 	return (
 		<div
-			className={`${
-				darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
-			} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col justify-between gap-y-6 relative items-center text-center`}>
+			className={`${theme.flatBackgroundColorSm} min-w-md w-full max-w-6xl h-full rounded-lg  p-12 flex flex-col justify-between gap-y-6 relative items-center text-center`}>
 			{children}
 			<div className='flex gap-16 mt-44 flex-col'>
 				<div>
 					<h2 className='pb-4 text-xl'>Game ID:</h2>
 					<div ref={gameIdRef} className='relative'>
 						<input
-							className={`${
-								darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-							} w-full text-center rounded-md h-max p-4 outline-none text-xl border border-transparent`}
+							className={`${theme.insetBackgroundColorXs} w-full text-center rounded-md h-max p-4 outline-none text-xl border border-transparent`}
 							value={gameId}
 							onChange={({ target }) => setGameId(target.value)}
 						/>
-						<div className='absolute -bottom-6 text-sm left-4 text-red-700'></div>
+						<div
+							className={`absolute -bottom-6 text-sm left-4 ${theme.errorTextColor}`}></div>
 					</div>
 				</div>
 				<div>
 					<h2 className='pb-4 text-xl'>Password:</h2>
 					<div ref={passwordRef} className='relative'>
 						<input
-							className={`${
-								darkTheme === true ? 'nm-inset-gray-neu-xs ' : 'nm-inset-gray-200-xs '
-							} w-full text-center rounded-md h-max p-4 outline-none text-xl border border-transparent`}
+							className={`${theme.insetBackgroundColorXs} w-full text-center rounded-md h-max p-4 outline-none text-xl border border-transparent`}
 							value={password}
 							onChange={({ target }) => setPassword(target.value)}
 						/>
-						<div className='absolute -bottom-6 text-sm left-4 text-red-700'></div>
+						<div
+							className={`absolute -bottom-6 text-sm left-4 ${theme.errorTextColor}`}></div>
 					</div>
 				</div>
 			</div>

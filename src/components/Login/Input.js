@@ -3,7 +3,7 @@ import React from 'react';
 
 const Input = React.forwardRef(
 	({ placeholder, classes, value, onChange, type, onBlur, containerClasses }, ref) => {
-		const darkTheme = useTheme();
+		const theme = useTheme();
 		return (
 			<div ref={ref} className={containerClasses ?? 'w-4/6 relative'}>
 				<input
@@ -11,12 +11,11 @@ const Input = React.forwardRef(
 					type={type ?? 'text'}
 					value={value ?? ''}
 					onChange={onChange}
-					className={`${
-						darkTheme === true ? 'nm-inset-gray-neu-sm' : 'nm-inset-gray-200-sm'
-					} rounded-3xl placeholder-gray-400 py-2 px-4 outline-none w-full border border-transparent ${classes}`}
+					className={`${theme.insetBackgroundColorSm} rounded-3xl placeholder-gray-400 py-2 px-4 outline-none w-full border border-transparent ${classes}`}
 					placeholder={placeholder ?? 'Input'}
 				/>
-				<div className='absolute -bottom-5 text-sm text-red-700 left-4'></div>
+				<div
+					className={`absolute -bottom-5 text-sm ${theme.errorTextColor} left-4`}></div>
 			</div>
 		);
 	}

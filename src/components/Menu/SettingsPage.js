@@ -3,14 +3,12 @@ import { useTheme, useToggleTheme } from '../ThemeContext';
 import Button from '../common/Button';
 
 const SettingsPage = ({updateUser}) => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const toggleTheme = useToggleTheme();
 	const setUser = (user) => updateUser(user);
 	return (
 		<div
-			className={`${
-				darkTheme === true ? 'nm-flat-gray-neu-sm' : 'nm-flat-gray-200-sm'
-			} absolute ml-80 bottom-0 mb-12 min-h-sm min-w-sm w-full max-w-102 rounded-lg p-12 flex flex-col justify-between `}>
+			className={`${theme.flatBackgroundColorSm} absolute ml-80 bottom-0 mb-12 min-h-sm min-w-sm w-full max-w-102 rounded-lg p-12 flex flex-col justify-between `}>
 			<div className='w-full flex flex-row space-x-8 justify-left items-center'>
 				<p className='mr-10'>Theme</p>
 				<Button
@@ -20,7 +18,7 @@ const SettingsPage = ({updateUser}) => {
 					pX={'2'}
 					pY={'px'}
 					handleClick={() => toggleTheme()}
-					toggled={darkTheme}
+					toggled={theme.dark}
 				/>
 				<Button
 					content={'Light'}
@@ -29,7 +27,7 @@ const SettingsPage = ({updateUser}) => {
 					pX={'2'}
 					pY={'px'}
 					handleClick={() => toggleTheme()}
-					toggled={!darkTheme}
+					toggled={!theme.dark}
 				/>
 			</div>
 

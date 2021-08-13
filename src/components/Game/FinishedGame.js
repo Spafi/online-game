@@ -4,7 +4,7 @@ import anime from 'animejs';
 import React, { useState, useEffect } from 'react';
 
 const FinishedGame = () => {
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const game = useGame();
 	const [result, setResult] = useState('');
 	const player1 = game.player1;
@@ -28,9 +28,7 @@ const FinishedGame = () => {
 
 	return (
 		<div
-			className={`${
-				darkTheme === true ? 'nm-flat-gray-neu-sm ' : 'nm-flat-gray-200-sm '
-			} min-w-md w-full max-w-6xl h-full rounded-lg p-12 flex flex-col gap-24 relative items-center justify-center text-center overflow-hidden`}>
+			className={`${theme.flatBackgroundColorSm} min-w-md w-full max-w-6xl h-full rounded-lg p-12 flex flex-col gap-24 relative items-center justify-center text-center overflow-hidden`}>
 			<div className='transform text-6xl '>
 				{player1.username}: {player1.score} / {player2.username}: {player2.score}
 			</div>

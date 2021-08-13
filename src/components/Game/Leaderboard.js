@@ -9,7 +9,7 @@ import Button from '../common/Button';
 
 const Leaderboard = ({ page, changePage }) => {
 	const [leaderboard, setLeaderboard] = useState([]);
-	const darkTheme = useTheme();
+	const theme = useTheme();
 // TODO: update leaderboard state, and don't perform more requests on no more results
 	const getLeaderboardData = async (page) => {
 		await axios
@@ -29,9 +29,7 @@ const Leaderboard = ({ page, changePage }) => {
 		<Page>
 			<div className='w-full text-center text-5xl pb-8'>Leaderboard</div>
 			<div
-				className={`${
-					darkTheme === true ? 'nm-inset-gray-neu-sm' : 'nm-inset-gray-200-sm'
-				}  rounded-xl w-full h-full p-2 px-4 overflow-x-hidden`}>
+				className={`${theme.insetBackgroundColorSm}  rounded-xl w-full h-full p-2 px-4 overflow-x-hidden`}>
 				<table className='w-full'>
 					<thead>
 						<tr className='border-b-8 border-transparent'>
@@ -44,7 +42,6 @@ const Leaderboard = ({ page, changePage }) => {
 					<tbody className='overflow-hidden'>
 						{leaderboard.map((entry) => (
 							<tr key={entry.username} className='h-10'>
-								{/* <td className='w-2 border-b border-gray-400'>position</td> */}
 								<td className='border-b border-gray-400'>{entry.username}</td>
 								<td className='text-center border-b border-gray-400'>
 									{entry.gamesPlayed}

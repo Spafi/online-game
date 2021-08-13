@@ -28,7 +28,7 @@ const EditableCodeContainer = ({ script, language, updateCode, readOnly }) => {
 		script =
 			script ||
 			'public class Problem { \n\n\n	public static void main (String[] args) {\n		/* code */\n	}\n}';
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	return (
 		<div className='w-full h-full'>
 			<AceEditor
@@ -44,7 +44,7 @@ const EditableCodeContainer = ({ script, language, updateCode, readOnly }) => {
 					}`
 				}
 				mode={language || 'sh'}
-				theme={darkTheme === true ? 'monokai' : 'xcode'}
+				theme={theme.dark === true ? 'monokai' : 'xcode'}
 				name='basic-code-editor'
 				onChange={updateCode && updateCode}
 				fontSize={fontSize}

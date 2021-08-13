@@ -7,7 +7,7 @@ import axios from 'axios';
 import { testCodeUrl, submitCodeUrl } from '../../BASE_URL';
 import { useTheme } from '../ThemeContext';
 import Input from '../Login/Input.js';
-import choices from '../../LANGUAGES'
+import choices from '../../LANGUAGES';
 
 const SubmitProblem = () => {
 	const [script, setScript] = useState('');
@@ -18,7 +18,7 @@ const SubmitProblem = () => {
 		decoy2: '',
 		decoy3: '',
 	});
-	const darkTheme = useTheme();
+	const theme = useTheme();
 	const decoysRef = useRef();
 	const [language, setLanguage] = useState(choices[0]);
 	const updateCode = (code) => setScript(code);
@@ -164,7 +164,7 @@ const SubmitProblem = () => {
 				<div className='relative'>
 					<div
 						className={`  h-36 flex-grow relative rounded-md px-1 py-2 text-xs font-roboto w-full overflow-scroll scrollbar-thin scrollbar-thumb-rounded-sm ${
-							darkTheme
+							theme.dark
 								? 'bg-monokai-bg scrollbar-thumb-purple-500'
 								: 'bg-white scrollbar-thumb-gray-400'
 						}`}>
@@ -206,7 +206,8 @@ const SubmitProblem = () => {
 								setAnswers({ ...answers, decoy3: target.value })
 							}
 						/>
-						<div className='absolute -bottom-5 text-sm text-red-700 left-4'></div>
+						<div
+							className={`absolute -bottom-5 text-sm ${theme.errorTextColor} left-4`}></div>
 					</div>
 				</div>
 			</div>
