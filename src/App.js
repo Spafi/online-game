@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 import { ThemeProvider } from './components/ThemeContext.js';
+import { ThemeProvider2 } from './components/ThemeContext2js.js';
 import { GameProvider } from './components/Game/GameContext.js';
 import Menu from './components/Menu/Menu';
 import Main from './components/Main.js';
@@ -19,7 +20,7 @@ function App() {
 	const [user, setUser] = useState();
 	const [username, setUsername] = useState('');
 	const [userBgColor, setUserBgColor] = useState('');
-	const [currentPage, setCurrentPage] = useState();
+	const [currentPage, setCurrentPage] = useState('main');
 	const [leaderboardPage, setLeaderboardPage] = useState(0);
 
 	const changeLeaderboardPage = (direction) => {
@@ -70,7 +71,7 @@ function App() {
 	const switchPages = (page) => {
 		switch (page) {
 			case 'main':
-				return <UserPage username={username} />;
+				return <SelectGameType />;
 			case 'play':
 				return <SelectGameType />;
 			case 'submitProblem':
@@ -87,6 +88,7 @@ function App() {
 	};
 	return (
 		<ThemeProvider>
+		<ThemeProvider2>
 			<div className='App subpixel-antialiased '>
 				<Main>
 					{/* <SessionExpiredMessage content={"Your session has expired!"} isActive={true}/> */}
@@ -112,6 +114,7 @@ function App() {
 					)}
 				</Main>
 			</div>
+		</ThemeProvider2>
 		</ThemeProvider>
 	);
 }

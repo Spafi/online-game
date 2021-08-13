@@ -11,9 +11,11 @@ export const ThemeProvider = ({ children }) => {
 	// gray-200, gray-800, gray-400
 	const [darkTheme, setDarkTheme] = useState(true);
 
+
 	const toggleTheme = () => {
 		setDarkTheme((prevTheme) => !prevTheme);
 	};
+
 
 	return (
 		<ThemeContext.Provider value={darkTheme}>
