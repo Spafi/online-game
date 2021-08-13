@@ -143,7 +143,10 @@ const LoginContainer = ({
 						<Input
 							placeholder={'E-mail'}
 							value={email}
-							onChange={({ target }) => setEmail(target.value)}
+							onChange={({ target }) => {
+								hideError(inputRef);
+								setEmail(target.value);
+							}}
 							ref={inputRef}
 						/>
 
@@ -156,7 +159,10 @@ const LoginContainer = ({
 						<Input
 							placeholder={'Username'}
 							value={username}
-							onChange={({ target }) => setUsername(target.value)}
+							onChange={({ target }) => {
+								hideError(usernameRef);
+								setUsername(target.value);
+							}}
 							ref={usernameRef}
 						/>
 						<Input

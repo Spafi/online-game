@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Button from '../common/Button';
 import { useTheme } from '../ThemeContext';
+import { useTheme2, useToggleTheme2 } from '../ThemeContext2js.js';
 import axios from 'axios';
 import { startGameUrl, webSocketUrl, gameProgressUrl } from '../../BASE_URL';
 import Input from '../Login/Input';
@@ -11,8 +12,10 @@ import languages from '../../LANGUAGES';
 
 const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 	const darkTheme = useTheme();
+	const theme = useTheme2();
 	const game = useGame();
 	const setGame = useUpdateGame();
+	const t2 = useToggleTheme2();
 	const [selectedLanguages, setSelectedLanguages] = useState([]);
 	const [rounds, setRounds] = useState(3);
 	// eslint-disable-next-line
@@ -160,6 +163,8 @@ const CreateGame = ({ children, changeGameMode, gameStatus }) => {
 					handleClick={() => createGame()}
 					classes={'text-xl text-green-600 font-bold'}></Button>
 			</div>
+			<div className={`${theme.insetBackgroundColor} ${theme.textColor}`}>w</div>
+			<button onClick={()=> t2()}>d</button>
 		</div>
 	);
 };
