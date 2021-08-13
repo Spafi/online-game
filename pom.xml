@@ -8,11 +8,11 @@
 		<version>2.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.spaf.jwt</groupId>
-	<artifactId>jwt101</artifactId>
+	<groupId>com.spaf.coderush</groupId>
+	<artifactId>coderush</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jwt101</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Code Rush</name>
+	<description>Code Rush Server</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -54,11 +54,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.github.cdimascio</groupId>
-			<artifactId>dotenv-java</artifactId>
-			<version>2.2.0</version>
 		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
