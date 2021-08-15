@@ -25,14 +25,14 @@ public class Problem {
     private String script;
     private String output;
     private String byUser;
+    private int playedCount = 0;
+    private int correctAnswered = 0;
 
     @Transient
     private String clientId;
 
     @Transient
     private String clientSecret;
-
-    private int playedCount;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> answers;

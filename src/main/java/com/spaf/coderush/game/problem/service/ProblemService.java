@@ -28,12 +28,11 @@ public class ProblemService {
         return problemRepository.findById(id).get();
     }
 
-    public List<Problem> findByLanguages(List<String> languages, int count) {
+    public List<Problem> findByLanguagesWithCount(List<String> languages, int count) {
 //        TODO: Change random retrieving method for large scale application, or, better, optimize database
         List<Problem> problemsByLanguages = problemRepository.findByLanguageIn(languages);
         if(problemsByLanguages.size() < count) throw new ArrayIndexOutOfBoundsException("Not enough problems");
         return getRandomProblems(problemsByLanguages, count);
-
     }
 
     List<Problem> getRandomProblems(List<Problem> problems, int count) {

@@ -31,11 +31,13 @@ class AppUser implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private int score;
-    private int gamesPlayed;
+    private int score = 0;
+    private int gamesPlayed = 0;
+    private int gamesWon = 0;
+    private int problemsSubmitted = 0;
 
 
-    @OneToMany
+    @ManyToMany
     private List<Language> languages;
 
     @Enumerated(EnumType.STRING)
@@ -58,8 +60,6 @@ class AppUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.score = 0;
-        this.gamesPlayed = 0;
     }
 
     public AppUser(String username, String email, String password, AppUserRole role) {

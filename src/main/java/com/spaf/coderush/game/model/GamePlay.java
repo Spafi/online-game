@@ -11,8 +11,4 @@ public class GamePlay {
     private String gameId;
     private String username;
     private String answer;
-
-    public GamePlay(String gameId) {
-        this.gameId = gameId;
-    }
 }

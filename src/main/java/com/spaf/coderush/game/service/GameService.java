@@ -1,5 +1,6 @@
 package com.spaf.coderush.game.service;
 
+import com.spaf.coderush.game.exception.GameNotFoundException;
 import com.spaf.coderush.game.model.*;
 import com.spaf.coderush.user.model.AppUser;
 import com.spaf.coderush.game.exception.InvalidGameException;
@@ -9,48 +10,47 @@ import com.spaf.coderush.game.repository.GameStorage;
 import com.spaf.coderush.game.problem.service.ProblemService;
 import com.spaf.coderush.user.exception.UserNotFoundException;
 import com.spaf.coderush.user.service.AppUserService;
-import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.spaf.coderush.game.model.GameStatus.FINISHED;
 
 
 @Service
 @AllArgsConstructor
 public class GameService {
 
-    @Autowired
-    private AppUserService userService;
+    private final AppUserService userService;
+    private final ProblemService problemService;
 
-    @Autowired
-    private ProblemService problemService;
-
-    public GameRound createGame(CreateGameRequest createGameRequest) throws UserNotFoundException {
-        //        TODO: ADD check for retrieving the username
-        String username = createGameRequest.getUsername();
-        AppUser user = userService.findByUsername(username);
-        Player player1 = new Player(user.getChosenUsername(), 0);
-        List<String> languages = createGameRequest.getLanguages();
-        byte rounds = createGameRequest.getRounds();
-        int roundTimeLimit = createGameRequest.getRoundTimeLimit();
+    public GameRound createGame(CreateGameRequest createGameRequest)
+            throws UserNotFoundException {
 
         Game game = new Game();
-        final int SHORT_ID_LENGTH = 6;
+        final byte SHORT_ID_LENGTH = 6;
 
         game.setGameId(RandomStringUtils.randomAlphanumeric(SHORT_ID_LENGTH));
-        game.setPlayer1(player1);
+
+        String username = createGameRequest.getUsername();
+        AppUser user = userService.findByUsername(username);
+        Player player1 = new Player(user.getChosenUsername());
+
+        game.getPlayers().add(player1);
         game.setGameStatus(GameStatus.NEW);
+
+        short roundTimeLimit = createGameRequest.getRoundTimeLimit();
         game.setRoundTimeLimit(roundTimeLimit);
-        List<Problem> problemsList = problemService.findByLanguages(languages, rounds);
+
+        List<String> languages = createGameRequest.getLanguages();
+        byte rounds = createGameRequest.getRounds();
+        List<Problem> problemsList = problemService.findByLanguagesWithCount(languages, rounds);
+
         game.setProblems(problemsList);
         problemsList.forEach(problem -> Collections.shuffle(problem.getAnswers()));
-        game.setRound(problemsList.size() - 1);
+        game.setRound((byte) (problemsList.size() - 1));
+
         GameStorage.getInstance().setGame(game);
 
         String password = createGameRequest.getPassword();
@@ -61,16 +61,16 @@ public class GameService {
         return GameRound
                 .builder()
                 .gameId(game.getGameId())
-                .player1(player1)
+                .players(game.getPlayers())
                 .build();
     }
 
-    public GameRound connectToGame(ConnectRequest connectRequest) throws InvalidParamException, InvalidGameException, UserNotFoundException {
-        Player player2 = connectRequest.getPlayer();
+    public GameRound connectToGame(ConnectRequest connectRequest)
+            throws InvalidParamException, InvalidGameException, UserNotFoundException {
+
         String gameId = connectRequest.getGameId();
         if (!GameStorage.getInstance().getGames().containsKey(gameId))
             throw new InvalidParamException("Game not found with ID: " + gameId);
-
 
         Game game = GameStorage.getInstance().getGames().get(gameId);
         String password = game.getPassword();
@@ -79,31 +79,24 @@ public class GameService {
             if (!connectRequest.getPassword().equals(password))
                 throw new InvalidParamException("Wrong Password!");
 
-        int previousScore = 0;
+        byte maxPlayers = game.getMaxPlayers();
+        if (game.getPlayers().size() >= maxPlayers)
+            throw new InvalidGameException(
+                    String.format("The maximum number of players (%d) has been reached!", maxPlayers)
+            );
 
-        if (game.getPlayer2() != null) {
-            if (!game.getPlayer2().equals(player2)) {
-                throw new InvalidGameException("Game is not valid anymore");
-            }
-//                Player 2 reconnect logic
-            //  If player 2 is reconnecting, it keeps the score
-            previousScore = game.getPlayer2().getScore();
+        Player player = new Player(
+                userService.findByUsername(connectRequest.getPlayer().getUsername())
+                        .getChosenUsername()
+        );
 
-        }
-//        TODO: ADD check for retrieving the username
-        AppUser user2 = userService.findByUsername(player2.getUsername());
-
-        player2 = new Player(user2.getChosenUsername(), previousScore);
-
-        game.setPlayer2(player2);
-        game.setGameStatus(GameStatus.IN_PROGRESS);
-
+        if (!game.getPlayers().contains(player))
+            game.getPlayers().add(player);
 
         return GameRound
                 .builder()
                 .gameId(game.getGameId())
-                .player1(game.getPlayer1())
-                .player2(game.getPlayer2())
+                .players(game.getPlayers())
                 .roundStatus(RoundStatus.CONNECTED)
                 .build();
     }
@@ -112,70 +105,107 @@ public class GameService {
         return null;
     }
 
-    public GameRound gamePlay(GamePlay gamePlay) throws NotFoundException, InvalidGameException, UserNotFoundException {
+    public GameRound startGame(StartGameRequest request) throws InvalidParamException {
+
+        String gameId = request.getGameId();
+
+        if (!GameStorage.getInstance().getGames().containsKey(gameId))
+            throw new InvalidParamException("Game not found with ID: " + gameId);
+// [0,1,2,3]
+        Game game = GameStorage.getInstance().getGames().get(gameId);
+        Problem problem = game.getProblems().get(game.getRound());
+
+        game.setRound((byte) (game.getRound() - 1));
+
+        return GameRound
+                .builder()
+                .gameId(game.getGameId())
+                .players(game.getPlayers())
+                .script(problem.getScript())
+                .language(problem.getLanguage())
+                .byUser(problem.getByUser())
+                .answers(problem.getAnswers())
+                .timeLimit((short) 3)
+                .roundStatus(RoundStatus.START_GAME)
+                .build();
+    }
+
+    public GameRound gamePlay(GamePlay gamePlay)
+            throws InvalidGameException, UserNotFoundException, GameNotFoundException {
 
         if (!GameStorage.getInstance().getGames().containsKey(gamePlay.getGameId())) {
-            throw new NotFoundException("Game not found");
+            throw new GameNotFoundException("Game not found");
         }
 
         Game game = GameStorage.getInstance().getGames().get(gamePlay.getGameId());
 
-        if (game.getGameStatus().equals(FINISHED)) {
+        if (game.getGameStatus().equals(GameStatus.FINISHED)) {
             throw new InvalidGameException("Game is already finished");
         }
 
         List<Problem> gameProblems = game.getProblems();
-        int currentRound = game.getRound();
-
+        byte currentRound = game.getRound();
 
         GameRound gameRound = GameRound
                 .builder()
                 .gameId(game.getGameId())
-                .timeLimit(game.getRoundTimeLimit())
-                .roundStatus(RoundStatus.IN_PROGRESS)
+                .timeLimit((short) 3)
+                .roundStatus(RoundStatus.FINISHED)
                 .build();
 
-        if (gamePlay.getUsername() != null && gamePlay.getAnswer() != null) {
+        Problem answeredProblem = gameProblems.get(currentRound + 1);
+        Problem problemFromDb = problemService.findById(answeredProblem.getId());
+
+        if (gamePlay.getAnswer().equals(answeredProblem.getOutput())) {
             Player player = game.getPlayerByUsername(gamePlay.getUsername());
-
-            if (gamePlay.getAnswer().equals(gameProblems.get(currentRound + 1).getOutput())) {
-                player.setScore((player.getScore() + 1));
-            }
-            gameRound.setRoundStatus(RoundStatus.FINISHED);
+            player.setScore((player.getScore() + 1));
+            gameRound.setWinner(player);
+            problemFromDb.setCorrectAnswered(problemFromDb.getCorrectAnswered() + 1);
         }
+        problemFromDb.setPlayedCount(problemFromDb.getPlayedCount() + 1);
+        problemService.save(problemFromDb);
 
-        gameRound.setPlayer1(game.getPlayer1());
-        gameRound.setPlayer2(game.getPlayer2());
-
-
-        if (currentRound <= -1) {
-            game.setGameStatus(FINISHED);
-            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
-
-            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
-                AppUser user = userService.findByUsername(p.getUsername());
-//                TODO: Update game score
-                user.setScore(user.getScore() + p.getScore());
-                user.setGamesPlayed(user.getGamesPlayed() + 1);
-                userService.updateUserData(user);
-            }
-            return gameRound;
-        }
-
-        Problem currentProblem = gameProblems.get(currentRound);
-        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
-        problemService.save(currentProblem);
-
-        gameRound.setScript(currentProblem.getScript());
-        gameRound.setLanguage(currentProblem.getLanguage());
-        gameRound.setByUser(currentProblem.getByUser());
-        gameRound.setAnswers(currentProblem.getAnswers());
-
-        if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
-            gameRound.setRoundStatus(RoundStatus.NEW);
-
-        }
         game.setRound(--currentRound);
+        Problem nextProblem = game.getProblems().get(currentRound);
+
+        gameRound.setScript(nextProblem.getScript());
+        gameRound.setAnswers(nextProblem.getAnswers());
+        gameRound.setLanguage(nextProblem.getLanguage());
+        gameRound.setByUser(nextProblem.getByUser());
+        gameRound.setPlayers(game.getPlayers());
+
         return gameRound;
+//
+//
+//
+//        if (currentRound <= -1) {
+//            game.setGameStatus(FINISHED);
+//            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
+//
+//            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
+//                AppUser user = userService.findByUsername(p.getUsername());
+////                TODO: Update game score
+//                user.setScore(user.getScore() + p.getScore());
+//                user.setGamesPlayed(user.getGamesPlayed() + 1);
+//                userService.updateUserData(user);
+//            }
+//            return gameRound;
+//        }
+//
+//        Problem currentProblem = gameProblems.get(currentRound);
+//        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
+//        problemService.save(currentProblem);
+//
+//        gameRound.setScript(currentProblem.getScript());
+//        gameRound.setLanguage(currentProblem.getLanguage());
+//        gameRound.setByUser(currentProblem.getByUser());
+//        gameRound.setAnswers(currentProblem.getAnswers());
+//
+//        if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
+//            gameRound.setRoundStatus(RoundStatus.NEW);
+//
+//        }
+//        game.setRound(--currentRound);
+
     }
 }
