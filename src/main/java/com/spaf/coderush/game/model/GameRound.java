@@ -17,5 +17,4 @@ public class GameRound {
     private Short timeLimit;
     private RoundStatus roundStatus;
     private Player winner;
-    private byte roundNumber;
 }

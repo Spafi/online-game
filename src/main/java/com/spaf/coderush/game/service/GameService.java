@@ -15,6 +15,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -50,7 +51,7 @@ public class GameService {
         game.setProblems(problemsList);
         problemsList.forEach(problem -> Collections.shuffle(problem.getAnswers()));
         game.setRound((byte) (problemsList.size() - 1));
-
+        // round 2
         GameStorage.getInstance().setGame(game);
 
         String password = createGameRequest.getPassword();
@@ -111,11 +112,9 @@ public class GameService {
 
         if (!GameStorage.getInstance().getGames().containsKey(gameId))
             throw new InvalidParamException("Game not found with ID: " + gameId);
-// [0,1,2,3]
+
         Game game = GameStorage.getInstance().getGames().get(gameId);
         Problem problem = game.getProblems().get(game.getRound());
-
-        game.setRound((byte) (game.getRound() - 1));
 
         return GameRound
                 .builder()
@@ -145,6 +144,7 @@ public class GameService {
 
         List<Problem> gameProblems = game.getProblems();
         byte currentRound = game.getRound();
+//        round 2
 
         GameRound gameRound = GameRound
                 .builder()
@@ -153,7 +153,7 @@ public class GameService {
                 .roundStatus(RoundStatus.FINISHED)
                 .build();
 
-        Problem answeredProblem = gameProblems.get(currentRound + 1);
+        Problem answeredProblem = gameProblems.get(currentRound);
         Problem problemFromDb = problemService.findById(answeredProblem.getId());
 
         if (gamePlay.getAnswer().equals(answeredProblem.getOutput())) {
@@ -165,47 +165,27 @@ public class GameService {
         problemFromDb.setPlayedCount(problemFromDb.getPlayedCount() + 1);
         problemService.save(problemFromDb);
 
-        game.setRound(--currentRound);
-        Problem nextProblem = game.getProblems().get(currentRound);
 
-        gameRound.setScript(nextProblem.getScript());
-        gameRound.setAnswers(nextProblem.getAnswers());
-        gameRound.setLanguage(nextProblem.getLanguage());
-        gameRound.setByUser(nextProblem.getByUser());
+        try {
+            Problem nextProblem = game.getProblems().get(currentRound - 1);
+            gameRound.setScript(nextProblem.getScript());
+            gameRound.setAnswers(nextProblem.getAnswers());
+            gameRound.setLanguage(nextProblem.getLanguage());
+            gameRound.setByUser(nextProblem.getByUser());
+        } catch (IndexOutOfBoundsException e) {
+            gameRound.setRoundStatus(RoundStatus.GAME_FINISH);
+
+            Player winner = game.getPlayers()
+                    .stream()
+                    .max(Comparator.comparing(Player::getScore))
+                    .get();
+
+            if (winner.getScore() > 0) game.setWinner(winner);
+        }
+
         gameRound.setPlayers(game.getPlayers());
+        game.setRound((byte) (currentRound - 1));
 
         return gameRound;
-//
-//
-//
-//        if (currentRound <= -1) {
-//            game.setGameStatus(FINISHED);
-//            gameRound.setRoundStatus(RoundStatus.FINISH_GAME);
-//
-//            for(Player p : new Player[]{game.getPlayer1(), game.getPlayer2()}) {
-//                AppUser user = userService.findByUsername(p.getUsername());
-////                TODO: Update game score
-//                user.setScore(user.getScore() + p.getScore());
-//                user.setGamesPlayed(user.getGamesPlayed() + 1);
-//                userService.updateUserData(user);
-//            }
-//            return gameRound;
-//        }
-//
-//        Problem currentProblem = gameProblems.get(currentRound);
-//        currentProblem.setPlayedCount(currentProblem.getPlayedCount() + 1);
-//        problemService.save(currentProblem);
-//
-//        gameRound.setScript(currentProblem.getScript());
-//        gameRound.setLanguage(currentProblem.getLanguage());
-//        gameRound.setByUser(currentProblem.getByUser());
-//        gameRound.setAnswers(currentProblem.getAnswers());
-//
-//        if (gamePlay.getUsername() == null && gamePlay.getAnswer() == null) {
-//            gameRound.setRoundStatus(RoundStatus.NEW);
-//
-//        }
-//        game.setRound(--currentRound);
-
     }
 }

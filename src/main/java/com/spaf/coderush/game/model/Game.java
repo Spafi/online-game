@@ -20,6 +20,7 @@ public class Game {
     private byte round;
     private short roundTimeLimit;
     private byte maxPlayers = 5;
+    private Player winner;
 
     public Player getPlayerByUsername(String username) {
         Player player = null;

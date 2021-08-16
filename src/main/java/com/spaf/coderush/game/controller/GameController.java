@@ -91,7 +91,7 @@ public class GameController {
         Game game = GameStorage.getInstance().getGames().get(request.getGameId());
         GameRound gameRound = gameService.gamePlay(request);
 
-        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + request.getGameId(), gameRound);
+        simpMessagingTemplate.convertAndSend(gameProgressURL + request.getGameId(), gameRound);
 
         RoundStatus roundStatus = gameRound.getRoundStatus();
 
